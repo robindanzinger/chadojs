@@ -24,14 +24,14 @@ buster.testCase("library assume", {
       assume(lib).canHandle('anyFuncName').withArgs('aString', [1,2]).andReturn('anyString');
       assert.equals(lib.anyFuncName('aString', [1,2]), expectedString);
     },
-    "when called with no arguments should throw error" : function () {
+    "when called with no arguments it should throw error" : function () {
       var lib = {};
       assume(lib).canHandle('anyFuncName').withArgs('aString', [1,2]).andReturn('anyString');
       assert.exception(function () {
         lib.anyFuncName();
       });
     },
-    "when called with wrong argument should throw error" : function () {
+    "when called with wrong argument it should throw error" : function () {
       var lib = {}
       assume(lib).canHandle('anyFuncName').withArgs('aString', [1,2]).andReturn('anyString');
       assert.exception(function () {
@@ -40,7 +40,7 @@ buster.testCase("library assume", {
     }
   },
   "Given two CanHandle assumptions with different arguments" : {
-    "should return the correct value depending on the argument" : function () {
+    "depending on the argument it should return the correspondent value" : function () {
       var lib = {};
       assume(lib).canHandle('anyFuncName').withArgs('arg1').andReturn('val1');
       assume(lib).canHandle('anyFuncName').withArgs('arg2').andReturn('val2');
