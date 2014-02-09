@@ -1,8 +1,13 @@
 var buster = require('buster');
 var assert = buster.assert;
 var refute = buster.refute;
-var verify = require('../lib/verify').verify;
+var repo;
+var verify;
 buster.testCase("library verify", {
+  setUp : function () {
+    repo = {};
+    verify = require('../lib/verify')(repo);
+  },
   "Given a CanHandle verification" : {
     "returns true, if the sut can handle the assumption" : function () {
       var lib = {
@@ -25,6 +30,11 @@ buster.testCase("library verify", {
         var lib = {};
         (verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturn("value").on(lib));
       });
+    },
+    "stores the verification" : function () {
+      var lib = {funcName : function() {return "value"}};
+      var bool = verify("libName").canHandle("funcName").withArgs("anyString").andReturn("value").on(lib);
+      assert(repo.libName.funcName.anyString.value);
     }
   }
 })
