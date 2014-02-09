@@ -34,7 +34,7 @@ buster.testCase("library verify", {
     "stores the verification" : function () {
       var lib = {funcName : function() {return "value"}};
       var bool = verify("libName").canHandle("funcName").withArgs("anyString").andReturn("value").on(lib);
-      assert(repo.libName.funcName.anyString.value);
+      assert(repo.libName.funcName['["anyString"]'].value);
     }
   }
 })
