@@ -53,8 +53,13 @@ buster.testCase("library assume", {
       var lib = chadodouble("mylib");
       assume(lib).canHandle('anyFunc').withArgs('aString').andReturn('anyString');
       assert(repo.mylib.anyFunc['["aString"]'].anyString);
-    }
-  },
+    },
+    "stores who calls the assumption in repo" : function () {
+      var lib = chadodouble("mylib");
+      assume(lib).canHandle('anyFunc').withArgs('aString').andReturn('anyString');
+      lib.anyFunc('aString');
+      assert(repo.mylib.anyFunc['["aString"]'].anyString.calledBy);
+    } },
   "Given two CanHandle assumptions with different arguments" : {
     "depending on the argument it should return the correspondent value" : function () {
       var lib = chadodouble("lib");
