@@ -21,6 +21,11 @@ buster.testCase("library assume", {
       var lib = chadodouble("lib");
       assume(lib).canHandle('anyFuncName').andReturn(5);
       assert.equals(lib.anyFuncName(), expectedNumber);
+    },
+    "return value is null" : function () {
+      var lib = chadodouble("lib");
+      assume(lib).canHandle('anyFuncName').andReturn(null);
+      assert.equals(lib.anyFuncName(), null);
     }
   },
   "Given CanHandle assumption with function arguments and return a simple value" : {
