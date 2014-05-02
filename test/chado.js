@@ -23,6 +23,16 @@ buster.testCase("library chado", {
     assume(lib).canHandle("foo").andReturn("bar");
 
     assert(chado2.repo.myLib.foo);
+  },
+  "can create a new chado config" : function () {
+    var chado2 = chado.create();
+    var assume = chado.assume;
+    var createDouble = chado.createDouble;
+    var lib = createDouble("myLib");
+    assume(lib).canHandle("foo").andReturn("bar");
+
+    refute(chado2.repo.myLib);
+    assert(chado.repo.myLib.foo);
   }
 });
 
