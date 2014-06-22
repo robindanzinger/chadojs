@@ -13,7 +13,6 @@ buster.testCase("Example", {
     },
     "it should be possible to add a new value" : function () {
       assume(this.store).canHandle('add').withArgs('myKey', 'myValue').andReturn();
-    //  console.log(report.getNotVerifiedAssumptions(chado.repo));
       assert.equals(this.store.add('myKey', 'myValue'), undefined);
     },
     "we should get the value with the correct key" : function () {
@@ -23,7 +22,6 @@ buster.testCase("Example", {
     "we should get null, if the value is not stored" : function () {
       assume(this.store).canHandle('get').withArgs('myKey').andReturn(null);
       assert.equals(this.store.get('myKey'), null);
-      console.log(report.getNotVerifiedAssumptions(chado.repo));
     }
   }
 });

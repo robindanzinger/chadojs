@@ -8,12 +8,18 @@ buster.testCase("library save", {
     repo = {};
     save = require('../lib/save');
   },
-  "saves a array as a map to the given repository object" : function () {
-    var list = ["value1", "value2"];
+  "saves an array as a map to the given repository object" : function () {
+    var list = ["value1", "value2", 1, "value3"];
+
     save(list).to(repo);
-    
     assert(repo.value1);
-    assert(repo.value1.value2);
+    assert(repo.value1.value2["1"].value3);
+  },
+  "stringifies objects" : function () {
+    var obj = {prop1: "prop", prop2: 2};
+    var list = [obj];
+    save(list).to(repo);
+    assert(repo['{"prop1":"prop","prop2":2}']);
   },
   "returns the last map value" : function () {
     var list = ["value"];

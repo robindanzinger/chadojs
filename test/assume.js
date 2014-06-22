@@ -26,6 +26,11 @@ buster.testCase("library assume", {
       var lib = chadodouble("lib");
       assume(lib).canHandle('anyFuncName').andReturn(null);
       assert.equals(lib.anyFuncName(), null);
+    },
+    "return value is an object" : function () {
+      var lib = chadodouble("lib");
+      assume(lib).canHandle('anyFuncName').andReturn({prop1: "value1", prop2: 4});
+      assert.equals(lib.anyFuncName(), {prop1: "value1", prop2: 4});
     }
   },
   "Given CanHandle assumption with function arguments and return a simple value" : {
@@ -64,7 +69,23 @@ buster.testCase("library assume", {
       assume(lib).canHandle('anyFunc').withArgs('aString').andReturn('anyString');
       lib.anyFunc('aString');
       assert(repo.mylib.anyFunc['["aString"]'].anyString.calledBy);
-    } },
+    } 
+  },
+  "Given CanHandle assumption with object as return value" : {
+    "should return the object" : function () {
+      var lib = chadodouble("mylib");
+      var returnValue = {
+        name : "addOneCalculator",
+        addOne : function(x) {
+          return x + 1;
+        }
+      }
+      assume(lib).canHandle('anyFunc').withArgs('aString').andReturn(returnValue);
+      var actualValue = lib.anyFunc('aString');
+      assert.equals(actualValue.name, "addOneCalculator");
+      assert.equals(actualValue.addOne(1), 2);
+    }
+  },
   "Given two CanHandle assumptions with different arguments" : {
     "depending on the argument it should return the correspondent value" : function () {
       var lib = chadodouble("lib");
