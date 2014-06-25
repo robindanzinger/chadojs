@@ -33,8 +33,55 @@ buster.testCase("Convert a map to an object" , {
     assert.equals(obj.returnValue, "false");
     assert.equals(obj.parameters, "[\"anyUnknownId\"]");
     assert.equals(obj.methodName, "hasValue"); 
+  },
+  "should convert map to array" : function () {
+    var map = { "Key1": {}, "Key2": {}};
+
+    var array = convertMapToArray(map);
+
+    assert.equals(array[0], {"Name" : "Key1", "Values" : []});
+    assert.equals(array[1], {"Name" : "Key2", "Values" : []});
+  },
+  "should convert map in map to array" : function () {
+    var map = { "Key1": {"SubKey11": {}, "SubKey12": {}}, "Key2": {"SubKey21":{}}};
+
+    var array = convertMapToArray(map);
+
+    assert.equals(array[0], {"Name" : "Key1", "Values" : [{"Name":"SubKey11","Values":[]},{"Name":"SubKey12","Values":[]}]});
+    assert.equals(array[1], {"Name" : "Key2", "Values" : [{"Name":"SubKey21","Values":[]}]});
+  },
+  "can limit convertion of submaps" : function () {
+    var map = { "Key1": {"prop":"value"}};
+
+    var array = convertMapToArray(map, 1);
+
+    assert.equals(array[0], {"Name" : "Key1", "Value" : {"prop":"value"}}); 
   }
 });
+
+function convertMapToArray(map, limit) {
+  if (limit === 1) {
+    return convertLastMapToArray(map);
+  }
+  return convertMapAndSubMapToArray(map, limit); 
+}
+
+function convertLastMapToArray(map) {
+  var array = [];
+  for (prop in map) {
+    array.push({"Name":prop,"Value":map[prop]});
+  }
+  return array;
+} 
+
+function convertMapAndSubMapToArray(map, limit){
+  var array = [];
+  limit = limit > 1 ? limit -1 : undefined; 
+  for (prop in map) {
+    array.push({"Name":prop,"Values":convertMapToArray(map[prop], limit)});
+  }
+  return array; 
+} 
 
 function convertMapToObject(map, obj, propName) {
   var restPropNames = Array.prototype.slice.call(arguments, 3);
