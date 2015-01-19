@@ -62,7 +62,9 @@ buster.testCase("library assume", {
     "stores the assumption in repo" : function () {
       var lib = chadodouble("mylib");
       assume(lib).canHandle('anyFunc').withArgs('aString').andReturn('anyString');
+      assume(lib).canHandle('anotherFunc').andReturn('foo');
       assert(repo.mylib.anyFunc['["aString"]'].anyString);
+      assert(repo.mylib.anotherFunc.undefined.foo);
     },
     "stores who calls the assumption in repo" : function () {
       var lib = chadodouble("mylib");

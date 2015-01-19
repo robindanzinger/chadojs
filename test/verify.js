@@ -35,6 +35,15 @@ buster.testCase("library verify", {
       var lib = {funcName : function() {return "value"}};
       var bool = verify("libName").canHandle("funcName").withArgs("anyString").andReturn("value").on(lib);
       assert(repo.libName.funcName['["anyString"]'].value);
+    },
+    "can return arrays" : function () {
+      var lib = {
+        funcName : function () {
+          return ["value1","value2"];
+        }
+      };
+      assert(verify("libName").canHandle("funcName").andReturn(["value1", "value2"]).on(lib));
     }
+
   }
 })
