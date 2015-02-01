@@ -1,7 +1,7 @@
 var buster = require('buster'); 
 var assert = buster.assert;
 var refute = buster.refute;
-var fs = require('fs');
+var transform = require('../lib/arraytransformer');
 buster.testCase("Chado Object Keys to Array Transformer", {
   "It transforms the json map to an array" : {
     "{} should result in []" : function () {
@@ -35,34 +35,10 @@ buster.testCase("Chado Object Keys to Array Transformer", {
                           '["Arg2"]':{ReturnVal1:{"assume":{"path4":{"17":{"CallerFuncC2":{}}}}}}}}
       };
       assert.equals(transform(this.json).length, 5); 
+    },
+    "can set names instead of index" : function () {
+      assert.equals([{'KEY1':'A', 'KEY2':'B'}, {'KEY1':'C'}], transform({A:{B:{}},C:{}}, ['KEY1', 'KEY2']));
     }
   }
 });
-
-function transform(obj) {
-  return extractKeys(obj, []);
-}
-
-function extractKeys (obj, extractedKeys) {
-  var result = [];
-  if (Object.keys(obj).length > 0) {
-    for (var prop in obj) {
-      result = result.concat(extractKeys(obj[prop], extractedKeys.concat(prop))); 
-    }
-  } else if (extractedKeys.length > 0){
-    result.push(createResult(extractedKeys));
-  }
-  return result;
-}
-
-function createResult(props) {
-  var result = {};
-  props.forEach(function(key, index){
-    result[index+1] = key;
-  });
-  return result;
-}
-
-
-
 
