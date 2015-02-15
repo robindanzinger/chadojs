@@ -9,7 +9,7 @@ buster.testCase("library assume", {
     repo = {};
     assume = require('../lib/assume')(repo, testdoubleRepo);
   },
-  "Given CanHandle assumption with return value it should return the value when function is called" : {
+  "Given canHandle assumption with return value it should return the value when function is called" : {
     "return value is a string" : function () {
       expectedString = 'anyString';
       var lib = chadodouble("lib");
@@ -33,7 +33,7 @@ buster.testCase("library assume", {
       assert.equals(lib.anyFuncName(), {prop1: "value1", prop2: 4});
     }
   },
-  "Given CanHandle assumption with function arguments and return a simple value" : {
+  "Given canHandle assumption with arguments and which returns a simple value" : {
     "when called with expected arguments it should return value" : function () {
       expectedString = 'anyString';
       var lib = chadodouble("lib");
@@ -73,7 +73,7 @@ buster.testCase("library assume", {
       assert(repo.mylib.anyFunc['["aString"]'].anyString.calledBy);
     } 
   },
-  "Given CanHandle assumption with object as return value" : {
+  "Given canHandle assumption with object as return value" : {
     "should return the object" : function () {
       var lib = chadodouble("mylib");
       var returnValue = {
@@ -86,6 +86,48 @@ buster.testCase("library assume", {
       var actualValue = lib.anyFunc('aString');
       assert.equals(actualValue.name, "addOneCalculator");
       assert.equals(actualValue.addOne(1), 2);
+    }
+  },
+  "Given canHandle assumption with a callback" : {
+    "should call the callback asynchronous" : function (done) {
+      var lib = chadodouble("mylib");
+      var cb = function() {
+        assert(true);
+        done();
+      };
+      assume(lib).canHandle('anyFunc').withArgs(cb).andCallsCallbackWith("");
+      lib.anyFunc(cb);
+    },
+    "should call the first function as argument" : function (done) {
+      var lib = chadodouble("mylib");
+      var cb = function() {
+        assert(true);
+        done();
+      };
+      var anyNumber = 5;
+      assume(lib).canHandle('anyFunc').withArgs("anyArg", anyNumber, cb).andCallsCallbackWith("");
+      lib.anyFunc("anyArg", anyNumber, cb);
+    },
+    "should return control flow and then call callback" : function (done) {
+      var lib = chadodouble("mylib");
+      var value = "value before";
+      var cb = function() {
+        assert.equals("changed after function call", value);
+        done();
+      };
+      assume(lib).canHandle('anyFunc').withArgs(cb).andCallsCallbackWith("");
+      lib.anyFunc(cb);
+      value = "changed after function call";
+    },
+    "should return returnValue and then call callback" : function (done) {
+      var lib = chadodouble("mylib");
+      var cb = function() {
+        assert(true);
+        done();
+      };
+      var anyNumber = 5;
+      assume(lib).canHandle('anyFunc').withArgs("anyArg", anyNumber, cb).andCallsCallbackWith("").andReturn(5);
+      assert.equals(5, lib.anyFunc("anyArg", anyNumber, cb));
     }
   },
   "Given two CanHandle assumptions with different arguments" : {
