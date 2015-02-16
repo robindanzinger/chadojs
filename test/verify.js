@@ -9,13 +9,29 @@ buster.testCase("library verify", {
     verify = require('../lib/verify')(repo);
   },
   "Given a CanHandle verification" : {
-    "returns true, if the sut can handle the assumption" : function () {
+    "returns true, if the sut can handle a assumption and returns the assumed value" : function () {
       var lib = {
         funcName : function () {
           return "value";
         }
       };
       assert(verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturn("value").on(lib));
+    },
+    "returns true, if the sut can handle the assumption and calls the callback" : function (done) {
+      var lib = {
+        funcName : function (foo, callback, bar) {
+          setTimeout(function() {
+            callback("value");
+          }, 0);
+        }
+      };
+      var callback = function () {};
+      verify("libName").canHandle("funcName").withArgs("foo", callback, "bar")
+        .andCallsCallbackWith(1, "value")
+        .on(lib, function (result) {
+          assert(result);
+          done();
+        });
     },
     "returns false, if the sut cannot handle the assumption" : function () {
       var lib = {
@@ -34,7 +50,7 @@ buster.testCase("library verify", {
     "stores the verification" : function () {
       var lib = {funcName : function() {return "value"}};
       var bool = verify("libName").canHandle("funcName").withArgs("anyString").andReturn("value").on(lib);
-      assert(repo.libName.funcName['["anyString"]'].value);
+      assert(repo.libName.funcName['["anyString"]']['r:"value"']);
     },
     "can return arrays" : function () {
       var lib = {
@@ -44,6 +60,5 @@ buster.testCase("library verify", {
       };
       assert(verify("libName").canHandle("funcName").andReturn(["value1", "value2"]).on(lib));
     }
-
   }
 })

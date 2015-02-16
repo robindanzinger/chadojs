@@ -57,20 +57,20 @@ buster.testCase("library assume", {
     "tracks the assumption call" : function () {
       var lib = chadodouble("lib");
       var trackInfo = assume(lib).canHandle('anyFuncName').withArgs('aString').andReturn('anyString');
-      assert.match(Object.keys(repo.lib.anyFuncName['["aString"]'].anyString.assume)[0], "assume.js");
+      assert.match(Object.keys(repo.lib.anyFuncName['["aString"]']['r:"anyString"'].assume)[0], "assume.js");
     },
     "stores the assumption in repo" : function () {
       var lib = chadodouble("mylib");
       assume(lib).canHandle('anyFunc').withArgs('aString').andReturn('anyString');
       assume(lib).canHandle('anotherFunc').andReturn('foo');
-      assert(repo.mylib.anyFunc['["aString"]'].anyString);
-      assert(repo.mylib.anotherFunc.undefined.foo);
+      assert(repo.mylib.anyFunc['["aString"]']['r:"anyString"']);
+      assert(repo.mylib.anotherFunc.undefined['r:"foo"']);
     },
     "stores who calls the assumption in repo" : function () {
       var lib = chadodouble("mylib");
       assume(lib).canHandle('anyFunc').withArgs('aString').andReturn('anyString');
       lib.anyFunc('aString');
-      assert(repo.mylib.anyFunc['["aString"]'].anyString.calledBy);
+      assert(repo.mylib.anyFunc['["aString"]']['r:"anyString"'].calledBy);
     } 
   },
   "Given canHandle assumption with object as return value" : {
