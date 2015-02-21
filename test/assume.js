@@ -91,22 +91,22 @@ buster.testCase("library assume", {
   "Given canHandle assumption with a callback" : {
     "should call the callback asynchronous" : function (done) {
       var lib = chadodouble("mylib");
-      var cb = function() {
-        assert(true);
+      var cb = function(result) {
+        assert.equals(result, "value");
         done();
       };
-      assume(lib).canHandle('anyFunc').withArgs(cb).andCallsCallbackWith("");
+      assume(lib).canHandle('anyFunc').withArgs(cb).andCallsCallbackWith(0, "value");
       lib.anyFunc(cb);
     },
-    "should call the first function as argument" : function (done) {
+    "the first arguement of andCallsCallbackWith defines which argument should be used as callback" : function (done) {
       var lib = chadodouble("mylib");
+      var anotherCb = function () {};
       var cb = function() {
         assert(true);
         done();
       };
-      var anyNumber = 5;
-      assume(lib).canHandle('anyFunc').withArgs("anyArg", anyNumber, cb).andCallsCallbackWith("");
-      lib.anyFunc("anyArg", anyNumber, cb);
+      assume(lib).canHandle('anyFunc').withArgs("anyArg", anotherCb, cb).andCallsCallbackWith(2, "");
+      lib.anyFunc("anyArg", anotherCb, cb);
     },
     "should return control flow and then call callback" : function (done) {
       var lib = chadodouble("mylib");
@@ -115,7 +115,7 @@ buster.testCase("library assume", {
         assert.equals("changed after function call", value);
         done();
       };
-      assume(lib).canHandle('anyFunc').withArgs(cb).andCallsCallbackWith("");
+      assume(lib).canHandle('anyFunc').withArgs(cb).andCallsCallbackWith(0, "");
       lib.anyFunc(cb);
       value = "changed after function call";
     },
@@ -126,7 +126,7 @@ buster.testCase("library assume", {
         done();
       };
       var anyNumber = 5;
-      assume(lib).canHandle('anyFunc').withArgs("anyArg", anyNumber, cb).andCallsCallbackWith("").andReturn(5);
+      assume(lib).canHandle('anyFunc').withArgs("anyArg", anyNumber, cb).andCallsCallbackWith(2, "").andReturn(5);
       assert.equals(5, lib.anyFunc("anyArg", anyNumber, cb));
     }
   },
