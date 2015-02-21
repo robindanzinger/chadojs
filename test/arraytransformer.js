@@ -26,6 +26,11 @@ buster.testCase("Chado Object Keys to Array Transformer", {
       var array = transform({A:{B:{}, C:{}}});
       assert.equals(array.length, 2);
     },
+    "can define a value parser" : function () {
+      var parser = function (value) { return "<" + value + ">"};
+      var result = transform({A:{B:{}}}, ['KEY1', 'KEY2'], {'KEY2': parser});
+      assert.equals([{'KEY1':'A', 'KEY2':'<B>'}], result);
+    },
     "complex example" : function () {
       this.json = {
         ObjectA:{Method1:{'["Arg1"]':{ReturnVal1:{"assume":{"path1":{"14":{"CallerFuncA":{}}}}}}}},
