@@ -1,14 +1,24 @@
 var buster = require('buster');
 var assert = buster.assert;
-var action = require('../lib/actionString');
+var actionString = require('../lib/actionString');
 buster.testCase("library action", {
   "createReturnValueActionString creates a String for a returnValue action" : function (){
-    assert.equals('r:"returnValue"', action.createReturnValueActionString("returnValue"));
+    assert.equals('r:"returnValue"', actionString.createReturnValueActionString("returnValue"));
   },
   "createCallbackActionString creates a String for a callback action" : function (){
     var callbackIndex = 2;
-    var actualString = action.createCallbackActionString(
+    var actualString = actionString.createCallbackActionString(
       callbackIndex, ["returnValue"]);
     assert.equals('cb:2->["returnValue"]', actualString);
+  },
+  "can parse an callbackValueActionString to a more readable" : function () {
+    var callbackString = 'cb:2->["returnValue"]';
+    var expected = 'calls 2 argument with ("returnValue")';
+    assert.equals(expected, actionString.parse(callbackString));
+  },
+  "can parse an returnValueActionString to a more readable" : function () {
+    var returnValueString = 'r:"returnValue"';
+    var expected = 'returns "returnValue"';
+    assert.equals(expected, actionString.parse(returnValueString));
   }
 })
