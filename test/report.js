@@ -20,6 +20,7 @@ buster.testCase("Some helper functions for the report", {
     var paths = report.findPaths(array, array[0]);
     assert.equals(paths[0][0], array[2]);
     assert.equals(paths[0][1], array[4]);
+    assert.equals(1, paths.length);
   },
   "find a path with two different ways" : function () {
     var array = createArray()
@@ -39,6 +40,19 @@ buster.testCase("Some helper functions for the report", {
     assert.equals(paths[0][1], array[4]);
     assert.equals(paths[1][0], array[6]);
     assert.equals(paths[1][1], array[8]);
+  },
+  "find a path with different several assumptions, should return one path" : function () {
+    var array = createArray()
+      .addAssumption("AName", "FileA", "MethodA")
+      .addVerification("AName", "FileB", "MethodB")
+      .addAssumption("Assumption1", "FileB", "MethodB")
+      .addAssumption("Assumption2", "FileB", "MethodB")
+     .build();
+
+    var paths = report.findPaths(array, array[0]);
+    assert.equals(1, paths.length);
+    assert.equals(paths[0][0], array[2]);
+    assert.equals(paths[0][1], array[3]);
   },
   "get all assumptions of an assumption" : function () {
     var array = createArray()
