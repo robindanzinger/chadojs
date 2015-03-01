@@ -17,9 +17,28 @@ buster.testCase("Some helper functions for the report", {
       .addAssumption("yetAnotherName", "FileC", "MethodC")
       .build();
 
-    var path = report.findPath(array, array[0]);
-    assert.equals(path[0], array[2]);
-    assert.equals(path[1], array[4]);
+    var paths = report.findPaths(array, array[0]);
+    assert.equals(paths[0][0], array[2]);
+    assert.equals(paths[0][1], array[4]);
+  },
+  "find a path with two different ways" : function () {
+    var array = createArray()
+      .addAssumption("AName", "FileA", "MethodA")
+      .addVerification("AName", "FileB", "MethodB")
+      .addAssumption("path1Name1", "FileB", "MethodB")
+      .addVerification("path1Name1", "FileD", "MethodD")
+      .addAssumption("path1Name2", "FileD", "MethodD")
+      .addVerification("AName", "FileC", "MethodC")
+      .addAssumption("path2Name1", "FileC", "MethodC")
+      .addVerification("path2Name1", "FileE", "MethodE")
+      .addAssumption("path2Name2", "FileE", "MethodE")
+     .build();
+
+    var paths = report.findPaths(array, array[0]);
+    assert.equals(paths[0][0], array[2]);
+    assert.equals(paths[0][1], array[4]);
+    assert.equals(paths[1][0], array[6]);
+    assert.equals(paths[1][1], array[8]);
   },
   "get all assumptions of an assumption" : function () {
     var array = createArray()
@@ -71,7 +90,6 @@ buster.testCase("Some helper functions for the report", {
 
 function createArray() {
   var array = [];
-  var itemsCounter = 0;
 
   function addAssumption(name, file, callermethod) {
     array.push(createItem(name, 'assume', file, callermethod));
@@ -89,7 +107,6 @@ function createArray() {
   }
 
   function createItem(name, type, file, callermethod, func, args, retval) {
-    itemsCounter++;
     return {
       name : name,
       func : func ? func : 'func',
