@@ -49,7 +49,7 @@ buster.testCase("library verify", {
     },
     "stores the verification" : function () {
       var lib = {funcName : function() {return "value"}};
-      var bool = verify("libName").canHandle("funcName").withArgs("anyString").andReturn("value").on(lib);
+      verify("libName").canHandle("funcName").withArgs("anyString").andReturn("value").on(lib);
       assert(repo.libName.funcName['["anyString"]']['r:"value"']);
     },
     "can return arrays" : function () {
@@ -60,5 +60,26 @@ buster.testCase("library verify", {
       };
       assert(verify("libName").canHandle("funcName").andReturn(["value1", "value2"]).on(lib));
     }
+  },
+  "Given throw Error assumption" : {
+    "returns true, if the sut can handle the assumption and throws an error" : function () {
+      var lib = {
+        funcName : function () {
+           throw Error("any message");
+        }
+      };
+      assert(verify("libName").canHandle("funcName").withArgs("anyArg").andThrowError("any message").on(lib));
+    },
+    "returns false, if the sut doesn't throw an error" : function () {
+      var lib = {
+        funcName : function () {}
+      };
+      refute(verify("libName").canHandle("funcName").withArgs("anyArg").andThrowError("any message").on(lib));
+    },
+    "stores the verification" : function () {
+     var lib = {funcName : function() {throw Error("any message")}};
+     verify("libName").canHandle("funcName").withArgs("anyArg").andThrowError("any message").on(lib);
+     assert(repo.libName.funcName['["anyArg"]']['ex:any message']);
+    }  
   }
 })

@@ -23,5 +23,10 @@ buster.testCase("library action", {
     var returnValueString = 'r:"returnValue"';
     var expected = 'returns "returnValue"';
     assert.equals(expected, actionString.parse(returnValueString));
+  },
+  "can parse an throwErrorActionString to a more readable" : function () {
+    var throwErrorString = "ex:error message";
+    var expected = 'throws Error: error message';
+    assert.equals(expected, actionString.parse(throwErrorString));
   }
 })
