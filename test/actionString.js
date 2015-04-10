@@ -11,6 +11,9 @@ buster.testCase("library action", {
       callbackIndex, ["returnValue"]);
     assert.equals('cb:2->["returnValue"]', actualString);
   },
+  "createThrowErrorActionString creates a String for a throwError action" : function () {
+    assert.equals('ex:message', actionString.createThrowErrorActionString("message"));
+  },
   "can parse an callbackValueActionString to a more readable" : function () {
     var callbackString = 'cb:2->["returnValue"]';
     var expected = 'calls 2 argument with ("returnValue")';

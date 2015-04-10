@@ -98,7 +98,7 @@ buster.testCase("library assume", {
       assume(lib).canHandle('anyFunc').withArgs(cb).andCallsCallbackWith(0, "value");
       lib.anyFunc(cb);
     },
-    "the first arguement of andCallsCallbackWith defines which argument should be used as callback" : function (done) {
+    "the first argument of andCallsCallbackWith defines which argument should be used as callback" : function (done) {
       var lib = chadodouble("mylib");
       var anotherCb = function () {};
       var cb = function() {
@@ -137,6 +137,14 @@ buster.testCase("library assume", {
       assume(lib).canHandle('anyFuncName').withArgs('arg2').andReturn('val2');
       assert.equals(lib.anyFuncName('arg1'), 'val1');
       assert.equals(lib.anyFuncName('arg2'), 'val2');
+    }
+  },
+  "Given throwError assumption" : {
+    "should throw an error when called" : function () {
+      var lib = chadodouble("lib");
+      assume(lib).canHandle("anyFunc").withArgs("anyArg").andThrowError("my error message");
+      assert.exception(function () {
+        lib.anyFunc("anyArg")}, {message: "my error message"});
     }
   }
 })
