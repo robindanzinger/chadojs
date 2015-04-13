@@ -24,7 +24,9 @@ buster.testCase("combines different arrays", {
     var arrayA = ['A1', 'A2'];
     var arrayB = ['B1'];
     var result = combine(arrayA, arrayB);
-    assert.equals([['A1', 'B1'], ['A2', 'B1']], result);
+    assert.equals([['A1', 'B1'], 
+                   ['A2', 'B1']], 
+                   result);
   }, 
   "combine [A1] with [B1,B2] should result in [[A1, B1],[A1, B2]]" : function () { 
     var arrayA = ['A1'];
@@ -49,15 +51,13 @@ buster.testCase("combines different arrays", {
     var pathA = ['A1', 'A2'];
     var pathB = ['B1'];
     var pathC = ['C1', 'C2', 'C3'];
-
-    var result = combine(pathA);
-
-    assert([['A1','B1','C1'],
-            ['A1','B1','C2'],
-            ['A1','B1','C3'],
+    var result = combine(pathA, pathB, pathC);
+    assert.equals([['A1','B1','C1'],
             ['A2','B1','C1'],
+            ['A1','B1','C2'],
             ['A2','B1','C2'],
+            ['A1','B1','C3'],
             ['A2','B1','C3']], 
-            combine(pathA, pathB, pathC));
+            result);
   }
 });
