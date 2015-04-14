@@ -1,13 +1,12 @@
 var buster = require('buster');
 var assert = buster.assert;
-var testdoubleRepo = require('../lib/testdouble')();
-var chadodouble = testdoubleRepo.createTestDoubleFor;
+var chadodouble =  require('../lib/testdouble').createTestDoubleFor;
 var repo;
 var assume;
 buster.testCase("library assume", {
   setUp : function () {
     repo = {};
-    assume = require('../lib/assume')(repo, testdoubleRepo);
+    assume = require('../lib/assume')(repo);
   },
   "Given canHandle assumption with return value it should return the value when function is called" : {
     "return value is a string" : function () {

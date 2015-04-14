@@ -3,9 +3,6 @@ var assert = buster.assert;
 var refute = buster.refute;
 var chado = require('../lib/chado');
 buster.testCase("library chado", {
-  "has access to chado.testdoubleRepo" : function () {
-    assert(chado.testDoubleRepo);
-  },
   "has access to chado.assume" : function () {
     assert(chado.assume);
   },

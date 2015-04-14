@@ -3,14 +3,11 @@ var assert = buster.assert;
 var testDoubleLib;
 buster.testCase("Library testdouble", { 
   setUp : function () {
-    testDoubleLib = require('../lib/testdouble')();
+    testDoubleLib = require('../lib/testdouble');
   },
   "Given: function createTestDoubleFor" : {
     setUp : function () {
       this.createTestDoubleFor = testDoubleLib.createTestDoubleFor;
-    },
-    "should contain function 'create'" : function () {
-      assert.isFunction(this.createTestDoubleFor);
     },
     "should throw error, if called without lib name" : function () {
       var createTestDoubleFor = testDoubleLib.createTestDoubleFor;
