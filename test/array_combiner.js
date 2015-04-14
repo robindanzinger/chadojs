@@ -44,8 +44,8 @@ buster.testCase("combines different arrays", {
   "empty array should be ignored" : function () {
     var emptyArray = [];
     var arrayA = ['A1'];
-    assert.equals([['A1']], combine(emptyArray, arrayA));
     assert.equals([['A1']], combine(arrayA, emptyArray));
+    assert.equals([['A1']], combine(emptyArray, arrayA));
   },
   "combine different paths" : function () {
     var pathA = ['A1', 'A2'];
