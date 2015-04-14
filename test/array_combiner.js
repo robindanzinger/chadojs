@@ -53,10 +53,10 @@ buster.testCase("combines different arrays", {
     var pathC = ['C1', 'C2', 'C3'];
     var result = combine(pathA, pathB, pathC);
     assert.equals([['A1','B1','C1'],
-            ['A2','B1','C1'],
             ['A1','B1','C2'],
-            ['A2','B1','C2'],
             ['A1','B1','C3'],
+            ['A2','B1','C1'],
+            ['A2','B1','C2'],
             ['A2','B1','C3']], 
             result);
   }
