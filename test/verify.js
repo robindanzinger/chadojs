@@ -17,22 +17,6 @@ buster.testCase("library verify", {
       };
       assert(verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturn("value").on(lib));
     },
-    "returns true, if the sut can handle the assumption and calls the callback" : function (done) {
-      var lib = {
-        funcName : function (foo, callback, bar) {
-          setTimeout(function() {
-            callback("value");
-          }, 0);
-        }
-      };
-      var callback = function () {};
-      verify("libName").canHandle("funcName").withArgs("foo", callback, "bar")
-        .andCallsCallbackWith(1, "value")
-        .on(lib, function (result) {
-          assert(result);
-          done();
-        });
-    },
     "returns false, if the sut cannot handle the assumption" : function () {
       var lib = {
         funcName : function () {
@@ -60,6 +44,24 @@ buster.testCase("library verify", {
       };
       assert(verify("libName").canHandle("funcName").andReturn(["value1", "value2"]).on(lib));
     }
+  },
+  "Given callback assumption" : {
+    "returns true, if the sut can handle the assumption and calls the callback" : function (done) {
+      var lib = {
+        funcName : function (foo, callback, bar) {
+          setTimeout(function() {
+            callback("value");
+          }, 0);
+        }
+      };
+      var callback = function () {};
+      verify("libName").canHandle("funcName").withArgs("foo", callback, "bar")
+        .andCallsCallbackWith(1, "value")
+        .on(lib, function (result) {
+          assert(result);
+          done();
+        });
+    },
   },
   "Given throw Error assumption" : {
     "returns true, if the sut can handle the assumption and throws an error" : function () {
