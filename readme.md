@@ -1,7 +1,7 @@
 # chadojs
 chadojs is a mocking library for nodejs which reduces the need for integration tests. Instead of integration tests it supports writing verification tests.
 
-# why a new mocking library
+## why a new mocking library
 The problem with mocks is, that the tests still pass, although the real objects might not work together any more.
 
 When I first started to learn tdd in javascript, I used mocks extensively. Whenever I renamed a unit or function, the unit tests didn't break (because they were unit-tests :-) ). But when I ran the application it crashed because the units didn't work together anymore. 
@@ -23,14 +23,13 @@ Integration tests are often used to check, whether the real objects work togethe
 But integration tests are hard to setup, might be slow and we can't test specific behavior which depends on a specific state (e.g. time, service-availability, failure,...). Integration tests might fail not only because of a bug but because of a depending resource which is not available for a moment.
 
 ### verification tests
-Chadojs tries to address this problem with additional verification tests. 
-With chadojs you do not need to write these types of integration tests. Instead whenever you mock a unit, you verify that the real object can behave like the mock.
+chadojs tries to address this problem with additional verification tests. With chadojs you do not need to write these types of integration tests. Instead whenever you mock a unit, you verify that the real object can behave like the mock.
 
-# setup chadojs
+## setup chadojs
 
-## busterjs
+### busterjs
 
-# how does it work
+## how does it work
 
 chadojs uses a assume-verify-approach<br>
 When you mock a function in chadojs you make an assumption about how the real object behaves.
@@ -39,16 +38,16 @@ On the other hand you have to verify that the real object can behave like you as
 If you forget to verify an assumption, chadojs reminds you, that there might be a problem.<br>
 If you verify an assumption, but you forgot to make the assumption, chadojs reminds you, that you might not have tested all necessary use cases.
 
-## create a mock
+### create a mock
 
-## define an assumption
+### define an assumption
 
-## define a verification
+### define a verification
 
-## evaluate your assumptions
+### evaluate your assumptions
 
 
-# inside-out vs outside-in tdd
+## inside-out vs outside-in tdd
 
 Because chadojs doesn't need integration test it's perfect for outside-in tdd.
 
@@ -61,12 +60,12 @@ So you have to mock the depending units.
 
 (picture) todo
 
-# additional
-##  influenced by
-J.B.Rainsberger Integrated tests are a scame:<br>
+## additional
+###  influenced by
+J.B.Rainsberger: Integrated tests are a scam:<br>
 http://blog.thecodewhisperer.com/blog/categories/integrated-tests-are-a-scam
 
-## other outside-in mocking libraries
+### other outside-in mocking libraries
 I don't know any other javascript mocking framework, which supports verification tests for mocks like chadojs.
 However there are some mocking libraries in other languages:<br>
 bogus for ruby: https://github.com/psyho/bogus <br>
