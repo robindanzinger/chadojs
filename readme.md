@@ -37,7 +37,7 @@ When you mock a function in chadojs you make an assumption about how the real ob
 On the other hand you have to verify that the real object can behave like you assumed.
 
 If you forget to verify an assumption, chadojs reminds you, that there might be a problem.<br>
-Whenever you verify an assumption, but you never made the assumption, chadojs reminds you, that you might not have tested all necessary cases.
+If you verify an assumption, but you forgot to make the assumption, chadojs reminds you, that you might not have tested all necessary use cases.
 
 ## create a mock
 
