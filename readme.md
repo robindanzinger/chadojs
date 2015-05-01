@@ -32,9 +32,20 @@ With chadojs you do not need to write these types of integration tests. Instead 
 
 # how does it work
 
+chadojs uses a assume-verify-approach
+When you mock a function in chadojs you make an assumption about how the real object behaves.
+So you have to verify that the real object can behave like you assumed. 
+If you forget to verify an assumption, chadojs reminds you, that there might be a problem.
+On the other hand, whenever you verify an assumption, but you never made the assumption, chadojs reminds you, that you might not have tested all necessary cases.
+
+## create a mock
+
 ## define an assumption
 
 ## define a verification
+
+## evaluate your assumptions
+
 
 # inside-out vs outside-in tdd
 
