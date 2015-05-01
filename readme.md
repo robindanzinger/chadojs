@@ -1,6 +1,5 @@
 # chadojs
-chadojs is a mocking library for nodejs which reduces the need for integration tests. 
-Instead of integration tests it supports writing verification tests.
+chadojs is a mocking library for nodejs which reduces the need for integration tests. Instead of integration tests it supports writing verification tests.
 
 # why a new mocking library
 When I first started to learn tdd in javascript, I used mocks extensively. But whenever I renamed a unit or function, the unit tests still worked. But when I ran the application it crashed because the units didn't work together anymore. 
@@ -43,14 +42,14 @@ chadojs supports you in writing these verification tests.
 
 
 #  influenced by
-J.B.Rainsberger Integrated tests are a scame:
+J.B.Rainsberger Integrated tests are a scame:<br>
 http://blog.thecodewhisperer.com/blog/categories/integrated-tests-are-a-scam
 
 # other outside-in mocking libraries
-I don't know any other javascript mocking framework, which supports outside-in tdd
-However there are some mocking libraries in other languages:
-bogus for ruby: https://github.com/psyho/bogus
-midje for clojure: https://github.com/marick/Midje
+I don't know any other javascript mocking framework, which supports verification tests for mocks like chadojs.
+However there are some mocking libraries in other languages:<br>
+bogus for ruby: https://github.com/psyho/bogus <br>
+midje for clojure: https://github.com/marick/Midje <br>
 
 # faq
 
