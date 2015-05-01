@@ -2,19 +2,21 @@
 chadojs is a mocking library for nodejs which reduces the need for integration tests. Instead of integration tests it supports writing verification tests.
 
 # why a new mocking library
-When I first started to learn tdd in javascript, I used mocks extensively. But whenever I renamed a unit or function, the unit tests still worked. But when I ran the application it crashed because the units didn't work together anymore. 
+When I first started to learn tdd in javascript, I used mocks extensively. Whenever I renamed a unit or function, the unit tests didn't break (because they were unit-tests :-) ). But when I ran the application it crashed because the units didn't work together anymore.
+
 What happened:
 
-One of the drawbacks of unit tests is that when you mock collaborating objects, you can't be sure, if the real object behaves like you expected.
+One of the drawbacks of unit tests is that when you mock collaborating objects, you can't be sure, that the real object behaves like you expected.
 There are two ways how to deal with that. 
+* Avoid mocks and use the real object instead.
 In classical (or bottom-up, inside-out) tdd you write first the units which do not depend on other units.
 
 (picture)
 
 Then you write the units, which only depends on units you already have written.
-So you usually do not need to write mocks. 
+So you usually do not need to write mocks.
 
-Although you will still need sometimes mocks when the real object might be too slow, or might not always work (e.g. webservices, database-access). Or you want to test a specific behavior (which might depend on the time, week-day, or that a specific service is not available)
+But: you will still need sometimes mocks when the real object might be too slow, or might not always work (e.g. webservices, database-access). Or you want to test a specific behavior (which might depend on the time, week-day, or that a specific service is / is not available)
 
 In outside-in (or top-down) tdd you write first the units next to the client or customer specification. But these units might depend on other units which do not already exist.
 So you have to mock the depending units.
@@ -27,7 +29,7 @@ When we have mocked them, the tests still pass, although the real objects might 
 To assure, that the real objects work together, we can write some integration tests.
 But integration tests are hard to setup, might be slow and we can't test specific behavior which depends on a specific state (time, service-availability). Integration tests might fail not only because of a bug but because of a depending resource which is not available for a moment).
 
-With chadojs you do not need to write these types of integration tests. Instead whenever you mock a unit, you have to verify that the real object behaves like the mock.
+With chadojs you do not need to write these types of integration tests. Instead whenever you mock a unit, you have to verify that the real object can behave like the mock.
 chadojs supports you in writing these verification tests.
 
 # setup chadojs
