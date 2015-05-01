@@ -71,5 +71,7 @@ However there are some mocking libraries in other languages:<br>
 bogus for ruby: https://github.com/psyho/bogus <br>
 midje for clojure: https://github.com/marick/Midje <br>
 
+### licence
+
 ## faq
 
