@@ -50,9 +50,53 @@ Note: every mock (or testdouble) is a new empty object. It neither creates a par
 
 ### define an assumption
 
+```js
+var chado = require('chado');
+var lib = chado.createDouble('myLib');
+var assume = chado.assume;
+```
+
+assume function returns a value
+```js
+assume(lib).canHandle('foo').andReturns('bar');
+// lib.foo() === 'bar'
+assume(lib).canHandle('foo').withArgs('argument').andReturns('bar');
+// lib.foo('argument') === 'bar'
+assume(lib).canHandle('foo').withArgs('first', 2, 'third').andReturns('bar');
+// lib.foo('first', 2, 'third) === 'bar'
+```
+
+assume function throws an error
+```js
+assume(lib).canHandle('foo').andThrowsError('error message');
+// lib.foo() -> Error: error message
+assume(lib).canHandle('foo').withArgs('argument').andThrowsError('error message');
+// lib.foo('argument') -> Error: error message
+```
+
+assume function calls a given callback
+```js
+var callback = function (result) {console.log(result);};
+assume(lib).canHandle('foo').andCallsCallbackWith(0);
+// lib.foo() -> console: undefined
+assume(lib).canHandle('foo').andCallsCallbackWith(0, 'bar');
+// lib.foo('argument') -> console: 'bar'
+```
+
+
 ### define a verification
 
+```js
+
+```
+
+
 ### evaluate your assumptions
+
+```js
+
+```
+
 
 
 ## inside-out vs outside-in tdd
