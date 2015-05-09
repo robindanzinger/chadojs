@@ -46,7 +46,7 @@ If you verify an assumption, but you forgot to make the assumption, chadojs remi
 var createDouble = require('chado').createDouble;
 var myTestdouble = createDouble('libname');
 ```
-Note: every mock (or testdouble) is a new empty object. It neither creates a partial mock nor supports to call the real implementation. See in FAQ and simple design philosphy why.
+Note: every mock (or testdouble) is a new empty object. It neither creates a partial mock nor supports to call the real implementation. See in FAQ and simple design philosophy why.
 
 ### define an assumption
 
@@ -148,14 +148,10 @@ verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallback
   // result === true
 ```
 
-
-### evaluate your assumptions
-
+### evaluate your assumptions and verifications
 ```js
 
 ```
-
-
 
 ## inside-out vs outside-in tdd
 
@@ -175,11 +171,13 @@ So you have to mock the depending units.
 ### simple design philosophy
 If it gets too complicated, maybe you should rethink about your design.
 
-It's the hardest part of programming (or anything else in the world?) to make things as simple as possible. In most cases we tend to make things complicated. And then we extend or adapt our frameworks and libraries, which makes them complicated, too.
+It's one of the hardest part of programming (or anything else in the world?) to make things as simple as possible. In most cases we tend to make things complicated (at least I do). And then we extend or adapt our frameworks and libraries, which makes them complicated, too. To keep chadojs simple, it is made only for one purpose: check if two units can work together. For other purposes maybe it's not the right tool.
 
 chadojs assumes that you either want to mock an object away or not. If you want to mock only a part of an object, maybe the object doesn't fulfill the single responsibility principle. Maybe you could split up your object in two. One object which you don't mock, another which you mock entirely. 
 
-chadojs doesn't support (yet?) to call the real implementation in a mock. It doesn't support clever mocks like counting the number of calls or change the behaviour depending on if it's the first or second call. chadojs wants to check if two units can work together. It doesn't check the behaviour of a unit. If you want to test or change the behaviour you can use another mocking framework. However, in chadojs you should only describe how a unit uses another unit and verify whether the other unit actually works as expected.
+chadojs doesn't support (yet?) to call the real implementation inside a mock. It doesn't support clever mocks like counting the number of calls or change the behaviour depending on if it's the first or second call. It doesn't check the behaviour of a unit. If you want to test or change the behaviour you can use another mocking framework. 
+
+However, in chadojs you should only describe how a unit uses another unit and verify whether the other unit actually works as expected.
 
 ###  references
 J.B.Rainsberger: Integrated tests are a scam:<br>
