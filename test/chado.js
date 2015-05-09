@@ -17,7 +17,7 @@ buster.testCase("library chado", {
     var assume = chado.assume;
     var createDouble = chado.createDouble;
     var lib = createDouble("myLib");
-    assume(lib).canHandle("foo").andReturn("bar");
+    assume(lib).canHandle("foo").andReturns("bar");
 
     assert(chado2.repo.myLib.foo);
   },
@@ -26,7 +26,7 @@ buster.testCase("library chado", {
     var assume = chado.assume;
     var createDouble = chado.createDouble;
     var lib = createDouble("myLib");
-    assume(lib).canHandle("foo").andReturn("bar");
+    assume(lib).canHandle("foo").andReturns("bar");
 
     refute(chado2.repo.myLib);
     assert(chado.repo.myLib.foo);

@@ -12,23 +12,23 @@ buster.testCase("library assume", {
     "return value is a string" : function () {
       expectedString = 'anyString';
       var lib = chadodouble("lib");
-      assume(lib).canHandle('anyFuncName').andReturn('anyString');
+      assume(lib).canHandle('anyFuncName').andReturns('anyString');
       assert.equals(lib.anyFuncName(), expectedString);
     },
     "return value is a number" : function () {
       expectedNumber = 5;
       var lib = chadodouble("lib");
-      assume(lib).canHandle('anyFuncName').andReturn(5);
+      assume(lib).canHandle('anyFuncName').andReturns(5);
       assert.equals(lib.anyFuncName(), expectedNumber);
     },
     "return value is null" : function () {
       var lib = chadodouble("lib");
-      assume(lib).canHandle('anyFuncName').andReturn(null);
+      assume(lib).canHandle('anyFuncName').andReturns(null);
       assert.equals(lib.anyFuncName(), null);
     },
     "return value is an object" : function () {
       var lib = chadodouble("lib");
-      assume(lib).canHandle('anyFuncName').andReturn({prop1: "value1", prop2: 4});
+      assume(lib).canHandle('anyFuncName').andReturns({prop1: "value1", prop2: 4});
       assert.equals(lib.anyFuncName(), {prop1: "value1", prop2: 4});
     }
   },
@@ -36,38 +36,38 @@ buster.testCase("library assume", {
     "when called with expected arguments it should return value" : function () {
       expectedString = 'anyString';
       var lib = chadodouble("lib");
-      assume(lib).canHandle('anyFuncName').withArgs('aString', [1,2]).andReturn('anyString');
+      assume(lib).canHandle('anyFuncName').withArgs('aString', [1,2]).andReturns('anyString');
       assert.equals(lib.anyFuncName('aString', [1,2]), expectedString);
     },
     "when called with no arguments it should throw error" : function () {
       var lib = chadodouble("lib");
-      assume(lib).canHandle('anyFuncName').withArgs('aString', [1,2]).andReturn('anyString');
+      assume(lib).canHandle('anyFuncName').withArgs('aString', [1,2]).andReturns('anyString');
       assert.exception(function () {
         lib.anyFuncName();
       });
     },
     "when called with wrong argument it should throw error" : function () {
       var lib = chadodouble("lib");
-      assume(lib).canHandle('anyFuncName').withArgs('aString', [1,2]).andReturn('anyString');
+      assume(lib).canHandle('anyFuncName').withArgs('aString', [1,2]).andReturns('anyString');
       assert.exception(function () {
         lib.anyFuncName('anotherString', [1,2]);
       });
     },
     "tracks the assumption call" : function () {
       var lib = chadodouble("lib");
-      var trackInfo = assume(lib).canHandle('anyFuncName').withArgs('aString').andReturn('anyString');
+      var trackInfo = assume(lib).canHandle('anyFuncName').withArgs('aString').andReturns('anyString');
       assert.match(Object.keys(repo.lib.anyFuncName['["aString"]']['r:"anyString"'].assume)[0], "assume.js");
     },
     "stores the assumption in repo" : function () {
       var lib = chadodouble("mylib");
-      assume(lib).canHandle('anyFunc').withArgs('aString').andReturn('anyString');
-      assume(lib).canHandle('anotherFunc').andReturn('foo');
+      assume(lib).canHandle('anyFunc').withArgs('aString').andReturns('anyString');
+      assume(lib).canHandle('anotherFunc').andReturns('foo');
       assert(repo.mylib.anyFunc['["aString"]']['r:"anyString"']);
       assert(repo.mylib.anotherFunc.undefined['r:"foo"']);
     },
     "stores who calls the assumption in repo" : function () {
       var lib = chadodouble("mylib");
-      assume(lib).canHandle('anyFunc').withArgs('aString').andReturn('anyString');
+      assume(lib).canHandle('anyFunc').withArgs('aString').andReturns('anyString');
       lib.anyFunc('aString');
       assert(repo.mylib.anyFunc['["aString"]']['r:"anyString"'].calledBy);
     } 
@@ -81,7 +81,7 @@ buster.testCase("library assume", {
           return x + 1;
         }
       }
-      assume(lib).canHandle('anyFunc').withArgs('aString').andReturn(returnValue);
+      assume(lib).canHandle('anyFunc').withArgs('aString').andReturns(returnValue);
       var actualValue = lib.anyFunc('aString');
       assert.equals(actualValue.name, "addOneCalculator");
       assert.equals(actualValue.addOne(1), 2);
@@ -125,15 +125,24 @@ buster.testCase("library assume", {
         done();
       };
       var anyNumber = 5;
-      assume(lib).canHandle('anyFunc').withArgs("anyArg", anyNumber, cb).andCallsCallbackWith(2, "").andReturn(5);
+      assume(lib).canHandle('anyFunc').withArgs("anyArg", anyNumber, cb).andCallsCallbackWith(2, "").andReturns(5);
       assert.equals(5, lib.anyFunc("anyArg", anyNumber, cb));
+    },
+    "should call callback with no argument if not defined" : function (done) {
+      var lib = chadodouble("mylib");
+      var callback = function() {
+        assert(true);
+        done();
+      };
+      assume(lib).canHandle('func').withArgs(callback).andCallsCallbackWith(0);
+      lib.func(callback);
     }
   },
   "Given two CanHandle assumptions with different arguments" : {
     "depending on the argument it should return the correspondent value" : function () {
       var lib = chadodouble("lib");
-      assume(lib).canHandle('anyFuncName').withArgs('arg1').andReturn('val1');
-      assume(lib).canHandle('anyFuncName').withArgs('arg2').andReturn('val2');
+      assume(lib).canHandle('anyFuncName').withArgs('arg1').andReturns('val1');
+      assume(lib).canHandle('anyFuncName').withArgs('arg2').andReturns('val2');
       assert.equals(lib.anyFuncName('arg1'), 'val1');
       assert.equals(lib.anyFuncName('arg2'), 'val2');
     }
@@ -141,7 +150,7 @@ buster.testCase("library assume", {
   "Given throwError assumption" : {
     "should throw an error when called" : function () {
       var lib = chadodouble("lib");
-      assume(lib).canHandle("anyFunc").withArgs("anyArg").andThrowError("my error message");
+      assume(lib).canHandle("anyFunc").withArgs("anyArg").andThrowsError("my error message");
       assert.exception(function () {
         lib.anyFunc("anyArg")}, {message: "my error message"});
     }
