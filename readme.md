@@ -77,10 +77,17 @@ assume(lib).canHandle('foo').withArgs('argument').andThrowsError('error message'
 assume function calls a given callback
 ```js
 var callback = function (result) {console.log(result);};
-assume(lib).canHandle('foo').andCallsCallbackWith(0);
-// lib.foo() -> console: undefined
-assume(lib).canHandle('foo').andCallsCallbackWith(0, 'bar');
-// lib.foo('argument') -> console: 'bar'
+
+assume(lib).canHandle('foo').withArgs(callback).andCallsCallbackWith(0);
+// lib.foo(callback) -> console: undefined
+assume(lib).canHandle('foo').withArgs(callback).andCallsCallbackWith(0, 'bar');
+// lib.foo(callback) -> console: 'bar'
+assume(lib).canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith(0, 'bar');
+// lib.foo('argument', callback) -> Error
+// lib.foo(callback, 'argument') -> console: 'bar'
+assume(lib).canHandle('foo').withArgs('argument', callback).andCallsCallbackWith(1, 'bar');
+// lib.foo('argument', callback) -> console: 'bar'
+// lib.foo(callback, 'argument') -> Error
 ```
 
 
