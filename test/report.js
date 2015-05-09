@@ -99,6 +99,26 @@ buster.testCase("Some helper functions for the report", {
     report.sort(array);
     var groupedArray = report.groupAssumptions(array);
     assert.equals(groupedArray.length, 4);
+  },
+  "get all not verified assumptions" : function () {
+    var array = createArray()
+      .addAssumption("A")
+      .addVerification("A")
+      .addAssumption("B")
+      .build();
+    var notVerifiedAssumptions = report.getNotVerifiedAssumptions(array);
+    assert.equals(notVerifiedAssumptions.length, 1);
+    assert.equals(notVerifiedAssumptions[0].name, "B");
+  },
+  "get all not assumed verifications" : function () {
+    var array = createArray()
+      .addAssumption("A")
+      .addVerification("A")
+      .addVerification("B")
+      .build();
+    var notAssumedVerifications = report.getNotAssumedVerifications(array);
+    assert.equals(notAssumedVerifications.length, 1);
+    assert.equals(notAssumedVerifications[0].name, "B");
   }
 });
 
