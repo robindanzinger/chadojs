@@ -15,7 +15,7 @@ buster.testCase("library verify", {
           return "value";
         }
       };
-      assert(verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturn("value").on(lib));
+      assert(verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturns("value").on(lib));
     },
     "returns false, if the sut cannot handle the assumption" : function () {
       var lib = {
@@ -23,17 +23,17 @@ buster.testCase("library verify", {
           return "anotherValue";
         }
       };
-      refute(verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturn("value").on(lib));
+      refute(verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturns("value").on(lib));
     },
     "throws error, if the sut has not the expected function" : function () {
       assert.exception(function () {
         var lib = {};
-        (verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturn("value").on(lib));
+        (verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturns("value").on(lib));
       });
     },
     "stores the verification" : function () {
       var lib = {funcName : function() {return "value"}};
-      verify("libName").canHandle("funcName").withArgs("anyString").andReturn("value").on(lib);
+      verify("libName").canHandle("funcName").withArgs("anyString").andReturns("value").on(lib);
       assert(repo.libName.funcName['["anyString"]']['r:"value"']);
     },
     "can return arrays" : function () {
@@ -42,7 +42,7 @@ buster.testCase("library verify", {
           return ["value1","value2"];
         }
       };
-      assert(verify("libName").canHandle("funcName").andReturn(["value1", "value2"]).on(lib));
+      assert(verify("libName").canHandle("funcName").andReturns(["value1", "value2"]).on(lib));
     }
   },
   "Given callback assumption" : {
@@ -70,17 +70,17 @@ buster.testCase("library verify", {
            throw Error("any message");
         }
       };
-      assert(verify("libName").canHandle("funcName").withArgs("anyArg").andThrowError("any message").on(lib));
+      assert(verify("libName").canHandle("funcName").withArgs("anyArg").andThrowsError("any message").on(lib));
     },
     "returns false, if the sut doesn't throw an error" : function () {
       var lib = {
         funcName : function () {}
       };
-      refute(verify("libName").canHandle("funcName").withArgs("anyArg").andThrowError("any message").on(lib));
+      refute(verify("libName").canHandle("funcName").withArgs("anyArg").andThrowsError("any message").on(lib));
     },
     "stores the verification" : function () {
      var lib = {funcName : function() {throw Error("any message")}};
-     verify("libName").canHandle("funcName").withArgs("anyArg").andThrowError("any message").on(lib);
+     verify("libName").canHandle("funcName").withArgs("anyArg").andThrowsError("any message").on(lib);
      assert(repo.libName.funcName['["anyArg"]']['ex:any message']);
     }  
   }
