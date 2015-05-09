@@ -122,7 +122,7 @@ result = verify('myLib').canHandle('foo').withArgs('argument').andThrowsError('e
 
 verify function calls a given callback
 ```js
-var callback = function (result) {console.log(result);};
+var callback = function () {}; // this function is never called in verify!
 var lib = {foo: function (callback) {callback();};
 
 verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith(0).
