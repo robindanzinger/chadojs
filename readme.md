@@ -93,8 +93,59 @@ assume(lib).canHandle('foo').withArgs('argument', callback).andCallsCallbackWith
 
 ### define a verification
 
-```js
 
+```js
+var chado = require('chado');
+var testdouble = chado.createDouble('myLib');
+var verify = chado.verify;
+```
+
+verify function returns a value
+```js
+var lib = {foo:function () { return 'bar';}};
+verify('myLib').canHandle('foo').andReturns('bar').on(lib);
+verify('myLib').canHandle('foo').withArgs('argument').andReturns('bar').on(lib);
+verify('myLib').canHandle('foo').withArgs('first', 2, 'third').andReturns('bar').on(lib);
+```
+
+verify function throws an error
+```js
+var result;
+var lib = {foo: function () { throw Error('error message');}};
+result = verify('myLib').canHandle('foo').andThrowsError('error message').on(lib);
+// result === true
+result = verify('myLib').canHandle('bang').andThrowsError('error message').on(lib);
+// result === false
+result = verify('myLib').canHandle('foo').withArgs('argument').andThrowsError('error message').on(lib);
+// result === true
+```
+
+verify function calls a given callback
+```js
+var callback = function (result) {console.log(result);};
+var lib = {foo: function (callback) {callback();};
+
+verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith(0).
+  on(lib, function (result) {});    
+  // result === true
+
+verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith(0, 'bar').
+  on(lib, function (result) {});    
+  // result === false, because lib.foo doesn't call callback with argument 'bar'
+
+lib = {foo: function (callback) {callback('bar');};
+verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith(0, 'bar').
+  on(lib, function (result) {});    
+  // result === true
+  
+verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith(1, 'bar').
+  on(lib, function (result) {});    
+  // result === false because lib.foo uses first argument as callback
+
+lib = {foo: function (argument, callback) {callback('bar');};
+verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith(1, 'bar').
+  on(lib, function (result) {});    
+  // result === true
 ```
 
 
