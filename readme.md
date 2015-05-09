@@ -42,6 +42,12 @@ If you verify an assumption, but you forgot to make the assumption, chadojs remi
 
 ### create a mock
 
+```js
+var createDouble = require('chado').createDouble;
+var myTestdouble = createDouble('libname');
+```
+Note: every mock (or testdouble) is a new empty object. It neither creates a partial mock nor supports to call the real implementation. See in FAQ and simple design philosphy why.
+
 ### define an assumption
 
 ### define a verification
@@ -63,15 +69,24 @@ So you have to mock the depending units.
 (picture) todo
 
 ## additional
-###  influenced by
+
+### simple design philosophy
+If it gets too complicated, maybe you should rethink about your design.
+
+It's the hardest part of programming (or anything else in the world?) to make things as simple as possible. In most cases we tend to make things complicated. And then we extend or adapt our frameworks and libraries, which makes them complicated, too.
+
+chadojs assumes that you either want to mock an object away or not. If you want to mock only a part of an object, maybe the object doesn't fulfill the single responsibility principle. Maybe you could split up your object in two. One object which you don't mock, another which you mock entirely. 
+
+chadojs doesn't support (yet?) to call the real implementation in a mock. It doesn't support clever mocks like counting the number of calls or change the behaviour depending on if it's the first or second call. chadojs wants to check if two units can work together. It doesn't check the behaviour of a unit. If you want to test or change the behaviour you can use another mocking framework. However, in chadojs you should only describe how a unit uses another unit and verify whether the other unit actually works as expected.
+
+###  references
 J.B.Rainsberger: Integrated tests are a scam:<br>
 http://blog.thecodewhisperer.com/blog/categories/integrated-tests-are-a-scam
 
-### other outside-in mocking libraries
 I don't know any other javascript mocking framework, which supports verification tests for mocks like chadojs.
-However there are some mocking libraries in other languages:<br>
-bogus for ruby: https://github.com/psyho/bogus <br>
-midje for clojure: https://github.com/marick/Midje <br>
+However there are some similar mocking libraries in other languages:
+ * bogus for ruby: https://github.com/psyho/bogus 
+ * midje for clojure: https://github.com/marick/Midje
 
 ### licence
 
