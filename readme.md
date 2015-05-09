@@ -33,7 +33,7 @@ chadojs tries to address this problem with additional verification tests. With c
 
 ## how does it work
 
-chadojs uses a assume-verify-approach<br>
+chadojs uses an assume-verify-approach<br>
 When you mock a function in chadojs you make an assumption about how the real object behaves.
 On the other hand you have to verify that the real object can behave like you assumed.
 
@@ -90,9 +90,7 @@ assume(lib).canHandle('foo').withArgs('argument', callback).andCallsCallbackWith
 // lib.foo(callback, 'argument') -> Error
 ```
 
-
 ### define a verification
-
 
 ```js
 var chado = require('chado');
@@ -166,7 +164,7 @@ So you have to mock the depending units.
 
 (picture) todo
 
-## additional
+## addition
 
 ### simple design philosophy
 If it gets too complicated, maybe you should rethink about your design.
@@ -191,4 +189,3 @@ However there are some similar mocking libraries in other languages:
 ### licence
 
 ## faq
-
