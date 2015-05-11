@@ -147,10 +147,21 @@ verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallback
   // result === true
 ```
 
-### evaluate your assumptions and verifications
+### evaluate assumptions and verifications
+##### manual evaluation with chado.report
 ```js
 
 ```
+##### simple console reporter
+```js
+
+```
+##### html reporter
+```js
+
+```
+
+
 
 ## inside-out vs outside-in tdd
 
