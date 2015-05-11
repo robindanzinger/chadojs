@@ -17,8 +17,7 @@ There are two ways how you can deal with that.
 
 ### avoiding mocks
 Avoiding mocks is not always possible or desired:
-E.g. the real object is a 3rd party service, it's too slow, or might not always work (e.g. webservices, database-access). Or you want to test a specific behavior (which might depend on the time, week-day, or that a specific service is / is not available)
-Or in outside-in tdd the collaborating object doesn't yet exist.
+E.g. the real object is a 3rd party service, it's too slow, or might not always work (e.g. webservices, database-access). Or you want to test a specific behavior (which might depend on the time, week-day, or that a specific service is / is not available). Or in outside-in tdd the collaborating object doesn't yet exist.
 
 ### integration tests
 Integration tests are often used to check, whether the real objects work together.
@@ -150,6 +149,19 @@ verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallback
 ### evaluate assumptions and verifications
 ##### manual evaluation with chado.report
 ```js
+var chado = require('chado');
+// chado.repo is the repository and contains all assumptions and verifications
+var repo = chado.repo;
+// chado.report contains functions for analyzing the assumptions and verifications
+var report = chado.report;
+// first we have to convert the repository to an array
+var reportArray = report.read(chado.repo);
+
+// now we can call some functions on that array
+// get all assumptions which aren't verified
+var notVerifiedAssumptions = report.getNotVerifiedAssumptions(reportArray);
+// get all verifications which weren't assumed
+var notAssumedVerifications = report.getNotAssumedVerifications(reportArray);
 
 ```
 ##### simple console reporter
