@@ -147,33 +147,44 @@ verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallback
 ```
 
 ### evaluate assumptions and verifications
-##### manual evaluation with chado.report
+##### manual evaluation with chado.analyzer
 ```js
 var chado = require('chado');
 // chado.repo is the repository and contains all assumptions and verifications
 var repo = chado.repo;
 // chado.report contains functions for analyzing the assumptions and verifications
-var report = chado.report;
+var report = chado.analyzer;
 // first we have to convert the repository to an array
-var reportArray = report.read(chado.repo);
+var reportArray = analyzer.read(chado.repo);
 
 // now we can call some functions on that array
 // get all assumptions which aren't verified
-var notVerifiedAssumptions = report.getNotVerifiedAssumptions(reportArray);
+var notVerifiedAssumptions = analyzer.getNotVerifiedAssumptions(reportArray);
 // get all verifications which weren't assumed
-var notAssumedVerifications = report.getNotAssumedVerifications(reportArray);
+var notAssumedVerifications = analyzer.getNotAssumedVerifications(reportArray);
 
 ```
 ##### simple console reporter
-```js
+add chado.console_reporter.logReport() after test-suite is run. 
+Then a small report is logged to the console.
+```
+======================
+CHADO CONSOLE REPORTER
+======================
 
+WARNING: some assumptions aren't verified
+-----------------------------------------------
+  lib.foo("any argument") => returns "bar"
+
+-----------------------------------------------
+WARNING: some assumptions are verified but never assumed
+--------------------------------------------------------------
+  lib.foo("any argument") => returns "foobar"
+
+--------------------------------------------------------------
 ```
 ##### html reporter
-```js
-
-```
-
-
+Save the assumptions repository to a file. Then you can use the chado html reporter for a more detailed report and analyze your assumptions.
 
 ## inside-out vs outside-in tdd
 
