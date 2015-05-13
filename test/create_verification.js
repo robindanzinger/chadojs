@@ -2,10 +2,10 @@ var buster = require('buster');
 var assert = buster.assert;
 var stringify = require('../lib/stringify').stringify;
 var parse = require('../lib/stringify').parse;
-var createVerification = require('../lib/createVerification');
-buster.testCase("Lib createVerification", {
+var createVerification = require('../lib/create_verification');
+buster.testCase("Lib create_verification", {
   "create verify string for returnValue assumption" : function () {
-    var expected = 'verify("name").canHandle("func").withArgs("arg1", "arg2").andReturn("value").on(sut));';
+    var expected = 'verify("name").canHandle("func").withArgs("arg1", "arg2").andReturns("value").on(sut));';
     var assumption = {
       name: "name",
       func: "func",
@@ -25,7 +25,7 @@ buster.testCase("Lib createVerification", {
     assert.equals(expected, createVerification(assumption));
   },
  "create verify string for throw Error assumption" : function () {
-    var expected = 'verify("name").canHandle("func").withArgs("arg").andThrowError("message").on(sut));';
+    var expected = 'verify("name").canHandle("func").withArgs("arg").andThrowsError("message").on(sut));';
     var assumption = {
       name: "name",
       func: "func",

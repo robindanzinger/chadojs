@@ -1,7 +1,7 @@
 var buster = require('buster'); 
 var assert = buster.assert;
 var refute = buster.refute;
-var transform = require('../lib/arraytransformer');
+var transform = require('../lib/array_transformer');
 buster.testCase("Chado Object Keys to Array Transformer", {
   "It transforms the json map to an array" : {
     "{} should result in []" : function () {

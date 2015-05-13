@@ -1,11 +1,11 @@
 var buster = require('buster'); 
 var assert = buster.assert;
 var refute = buster.refute;
-var report = require('../lib/report');
-buster.testCase("Some helper functions for the report", {
+var analyzer = require('../lib/analyzer');
+buster.testCase("Some functions for analyzing the made assumptions", {
   "sort array" : function () {
     var array = createArray().addAssumption("BName").addAssumption("AName").build();
-    report.sort(array);
+    analyzer.sort(array);
     assert.equals(array[0].name, "AName"); 
   },
   "find a path" : function () {
@@ -17,7 +17,7 @@ buster.testCase("Some helper functions for the report", {
       .addAssumption("yetAnotherName", "FileC", "MethodC")
       .build();
 
-    var paths = report.findPaths(array, array[0]);
+    var paths = analyzer.findPaths(array, array[0]);
     assert.equals(paths[0][0], array[2]);
     assert.equals(paths[0][1], array[4]);
     assert.equals(1, paths.length);
@@ -35,7 +35,7 @@ buster.testCase("Some helper functions for the report", {
       .addAssumption("path2Name2", "FileE", "MethodE")
      .build();
 
-    var paths = report.findPaths(array, array[0]);
+    var paths = analyzer.findPaths(array, array[0]);
     assert.equals(paths[0][0], array[2]);
     assert.equals(paths[0][1], array[4]);
     assert.equals(paths[1][0], array[6]);
@@ -49,7 +49,7 @@ buster.testCase("Some helper functions for the report", {
       .addAssumption("Assumption2", "FileB", "MethodB")
      .build();
 
-    var paths = report.findPaths(array, array[0]);
+    var paths = analyzer.findPaths(array, array[0]);
     assert.equals(1, paths.length);
     assert.equals(paths[0][0], array[2]);
     assert.equals(paths[0][1], array[3]);
@@ -60,7 +60,7 @@ buster.testCase("Some helper functions for the report", {
       .addAssumption("anotherName")
       .addAssumption("aName")
       .build();
-    var assumptions = report.findAssumptions(array, array[2]);
+    var assumptions = analyzer.findAssumptions(array, array[2]);
     assert.equals(2, assumptions.length);
     assert.equals(assumptions[0], array[0]);
     assert.equals(assumptions[1], array[2]);
@@ -71,7 +71,7 @@ buster.testCase("Some helper functions for the report", {
       .addVerification("aName")
       .addVerification("anotherName")
       .build();
-    var verifications = report.findVerifications(array, array[0]);
+    var verifications = analyzer.findVerifications(array, array[0]);
     assert.equals(1, verifications.length);
     assert.equals(verifications[0], array[1]);
   },
@@ -82,7 +82,7 @@ buster.testCase("Some helper functions for the report", {
       .addCalledBy("aName")
       .addCalledBy("aName")
       .build();
-    var calledBy = report.findCalledBy(array, array[0]);
+    var calledBy = analyzer.findCalledBy(array, array[0]);
     assert.equals(2, calledBy.length);
     assert.equals(calledBy[0], array[2]);
     assert.equals(calledBy[1], array[3]);
@@ -96,8 +96,8 @@ buster.testCase("Some helper functions for the report", {
       .addCalledBy("A")
       .addCalledBy("D")
       .build();
-    report.sort(array);
-    var groupedArray = report.groupAssumptions(array);
+    analyzer.sort(array);
+    var groupedArray = analyzer.groupAssumptions(array);
     assert.equals(groupedArray.length, 4);
   },
   "get all not verified assumptions" : function () {
@@ -106,7 +106,7 @@ buster.testCase("Some helper functions for the report", {
       .addVerification("A")
       .addAssumption("B")
       .build();
-    var notVerifiedAssumptions = report.getNotVerifiedAssumptions(array);
+    var notVerifiedAssumptions = analyzer.getNotVerifiedAssumptions(array);
     assert.equals(notVerifiedAssumptions.length, 1);
     assert.equals(notVerifiedAssumptions[0].name, "B");
   },
@@ -116,7 +116,7 @@ buster.testCase("Some helper functions for the report", {
       .addVerification("A")
       .addVerification("B")
       .build();
-    var notAssumedVerifications = report.getNotAssumedVerifications(array);
+    var notAssumedVerifications = analyzer.getNotAssumedVerifications(array);
     assert.equals(notAssumedVerifications.length, 1);
     assert.equals(notAssumedVerifications[0].name, "B");
   }
