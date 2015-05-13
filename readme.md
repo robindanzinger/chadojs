@@ -152,8 +152,8 @@ verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallback
 var chado = require('chado');
 // chado.repo is the repository and contains all assumptions and verifications
 var repo = chado.repo;
-// chado.report contains functions for analyzing the assumptions and verifications
-var report = chado.analyzer;
+// chado.analyzer contains functions for analyzing the assumptions and verifications
+var analyzer = chado.analyzer;
 // first we have to convert the repository to an array
 var reportArray = analyzer.read(chado.repo);
 
@@ -165,8 +165,7 @@ var notAssumedVerifications = analyzer.getNotAssumedVerifications(reportArray);
 
 ```
 ##### simple console reporter
-add chado.console_reporter.logReport() after test-suite is run. 
-Then a small report is logged to the console.
+add chado.console_reporter.logReport() after test-suite is run. Then a report is logged to the console which lists all not verified assumptions and all not assumed verifications. 
 ```
 ======================
 CHADO CONSOLE REPORTER
@@ -177,7 +176,7 @@ WARNING: some assumptions aren't verified
   lib.foo("any argument") => returns "bar"
 
 -----------------------------------------------
-WARNING: some assumptions are verified but never assumed
+WARNING: some verifications aren't assumed
 --------------------------------------------------------------
   lib.foo("any argument") => returns "foobar"
 
