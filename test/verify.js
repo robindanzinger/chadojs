@@ -9,26 +9,29 @@ buster.testCase("library verify", {
     verify = require('../lib/verify')(repo);
   },
   "Given a CanHandle verification" : {
-    "returns true, if the sut can handle a assumption and returns the assumed value" : function () {
+    "doesn't throw an error if the sut can handle a assumption and returns the assumed value" : function () {
       var lib = {
         funcName : function () {
           return "value";
         }
       };
-      assert(verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturns("value").on(lib));
+      verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturns("value").on(lib);
+      assert(true);
     },
-    "returns false, if the sut cannot handle the assumption" : function () {
+    "throws error, if the sut cannot handle the assumption" : function () {
       var lib = {
         funcName : function () {
           return "anotherValue";
         }
       };
-      refute(verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturns("value").on(lib));
+      assert.exception(function () {
+        verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturns("value").on(lib);
+      });
     },
     "throws error, if the sut has not the expected function" : function () {
       assert.exception(function () {
         var lib = {};
-        (verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturns("value").on(lib));
+        verify("libName").canHandle("funcName").withArgs("anyString", [1,2]).andReturns("value").on(lib);
       });
     },
     "stores the verification" : function () {
@@ -42,7 +45,8 @@ buster.testCase("library verify", {
           return ["value1","value2"];
         }
       };
-      assert(verify("libName").canHandle("funcName").andReturns(["value1", "value2"]).on(lib));
+      verify("libName").canHandle("funcName").andReturns(["value1", "value2"]).on(lib);
+      assert(true);
     }
   },
   "Given callback assumption" : {
@@ -64,19 +68,22 @@ buster.testCase("library verify", {
     },
   },
   "Given throw Error assumption" : {
-    "returns true, if the sut can handle the assumption and throws an error" : function () {
+    "doesn't throw an error, if the sut can handle the assumption and throws an error" : function () {
       var lib = {
         funcName : function () {
            throw Error("any message");
         }
       };
-      assert(verify("libName").canHandle("funcName").withArgs("anyArg").andThrowsError("any message").on(lib));
+      verify("libName").canHandle("funcName").withArgs("anyArg").andThrowsError("any message").on(lib);
+      assert(true);
     },
-    "returns false, if the sut doesn't throw an error" : function () {
+    "throws an error, if the sut doesn't throw an error" : function () {
       var lib = {
         funcName : function () {}
       };
-      refute(verify("libName").canHandle("funcName").withArgs("anyArg").andThrowsError("any message").on(lib));
+      assert.exception(function () {
+        verify("libName").canHandle("funcName").withArgs("anyArg").andThrowsError("any message").on(lib);
+      });
     },
     "stores the verification" : function () {
      var lib = {funcName : function() {throw Error("any message")}};
