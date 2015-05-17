@@ -165,7 +165,7 @@ var notAssumedVerifications = analyzer.getNotAssumedVerifications(reportArray);
 
 ```
 ##### simple console reporter
-add chado.console_reporter.logReport() after test-suite is run. Then a report is logged to the console which lists all not verified assumptions and all not assumed verifications. 
+add chado.consoleReporter.logReport() after test-suite is run. Then a report is logged to the console which lists all not verified assumptions and all not assumed verifications. 
 ```
 ======================
 CHADO CONSOLE REPORTER
@@ -184,6 +184,11 @@ WARNING: some verifications aren't assumed
 ```
 ##### html reporter
 Save the assumptions repository to a file. Then you can use the chado html reporter for a more detailed report and analyze your assumptions.
+```js
+var fs = require('fs'); // or any other file writer library
+var json = JSON.stringify(chado.repo, null, 2)
+fs.writeFile("chado-result.json", json);
+```
 
 ## inside-out vs outside-in tdd
 
