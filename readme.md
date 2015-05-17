@@ -101,21 +101,25 @@ var verify = chado.verify;
 verify function returns a value
 ```js
 var lib = {foo:function () { return 'bar';}};
+// ok
 verify('myLib').canHandle('foo').andReturns('bar').on(lib);
 verify('myLib').canHandle('foo').withArgs('argument').andReturns('bar').on(lib);
 verify('myLib').canHandle('foo').withArgs('first', 2, 'third').andReturns('bar').on(lib);
+// error
+verify('myLib').canHandle('foo').andReturns('foo').on(lib); // because bar != foo
+verify('myLib').canHandle('foo').withArgs('arg').andReturns('bar').on(lib); // because argument != arg
+verify('myLib').canHandle('foo').withArgs(1, 2, 'third').andReturns('bar').on(lib); // because 1 != first
 ```
 
 verify function throws an error
 ```js
-var result;
 var lib = {foo: function () { throw Error('error message');}};
-result = verify('myLib').canHandle('foo').andThrowsError('error message').on(lib);
-// result === true
-result = verify('myLib').canHandle('bang').andThrowsError('error message').on(lib);
-// result === false
-result = verify('myLib').canHandle('foo').withArgs('argument').andThrowsError('error message').on(lib);
-// result === true
+// ok: 
+verify('myLib').canHandle('foo').andThrowsError('error message').on(lib);
+// error:
+verify('myLib').canHandle('bang').andThrowsError('error message').on(lib);
+// ok
+verify('myLib').canHandle('foo').withArgs('argument').andThrowsError('error message').on(lib);
 ```
 
 verify function calls a given callback
