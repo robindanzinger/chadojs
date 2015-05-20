@@ -76,18 +76,19 @@ assume(lib).canHandle('foo').withArgs('argument').andThrowsError('error message'
 
 assume function calls a given callback
 ```js
-var callback = function (result) {console.log(result);};
+var callback = chado.callback
+// var realCallback = function (result) {console.log(result);};
 
-assume(lib).canHandle('foo').withArgs(callback).andCallsCallbackWith(0);
-// lib.foo(callback) -> console: undefined
-assume(lib).canHandle('foo').withArgs(callback).andCallsCallbackWith(0, 'bar');
-// lib.foo(callback) -> console: 'bar'
-assume(lib).canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith(0, 'bar');
-// lib.foo('argument', callback) -> Error
-// lib.foo(callback, 'argument') -> console: 'bar'
-assume(lib).canHandle('foo').withArgs('argument', callback).andCallsCallbackWith(1, 'bar');
-// lib.foo('argument', callback) -> console: 'bar'
-// lib.foo(callback, 'argument') -> Error
+assume(lib).canHandle('foo').withArgs(callback).andCallsCallbackWith();
+// lib.foo(realCallback) -> console: undefined
+assume(lib).canHandle('foo').withArgs(callback).andCallsCallbackWith('bar');
+// lib.foo(realCallback) -> console: 'bar'
+assume(lib).canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar');
+// lib.foo('argument', realCallback) -> Error
+// lib.foo(realCallback, 'argument') -> console: 'bar'
+assume(lib).canHandle('foo').withArgs('argument', callback).andCallsCallbackWith('bar');
+// lib.foo('argument', realCallback) -> console: 'bar'
+// lib.foo(realCallback, 'argument') -> Error
 ```
 
 ### define a verification
@@ -124,28 +125,28 @@ verify('myLib').canHandle('foo').withArgs('argument').andThrowsError('error mess
 
 verify function calls a given callback
 ```js
-var callback = function () {}; // this function is never called in verify!
+var callback = chado.callback; // this function is never called in verify!
 var lib = {foo: function (callback) {callback();};
 
-verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith(0).
+verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith().
   on(lib, function (result) {});    
   // result === true
 
-verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith(0, 'bar').
+verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith('bar').
   on(lib, function (result) {});    
   // result === false, because lib.foo doesn't call callback with argument 'bar'
 
 lib = {foo: function (callback) {callback('bar');};
-verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith(0, 'bar').
+verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith('bar').
   on(lib, function (result) {});    
   // result === true
   
-verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith(1, 'bar').
+verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
   on(lib, function (result) {});    
   // result === false because lib.foo uses first argument as callback
 
 lib = {foo: function (argument, callback) {callback('bar');};
-verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith(1, 'bar').
+verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
   on(lib, function (result) {});    
   // result === true
 ```
