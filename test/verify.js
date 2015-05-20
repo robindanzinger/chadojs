@@ -1,6 +1,7 @@
 var buster = require('buster');
 var assert = buster.assert;
 var refute = buster.refute;
+var chado = require('../lib/chado');
 var repo;
 var verify;
 buster.testCase("library verify", {
@@ -58,14 +59,21 @@ buster.testCase("library verify", {
           }, 0);
         }
       };
-      var callback = function () {};
-      verify("libName").canHandle("funcName").withArgs("foo", callback, "bar")
-        .andCallsCallbackWith(1, "value")
+      verify("libName").canHandle("funcName").withArgs("foo", chado.callback, "bar")
+        .andCallsCallbackWith("value")
         .on(lib, function (result) {
           assert(result);
           done();
         });
     },
+    "should throw error, when no callback is passed" : function () {
+      var lib = {funcName: function() {}};
+      assert.exception(function () {
+        verify("libName").canHandle("funcName").withArgs("foo")
+          .andCallsCallbackWith("bar")
+          .on(lib, function () {});
+      });
+    }
   },
   "Given throw Error assumption" : {
     "doesn't throw an error, if the sut can handle the assumption and throws an error" : function () {

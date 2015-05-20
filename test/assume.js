@@ -1,6 +1,7 @@
 var buster = require('buster');
 var assert = buster.assert;
 var chadodouble =  require('../lib/testdouble').createTestDoubleFor;
+var callback = require('../lib/types').callback;
 var repo;
 var assume;
 buster.testCase("library assume", {
@@ -94,7 +95,7 @@ buster.testCase("library assume", {
         assert.equals(result, "value");
         done();
       };
-      assume(lib).canHandle('anyFunc').withArgs(cb).andCallsCallbackWith(0, "value");
+      assume(lib).canHandle('anyFunc').withArgs(callback).andCallsCallbackWith("value");
       lib.anyFunc(cb);
     },
     "the first argument of andCallsCallbackWith defines which argument should be used as callback" : function (done) {
@@ -104,7 +105,7 @@ buster.testCase("library assume", {
         assert(true);
         done();
       };
-      assume(lib).canHandle('anyFunc').withArgs("anyArg", anotherCb, cb).andCallsCallbackWith(2, "");
+      assume(lib).canHandle('anyFunc').withArgs("anyArg", anotherCb, callback).andCallsCallbackWith("");
       lib.anyFunc("anyArg", anotherCb, cb);
     },
     "should return control flow and then call callback" : function (done) {
@@ -114,7 +115,7 @@ buster.testCase("library assume", {
         assert.equals("changed after function call", value);
         done();
       };
-      assume(lib).canHandle('anyFunc').withArgs(cb).andCallsCallbackWith(0, "");
+      assume(lib).canHandle('anyFunc').withArgs(callback).andCallsCallbackWith("");
       lib.anyFunc(cb);
       value = "changed after function call";
     },
@@ -125,17 +126,17 @@ buster.testCase("library assume", {
         done();
       };
       var anyNumber = 5;
-      assume(lib).canHandle('anyFunc').withArgs("anyArg", anyNumber, cb).andCallsCallbackWith(2, "").andReturns(5);
+      assume(lib).canHandle('anyFunc').withArgs("anyArg", anyNumber, callback).andCallsCallbackWith("").andReturns(5);
       assert.equals(5, lib.anyFunc("anyArg", anyNumber, cb));
     },
     "should call callback with no argument if not defined" : function (done) {
       var lib = chadodouble("mylib");
-      var callback = function() {
+      var cb = function() {
         assert(true);
         done();
       };
-      assume(lib).canHandle('func').withArgs(callback).andCallsCallbackWith(0);
-      lib.func(callback);
+      assume(lib).canHandle('func').withArgs(callback).andCallsCallbackWith();
+      lib.func(cb);
     }
   },
   "Given two CanHandle assumptions with different arguments" : {
