@@ -30,6 +30,38 @@ chadojs tries to address this problem with additional verification tests. With c
 ## setup chadojs
 
 ### busterjs
+create a new file (e.g.: buster-chado.js) in your test director
+and add the following lines. 
+```js
+var chado = require('chado');
+var fs = require('fs');
+var testRunner = require('buster').testRunner;
+testRunner.on('suite:end', function () {
+  chado.consoleReporter.logReport();
+  fs.writeFile(
+    "chado-result.json", 
+    JSON.stringify(chado.repo, null, 2)
+  );
+});
+```
+
+### mocha
+create a new file (e.g.: mocha-chado.js) in your test director
+and add the following lines. 
+```js
+var chado = require('chado');
+var fs = require('fs');
+after( function () {
+  chado.consoleReporter.logReport();
+  fs.writeFileSync(
+    "chado-result.json", 
+    JSON.stringify(chado.repo, null, 2)
+  );
+});
+```
+
+### other frameworks
+ensure that after the test suite is run chado.consoleReporter.logReport() is called and if you want to use the html-reporter that the chado.repo is written to a file.
 
 ## how does it work
 
