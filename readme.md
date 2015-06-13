@@ -27,6 +27,9 @@ But integration tests are hard to setup, might be slow and we can't test specifi
 ### verification tests
 chadojs tries to address this problem with additional verification tests. With chadojs you do not need to write these types of integration tests. Instead whenever you mock a unit, you verify that the real object can behave like the mock.
 
+## install chadojs
+npm install chado
+
 ## setup chadojs
 
 ### busterjs
@@ -58,8 +61,8 @@ after( function () {
 });
 ```
 
-### other frameworks
-ensure that after the test suite is run chado.consoleReporter.logReport() is called and if you want to use the html-reporter that the chado.repo is written to a file.
+### other testrunners
+ensure that after the test suite ran chado.consoleReporter.logReport() is called and if you want to use the html-reporter that the chado.repo is written to a file.
 
 ## how does it work
 
