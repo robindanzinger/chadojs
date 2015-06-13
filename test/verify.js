@@ -9,7 +9,7 @@ buster.testCase("library verify", {
     repo = {};
     verify = require('../lib/verify')(repo);
   },
-  "Given a CanHandle verification" : {
+  "Given canHandle verification" : {
     "doesn't throw an error if the sut can handle a assumption and returns the assumed value" : function () {
       var lib = {
         funcName : function () {
@@ -51,7 +51,7 @@ buster.testCase("library verify", {
     }
   },
   "Given callback assumption" : {
-    "returns true, if the sut can handle the assumption and calls the callback" : function (done) {
+    "should call the given callback of method on, if the sut can handle the assumption and calls the callback" : function (done) {
       var lib = {
         funcName : function (foo, callback, bar) {
           setTimeout(function() {
@@ -61,8 +61,37 @@ buster.testCase("library verify", {
       };
       verify("libName").canHandle("funcName").withArgs("foo", chado.callback, "bar")
         .andCallsCallbackWith("value")
-        .on(lib, function (result) {
-          assert(result);
+        .on(lib, function() {
+          assert(true);
+          done();
+        });
+    },
+    "should throw error, if the sut calls the callback with other argument than expected" : function () {
+      var lib = {
+        funcName : function (foo, callback, bar) {
+          setTimeout(function() {
+            callback("anothervalue");
+          }, 0);
+        }
+      };
+      assert.exception(function () {
+        verify("libName").canHandle("funcName").withArgs("foo", chado.callback, "bar")
+          .andCallsCallbackWith("value")
+          .on(lib, done);
+      });
+    },
+    "stores the verification" : function (done) {
+      var lib = {
+        funcName : function (callback) {
+          setTimeout(function() {
+            callback("value");
+          }, 0);
+        }
+      };
+      verify("libName").canHandle("funcName").withArgs(chado.callback)
+        .andCallsCallbackWith("value")
+        .on(lib, function() {
+          assert(repo.libName.funcName['["=>function"]']['cb:0->["value"]']);
           done();
         });
     },
