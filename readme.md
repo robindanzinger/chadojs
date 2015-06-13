@@ -30,8 +30,7 @@ chadojs tries to address this problem with additional verification tests. With c
 ## setup chadojs
 
 ### busterjs
-create a new file (e.g.: buster-chado.js) in your test director
-and add the following lines. 
+create a new file (e.g.: buster-chado.js) in your test directory and add the following lines. 
 ```js
 var chado = require('chado');
 var fs = require('fs');
@@ -46,8 +45,7 @@ testRunner.on('suite:end', function () {
 ```
 
 ### mocha
-create a new file (e.g.: mocha-chado.js) in your test director
-and add the following lines. 
+create a new file (e.g.: mocha-chado.js) in your test directory and add the following lines. 
 ```js
 var chado = require('chado');
 var fs = require('fs');
