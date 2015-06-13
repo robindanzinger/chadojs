@@ -128,27 +128,27 @@ verify function calls a given callback
 var callback = chado.callback; // this function is never called in verify!
 var lib = {foo: function (callback) {callback();};
 
+// ok
 verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith().
-  on(lib, function (result) {});    
-  // result === true
+  on(lib, function () {});    
 
+// throws error, because lib.foo doesn't call callback with argument 'bar'
 verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith('bar').
-  on(lib, function (result) {});    
-  // result === false, because lib.foo doesn't call callback with argument 'bar'
+  on(lib, function () {});    
 
+// ok
 lib = {foo: function (callback) {callback('bar');};
 verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith('bar').
-  on(lib, function (result) {});    
-  // result === true
-  
-verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
-  on(lib, function (result) {});    
-  // result === false because lib.foo uses first argument as callback
+  on(lib, function () {});    
 
+// throws error, because lib.foo uses first argument as callback
+verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
+  on(lib, function () {});    
+  
+// ok
 lib = {foo: function (argument, callback) {callback('bar');};
 verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
-  on(lib, function (result) {});    
-  // result === true
+  on(lib, function () {});    
 ```
 
 ### evaluate assumptions and verifications
