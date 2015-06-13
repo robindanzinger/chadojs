@@ -4,7 +4,7 @@ var refute = buster.refute;
 var stringify = require('../lib/stringify').stringify;
 var parse = require('../lib/stringify').parse;
 
-buster.testCase("Test Stringify", {
+buster.testCase("Test stringify", {
   "stringifies data like JSON" : function () {
     assert.equals('"5"', stringify("5"));
     assert.equals("5", stringify(5));
@@ -20,11 +20,11 @@ buster.testCase("Test Stringify", {
     var expected = '[5,"value","anotherValue"]';
     assert.equals(expected, stringify(array));
   },
-  "stringifies functions as /function string" : function () {
+  "stringifies functions as '=>function' string" : function () {
     var func = function () {};
     assert.equals('"=>function"', stringify(func)); 
   },
-  "escapes String =>function" : function () {
+  "escapes string =>function" : function () {
     assert.equals('"/=>function"', stringify("=>function"));
     assert.equals('"//=>function"', stringify("/=>function"));
     assert.equals('"foo=>function"', stringify("foo=>function"));
