@@ -1,14 +1,12 @@
-var buster = require('buster'); 
-var assert = buster.assert;
-var refute = buster.refute;
+var expect = require('must');
 var analyzer = require('../lib/analyzer');
-buster.testCase("Some functions for analyzing the made assumptions", {
-  "sort array" : function () {
+describe("Some functions for analyzing the made assumptions", function () {
+  it('sort array', function () {
     var array = createArray().addAssumption("BName").addAssumption("AName").build();
     analyzer.sort(array);
-    assert.equals(array[0].name, "AName"); 
-  },
-  "find a path" : function () {
+    expect("AName").equal(array[0].name); 
+  }),
+  it('find a path', function () {
     var array = createArray()
       .addAssumption("AName", "FileA", "MethodA")
       .addVerification("AName", "FileB", "MethodB")
@@ -18,11 +16,11 @@ buster.testCase("Some functions for analyzing the made assumptions", {
       .build();
 
     var paths = analyzer.findPaths(array, array[0]);
-    assert.equals(paths[0][0], array[2]);
-    assert.equals(paths[0][1], array[4]);
-    assert.equals(1, paths.length);
-  },
-  "find a path with two different ways" : function () {
+    expect(array[2]).equal(paths[0][0]);
+    expect(array[4]).equal(paths[0][1]);
+    expect(paths.length).equal(1);
+  }),
+  it('find a path with two different ways', function () {
     var array = createArray()
       .addAssumption("AName", "FileA", "MethodA")
       .addVerification("AName", "FileB", "MethodB")
@@ -36,12 +34,12 @@ buster.testCase("Some functions for analyzing the made assumptions", {
      .build();
 
     var paths = analyzer.findPaths(array, array[0]);
-    assert.equals(paths[0][0], array[2]);
-    assert.equals(paths[0][1], array[4]);
-    assert.equals(paths[1][0], array[6]);
-    assert.equals(paths[1][1], array[8]);
-  },
-  "find a path with different several assumptions, should return one path" : function () {
+    expect(array[2]).equal(paths[0][0]);
+    expect(array[4]).equal(paths[0][1]);
+    expect(array[6]).equal(paths[1][0]);
+    expect(array[8]).equal(paths[1][1]);
+  }),
+  it('find a path with different several assumptions, should return one path', function () {
     var array = createArray()
       .addAssumption("AName", "FileA", "MethodA")
       .addVerification("AName", "FileB", "MethodB")
@@ -50,32 +48,32 @@ buster.testCase("Some functions for analyzing the made assumptions", {
      .build();
 
     var paths = analyzer.findPaths(array, array[0]);
-    assert.equals(1, paths.length);
-    assert.equals(paths[0][0], array[2]);
-    assert.equals(paths[0][1], array[3]);
-  },
-  "get all assumptions of an assumption" : function () {
+    expect(paths.length).equal(1);
+    expect(array[2]).equal(paths[0][0]);
+    expect(array[3]).equal(paths[0][1]);
+  }),
+  it('get all assumptions of an assumption', function () {
     var array = createArray()
       .addAssumption("aName")
       .addAssumption("anotherName")
       .addAssumption("aName")
       .build();
     var assumptions = analyzer.findAssumptions(array, array[2]);
-    assert.equals(2, assumptions.length);
-    assert.equals(assumptions[0], array[0]);
-    assert.equals(assumptions[1], array[2]);
-  },
-  "get all verifications of an assumption" : function () {
+    expect(assumptions.length).equal(2);
+    expect(array[0]).equal(assumptions[0]);
+    expect(array[2]).equal(assumptions[1]);
+  }),
+  it('get all verifications of an assumption', function () {
     var array = createArray()
       .addAssumption("aName")
       .addVerification("aName")
       .addVerification("anotherName")
       .build();
     var verifications = analyzer.findVerifications(array, array[0]);
-    assert.equals(1, verifications.length);
-    assert.equals(verifications[0], array[1]);
-  },
-  "get all callers of an assumption" : function () {
+    expect(verifications.length).equal(1);
+    expect(array[1]).equal(verifications[0]);
+  }),
+  it('get all callers of an assumption', function () {
     var array = createArray()
       .addAssumption("aName")
       .addCalledBy("anotherName")
@@ -83,11 +81,11 @@ buster.testCase("Some functions for analyzing the made assumptions", {
       .addCalledBy("aName")
       .build();
     var calledBy = analyzer.findCalledBy(array, array[0]);
-    assert.equals(2, calledBy.length);
-    assert.equals(calledBy[0], array[2]);
-    assert.equals(calledBy[1], array[3]);
-  },
-  "get all types of an assumption" : function () {
+    expect(calledBy.length).equal(2);
+    expect(array[2]).equal(calledBy[0]);
+    expect(array[3]).equal(calledBy[1]);
+  }),
+  it('get all types of an assumption', function () {
     var array = createArray()
       .addAssumption("A")
       .addAssumption("B")
@@ -98,28 +96,28 @@ buster.testCase("Some functions for analyzing the made assumptions", {
       .build();
     analyzer.sort(array);
     var groupedArray = analyzer.groupAssumptions(array);
-    assert.equals(groupedArray.length, 4);
-  },
-  "get all not verified assumptions" : function () {
+    expect(4).equal(groupedArray.length);
+  }),
+  it('get all not verified assumptions', function () {
     var array = createArray()
       .addAssumption("A")
       .addVerification("A")
       .addAssumption("B")
       .build();
     var notVerifiedAssumptions = analyzer.getNotVerifiedAssumptions(array);
-    assert.equals(notVerifiedAssumptions.length, 1);
-    assert.equals(notVerifiedAssumptions[0].name, "B");
-  },
-  "get all not assumed verifications" : function () {
+    expect(1).equal(notVerifiedAssumptions.length);
+    expect("B").equal(notVerifiedAssumptions[0].name);
+  }),
+  it('get all not assumed verifications', function () {
     var array = createArray()
       .addAssumption("A")
       .addVerification("A")
       .addVerification("B")
       .build();
     var notAssumedVerifications = analyzer.getNotAssumedVerifications(array);
-    assert.equals(notAssumedVerifications.length, 1);
-    assert.equals(notAssumedVerifications[0].name, "B");
-  }
+    expect(1).equal(notAssumedVerifications.length);
+    expect("B").equal(notAssumedVerifications[0].name);
+  })
 });
 
 function createArray() {

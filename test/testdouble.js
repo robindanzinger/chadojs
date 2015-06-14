@@ -1,50 +1,53 @@
-var buster = require('buster');
-var assert = buster.assert;
-var testDoubleLib;
-buster.testCase("Library testdouble", { 
-  setUp : function () {
+var expect = require('must');
+describe('Library testdouble', function () { 
+  var testDoubleLib;
+  before(function () {
     testDoubleLib = require('../lib/testdouble');
-  },
-  "Given: function createTestDoubleFor" : {
-    setUp : function () {
+  }),
+  describe('Given: function createTestDoubleFor', function () {
+    before(function () {
       this.createTestDoubleFor = testDoubleLib.createTestDoubleFor;
-    },
-    "should throw error, if called without lib name" : function () {
+    }),
+    it('should throw error, if called without lib name', function () {
       var createTestDoubleFor = testDoubleLib.createTestDoubleFor;
-      assert.exception(function () {
+      var func = function () {
         createTestDoubleFor();
-      });
-    },
-    "should throw error, if lib is no string" : function () {
+      };
+      expect(func).throw();
+    }),
+    it('should throw error, if lib is no string', function () {
       var createTestDoubleFor = testDoubleLib.createTestDoubleFor;
-      assert.exception(function () {
+      var func = function () {
         createTestDoubleFor({});
-      });
-    },
-    "should return object, which can be used as testDouble, when called" : function () {
-      assert.isObject(this.createTestDoubleFor("anyLib"));
-    }
-  },
-  "Given: function getLibFor And: testDouble" : {
-    setUp : function () {
+      };
+      expect(func).throw();
+    }),
+    it('should return object, which can be used as testDouble, when called', function () {
+      expect(this.createTestDoubleFor("anyLib")).to.be.an.object();
+    })
+  }),
+  describe('Given: function getLibFor And: testDouble', function () {
+    before(function () {
       this.getLibNameFor = testDoubleLib.getLibNameFor;
       this.testDouble = testDoubleLib.createTestDoubleFor("anyLib");
       testDoubleLib.createTestDoubleFor("anotherLib");
-    },
-    "should throw error, if called with no testDouble" : function () {
+    }),
+    it('should throw error, if called with no testDouble', function () {
       var getLibNameFor = this.getLibNameFor;
-      assert.exception(function () {
+      var func = function () {
         getLibNameFor();
-      });
-    },
-    "should return library name, when called with testDouble" : function () {
-      assert.equals(this.getLibNameFor(this.testDouble), "anyLib");
-    },
-    "should throw error, if test double is not stored" : function () {
+      };
+      expect(func).throw();
+    }),
+    it('should return library name, when called with testDouble', function () {
+      expect(this.getLibNameFor(this.testDouble)).equal("anyLib");
+    }),
+    it('should throw error, if test double is not stored', function () {
       var getLibNameFor = this.getLibNameFor;
-      assert.exception(function () {
+      var func = function () {
         getLibNameFor({});
-      });
-    }
-  }
+      };
+      expect(func).throw();
+    })
+  })
 });

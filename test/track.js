@@ -1,15 +1,14 @@
-var buster = require('buster');
-var assert = buster.assert;
+var expect = require('must');
 var track = require('../lib/track').track;
-buster.testCase("library track", {
-  "given a called function, it returns file-information about the caller" : function () {
+describe('library track', function () {
+  it('given a called function, it returns file-information about the caller', function foo () {
     var func = function () {
       var trackInfo = track();
-      assert(trackInfo.file.match(".*track.js"));
-      assert.equals(trackInfo.func, "Object.buster.testCase.given a called function, it returns file-information about the caller");
-      assert.equals(trackInfo.line, "13");
-      assert.equals(trackInfo.index, "5");
+      expect(trackInfo.file).match(".*track.js");
+      expect(trackInfo.func).equal("Context.foo");
+      expect(trackInfo.line).eql("12");
+      expect(trackInfo.index).eql("5");
     }
     func();
-  }
+  })
 })
