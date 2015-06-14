@@ -17,7 +17,7 @@
     "must": "^0.12.0"
   },
   "scripts": {
-    "test": "buster-test"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
