@@ -244,7 +244,7 @@ So you have to mock the depending units.
 (picture) todo
 
 ### pizza restaurant - an example
-[pizza restaurant - an example](https://github.com/robindanzinger/chado_example)
+[pizza restaurant - an example](https://github.com/robindanzinger/chadojs/blob/master/example/example.md)
 
 ### simple design philosophy
 If it gets too complicated, maybe you should rethink about your design.
