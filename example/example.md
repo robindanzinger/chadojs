@@ -352,4 +352,6 @@ CHADO CONSOLE REPORTER
 Now our pizza restaurant is fully tested. The waiter can talk to the chef. And the chef works with the pantry. Even error handling is implemented although we didn't think of it when we made the specification.
 What next? Another specification? How does the pantry get filled? Or are there any other issues, which we discovered when we wrote the program? Go on with your imagination and what you think we still miss.
 
+### references
+[example code](https://github.com/robindanzinger/chadojs/blob/master/example/example.js)
 
