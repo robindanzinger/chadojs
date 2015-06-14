@@ -1,0 +1,30 @@
+{
+  "name": "chado",
+  "version": "0.1.2",
+  "description": "",
+  "main": "lib/chado.js",
+  "directories": {
+    "lib" : "lib"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "buster": "~0.7.7"
+  },
+  "scripts": {
+    "test": "buster-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robindanzinger/chadojs.git"
+  },
+  "keywords": [
+    "test", "mock", "top-down", "outside-in", "integrated test scam", "tdd", "testdouble", "fake"
+  ],
+  "author": "Robin Danzinger",
+  "license": "MIT",
+  "gitHead": "4b0edf858c7182aa673e24b6ed485892ce48f90c",
+  "bugs": {
+    "url": "https://github.com/robindanzinger/chadojs/issues"
+  }
+}
