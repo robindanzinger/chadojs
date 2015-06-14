@@ -228,7 +228,9 @@ var json = JSON.stringify(chado.repo, null, 2)
 fs.writeFile("chado-result.json", json);
 ```
 
-## inside-out vs outside-in tdd
+## addition
+
+### inside-out vs outside-in tdd
 
 Because chadojs doesn't need integration test it's perfect for outside-in tdd.
 
@@ -241,7 +243,8 @@ So you have to mock the depending units.
 
 (picture) todo
 
-## addition
+### pizza restaurant - an example
+[pizza restaurant - an example](https://github.com/robindanzinger/chado_example)
 
 ### simple design philosophy
 If it gets too complicated, maybe you should rethink about your design.
