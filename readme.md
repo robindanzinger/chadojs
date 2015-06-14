@@ -1,6 +1,8 @@
 experimental stuff
 under development
 
+[![Build Status](https://api.travis-ci.org/robindanzinger/chadojs.png)](https://travis-ci.org/robindanzinger/chadojs)
+
 # chadojs
 chadojs is a mocking library for nodejs which reduces the need for integration tests. Instead of integration tests it supports writing verification tests.
 
