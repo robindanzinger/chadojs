@@ -9,6 +9,10 @@
   "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-eslint": "^14.0.0",
+    "grunt-jslint": "^1.1.14",
+    "grunt-mocha-istanbul": "^2.4.0",
+    "istanbul": "^0.3.15",
     "mocha": "^2.2.5",
     "must": "^0.12.0"
   },
@@ -30,7 +34,10 @@
     "fake"
   ],
   "author": "Robin Danzinger",
-  "license": "MIT",
+  "license": {
+    "type": "MIT",
+    "url": "http://www.opensource.org/licenses/MIT"
+  },
   "gitHead": "4b0edf858c7182aa673e24b6ed485892ce48f90c",
   "bugs": {
     "url": "https://github.com/robindanzinger/chadojs/issues"
