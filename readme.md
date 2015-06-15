@@ -1,6 +1,3 @@
-experimental stuff
-under development
-
 [![Build Status](https://api.travis-ci.org/robindanzinger/chadojs.png)](https://travis-ci.org/robindanzinger/chadojs)
 
 # chadojs
