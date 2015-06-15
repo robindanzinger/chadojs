@@ -3,10 +3,8 @@
     "node": true
   },
   "rules": {
-    "quotes": [ 2, "single"],
-    "no-use-before-define": 0,
-    "no-trailing-spaces": 0,
-    "no-underscore-dangle": 0,
-    "camelcase": 0
+    "quotes": [2, "single"],
+    "no-use-before-define": [2, "nofunc"],
+    "no-trailing-spaces": 0
   }
 }
