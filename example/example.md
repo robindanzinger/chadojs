@@ -1,6 +1,6 @@
 # chado_example
 
-chadojs supports you in doing extreme outside-in tdd. 
+chadojs supports you in extreme outside-in tdd. 
 What is extreme outside-in tdd? You write your units and tests starting from the client to the deeper smaller units. 
 When a unit (the outer unit) depends on another unit (the inner unit) then you mock that inner unit due to it doesn't yet exist
 In the end you have to verify, that the outer unit does not only work with the testdouble but also with the real (inner) unit.
