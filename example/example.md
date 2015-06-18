@@ -299,7 +299,7 @@ Ok, our chef can handle the response false and throws an error. But our waiter c
 
 ### 7. assume the verification chef throws an error
 
-When the chef throws an error, the waiter throw that error to the 
+When the chef throws an error, the waiter should throw that error, too. 
 ```js
   describe('waiter', function () {
     ...
