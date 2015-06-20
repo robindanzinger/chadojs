@@ -8,7 +8,11 @@ In short: extreme outside-in tdd is outside-in tdd without integration tests.
 
 ## pizza restaurant - an example
 
-(picture) todo
+In our example a customer should be able to order a pizza from the waiter. The waiter then asks the chef to make the pizza. The chef gets the ingredients from the pantry, makes the pizza.
+
+![alt tag](https://github.com/robindanzinger/chadojs/blob/master/example/overview.jpg)
+
+The customer is the client of our program. Waiter, Chef and Pantry shall be our units, i.e. they should work and be tested independently.
 
 ### 0. using chado in your test files
 ```js
