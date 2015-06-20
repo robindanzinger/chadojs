@@ -27,7 +27,7 @@ But integration tests are hard to setup, might be slow and we can't test specifi
 chadojs tries to address this problem with additional verification tests. With chadojs you do not need to write these types of integration tests. Instead whenever you mock a unit, you verify that the real object can behave like the mock.
 
 ## install chadojs
-npm install chado
+npm install chado --save-dev
 
 ## setup chadojs
 
@@ -229,21 +229,21 @@ fs.writeFile("chado-result.json", json);
 
 ## addition
 
+### pizza restaurant - an example
+[pizza restaurant - an example](https://github.com/robindanzinger/chadojs/blob/master/example/example.md)
+
 ### inside-out vs outside-in tdd
 
 Because chadojs doesn't need integration test it's perfect for outside-in tdd.
 
 In classical (or bottom-up, inside-out) tdd you write first the units which do not depend on other units. Then you write the units, which only depends on units you already have written. So you usually do not need to use mocks.
 
-(picture) todo
+![inside-out](https://github.com/robindanzinger/chadojs/blob/master/example/inside-out-tdd.jpg)
 
 In outside-in (or top-down) tdd you write first the units next to the client or customer specification. But these units might depend on other units which do not already exist.
 So you have to mock the depending units.
 
-(picture) todo
-
-### pizza restaurant - an example
-[pizza restaurant - an example](https://github.com/robindanzinger/chadojs/blob/master/example/example.md)
+![outside-in](https://github.com/robindanzinger/chadojs/blob/master/example/outside-in-tdd.jpg)
 
 ### simple design philosophy
 If it gets too complicated, maybe you should rethink about your design.
@@ -268,7 +268,7 @@ However there are some similar mocking libraries in other languages:
 ### licence
 The MIT License (MIT)
 
-Copyright (c) <year> <copyright holders>
+Copyright (c) <2015> <copyright holders>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
