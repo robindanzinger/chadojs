@@ -1,14 +1,20 @@
-# chado_example
+# chado example
 
-chadojs supports you in extreme outside-in tdd. 
-What is extreme outside-in tdd? You write your units and tests starting from the client to the deeper smaller units. 
-When a unit (the outer unit) depends on another unit (the inner unit) then you mock that inner unit due to it doesn't yet exist
-In the end you have to verify, that the outer unit does not only work with the testdouble but also with the real (inner) unit.
+## outside-in tdd without integration tests
+
+chadojs supports you in extremse outside-in tdd. What is extreme outside-in tdd? 
+In outside-in tdd you write your units and tests starting from the units next to the client. These outer units might depend on other units - the inner units. 
+Whenever a unit (the outer unit) depends on another unit (the inner unit) you have to mock that inner unit due to it doesn't yet exist. With you mock you make an assumption about the real unit, i.e. how you think it should behave.
+
+When you write the inner units, you have to verify your assumptions made on the mock.
+You can do this with an integration test. But chado uses instead of integration tests a verification test, which is similar to a unit test. 
+With chado you can guarantee without integration tests, that the outer unit does not only work with the testdouble but also with the real (inner) unit.
+
 In short: extreme outside-in tdd is outside-in tdd without integration tests.
 
 ## pizza restaurant - an example
 
-In our example a customer should be able to order a pizza from the waiter. The waiter then asks the chef to make the pizza. The chef gets the ingredients from the pantry, makes the pizza.
+In our example a customer should be able to order a pizza from a waiter. The waiter then asks the chef to make the pizza. The chef gets the ingredients from the pantry and makes the pizza.
 
 ![alt tag](https://github.com/robindanzinger/chadojs/blob/master/example/overview.jpg)
 
