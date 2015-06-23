@@ -2,15 +2,13 @@
 
 ## outside-in tdd without integration tests
 
-chadojs supports you in extremse outside-in tdd. What is extreme outside-in tdd? 
+chadojs supports you in outside-in tdd. 
 In outside-in tdd you write your units and tests starting from the units next to the client. These outer units might depend on other units - the inner units. 
-Whenever a unit (the outer unit) depends on another unit (the inner unit) you have to mock that inner unit due to it doesn't yet exist. With you mock you make an assumption about the real unit, i.e. how you think it should behave.
+Whenever a unit (the outer unit) depends on another unit (the inner unit) you have to mock that inner unit due to it doesn't yet exist. When you mock you make an assumption about the real unit, i.e. how you think it should behave.
 
 When you write the inner units, you have to verify your assumptions made on the mock.
-You can do this with an integration test. But chado uses instead of integration tests a verification test, which is similar to a unit test. 
+You can do this with an integration test. But instead of integration tests chado uses verification tests, which are similar to unit tests. 
 With chado you can guarantee without integration tests, that the outer unit does not only work with the testdouble but also with the real (inner) unit.
-
-In short: extreme outside-in tdd is outside-in tdd without integration tests.
 
 ## pizza restaurant - an example
 
@@ -18,7 +16,7 @@ In our example a customer should be able to order a pizza from a waiter. The wai
 
 ![alt tag](https://github.com/robindanzinger/chadojs/blob/master/example/overview.jpg)
 
-The customer is the client of our program. Waiter, Chef and Pantry shall be our units, i.e. they should work and be tested independently.
+The customer is the client of our program. Waiter, Chef and Pantry shall be our units, i.e. they should work and be tested independently. We start writing code from outside-in. Our first unit will be the Waiter, then the Chef and finally the Pantry.
 
 ### 0. using chado in your test files
 ```js
