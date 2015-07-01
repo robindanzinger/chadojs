@@ -16,12 +16,13 @@ describe('Lib create_verification', function () {
       expect(createVerification(assumption)).to.eql(expected);
     });
     it('complex assumption', function () {
-      var expected = 'verify("name").canHandle("func").withArgs(5, {"key":"value"}).andReturns({"foo":"bar"}).on(sut));';
+      var expected = 'verify("name").canHandle("func").withArgs(5, {"key":"value"}).andReturns({"foo":"bar","func":function () {}}).on(sut));';
+      var foo = function () {return 'foo'; };
       var assumption = {
         name: 'name',
         func: 'func',
         args: stringify([5, {key: 'value'}]),
-        action: 'r:' + stringify({foo: 'bar'})
+        action: 'r:' + stringify({foo: 'bar', func: foo})
       };
       expect(createVerification(assumption)).to.eql(expected);
     });

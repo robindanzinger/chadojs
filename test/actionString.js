@@ -38,18 +38,18 @@ describe('library actionString', function () {
   it('can parse a callbackValueActionString', function () {
     var callbackString = 'cb:2->["returnValue"]';
     var expected = {type: 'callback', value: 'returnValue', callbackIndex: 2};
-    expect(actionString.parseAction(callbackString)).to.eql(expected);
+    expect(actionString.parseActionString(callbackString)).to.eql(expected);
   });
 
   it('can parse a returnValueActionString', function () {
     var returnValueString = 'r:"returnValue"';
     var expected = {type: 'returnValue', value: 'returnValue'};
-    expect(actionString.parseAction(returnValueString)).to.eql(expected);
+    expect(actionString.parseActionString(returnValueString)).to.eql(expected);
   });
 
   it('can parse a throwErrorActionString', function () {
     var throwErrorString = 'ex:error message';
     var expected = {type: 'throwError', message: 'error message'};
-    expect(actionString.parseAction(throwErrorString)).to.eql(expected);
+    expect(actionString.parseActionString(throwErrorString)).to.eql(expected);
   });
 });
