@@ -129,6 +129,26 @@ describe('Some functions for analyzing the made assumptions', function () {
     expect(notAssumedVerifications).to.have.length(1);
     expect(notAssumedVerifications[0].name).to.be('B');
   });
+
+  it('get all assumptions', function () {
+    var array = createArray()
+      .addAssumption('A')
+      .addAssumption('B')
+      .addVerification('C')
+      .build();
+    var allAssumptions = analyzer.getAllAssumptions(array);
+    expect(allAssumptions).to.have.length(2);
+  });
+  it('get all verifications', function () {
+    var array = createArray()
+      .addAssumption('A')
+      .addAssumption('B')
+      .addVerification('C')
+      .addVerification('A')
+      .build();
+    var allVerifications = analyzer.getAllVerifications(array);
+    expect(allVerifications).to.have.length(2);
+  });
 });
 
 function createArray() {
