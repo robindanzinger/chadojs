@@ -17,7 +17,7 @@ describe('library actionString', function () {
     expect(actionString.createThrowErrorActionString('message')).to.be('ex:message');
   });
 
-  it('can transfrom a callbackValueActionString to a more readable', function () {
+  it('can transform a callbackValueActionString to a more readable', function () {
     var callbackString = 'cb:2->["returnValue"]';
     var expected = 'calls 2. argument with ("returnValue")';
     expect(actionString.makeHumanReadableActionString(callbackString)).to.be(expected);
@@ -37,7 +37,7 @@ describe('library actionString', function () {
 
   it('can parse a callbackValueActionString', function () {
     var callbackString = 'cb:2->["returnValue"]';
-    var expected = {type: 'callback', value: 'returnValue', callbackIndex: 2};
+    var expected = {type: 'callback', value: ['returnValue'], callbackIndex: 2};
     expect(actionString.parseActionString(callbackString)).to.eql(expected);
   });
 
