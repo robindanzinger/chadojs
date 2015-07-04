@@ -46,7 +46,7 @@ describe('Lib create_verification', function () {
       var assumption = createAssumption().build();
       var expectedMethodString = 
         'describe(\'name\'), function () {\n'
-      + '  it(\'func called with (arg) should return \"value\"\'), function () {\n'
+      + '  it(\'func called with ("arg") should return "value"\'), function () {\n'
       + '    verify(\'name\').canHandle(\'func\').withArgs("arg").andReturns("value").on(sut));\n'
       + '  });\n'
       + '});\n';
@@ -68,7 +68,7 @@ describe('Lib create_verification', function () {
      var expectedMethodString = 
         'describe(\'name\'), function () {\n'
       + '  describe(\'func\'), function () {\n'
-      + '    it(\'called with (arg) should return \"value\"\'), function () {\n'
+      + '    it(\'called with ("arg") should return "value"\'), function () {\n'
       + '      verify(\'name\').canHandle(\'func\').withArgs("arg").andReturns("value").on(sut));\n'
       + '    });\n'
       + '  });\n'
@@ -80,7 +80,7 @@ describe('Lib create_verification', function () {
       var assumption = createAssumption().withErrorMessage('message').build();
       var expectedMethodString = 
          'describe(\'name\'), function () {\n'
-       + '  it(\'called with (arg) should throw error\'), function () {\n'
+       + '  it(\'called with ("arg") should throw error\'), function () {\n'
        + '    verify(\'name\').canHandle(\'func\').withArgs("arg").andThrowsError(\'message\').on(sut));\n'
        + '  });\n'
        + '});\n';
@@ -91,7 +91,7 @@ describe('Lib create_verification', function () {
       var assumption = createAssumption().withArgs([function () {}, 5]).withCallback(0, ['foo', 'bar']).build();
       var expectedMethodString = 
         'describe(\'name\'), function () {\n'
-      + '  it(\'func called with (function () {},5) should call callback with ("foo","bar")\'), function () {\n'
+      + '  it(\'func called with (function () {}, 5) should call callback with ("foo","bar")\'), function () {\n'
       + '    verify(\'name\').canHandle(\'func\').withArgs(callback, 5).andCallsCallbackWith("foo","bar").on(sut, function () {}));\n'
       + '  });\n'
       + '});\n';
