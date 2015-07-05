@@ -12,13 +12,13 @@ describe('Lib create_verification', function () {
     describe('create verify string for returnValue assumption', function () {
       it('simple assumption', function () {
         var expected = 'verify(\'name\').canHandle(\'func\').withArgs("arg1", "arg2").andReturns("value").on(sut));';
-        var assumption = createAssumption().withArgs(['arg1', 'arg2']).build();
+        var assumption = createDefaultReturnValueAssumption().withArgs(['arg1', 'arg2']).build();
         expect(createVerificationString(assumption)).to.eql(expected);
       });
       it('complex assumption', function () {
         var expected = 'verify(\'name\').canHandle(\'func\').withArgs(5, {"key":"value"}).andReturns({"foo":"bar","func":function () {}}).on(sut));';
         var foo = function () {return 'foo'; };
-        var assumption = createAssumption()
+        var assumption = createDefaultReturnValueAssumption()
           .withArgs([5, {key: 'value'}])
           .withReturnValue({foo: 'bar', func: foo})
           .build();
@@ -27,23 +27,20 @@ describe('Lib create_verification', function () {
     });
   
     it('create verify string for callback assumption', function () {
-      var expected = 'verify(\'name\').canHandle(\'func\').withArgs("arg1", callback).andCallsCallbackWith("value").on(sut, function () {}));';
-      var assumption = createAssumption()
-        .withArgs(['arg1', function () {}])
-        .withCallback(1, ['value'])
-        .build();
+      var expected = 'verify(\'name\').canHandle(\'func\').withArgs(callback, "arg").andCallsCallbackWith("value").on(sut, function () {}));';
+      var assumption = createDefaultCallbackAssumption().build();
       expect(createVerificationString(assumption)).to.eql(expected);
     });
   
     it('create verify string for throw Error assumption', function () {
       var expected = 'verify(\'name\').canHandle(\'func\').withArgs("arg").andThrowsError(\'message\').on(sut));';
-      var assumption = createAssumption().withErrorMessage('message').build();
+      var assumption = createDefaultThrowErrorAssumption().build();
       expect(createVerificationString(assumption)).to.eql(expected);
     });
   });
   describe('create verification method', function () {
     it('creates a method skeleton', function () {
-      var assumption = createAssumption().build();
+      var assumption = createDefaultReturnValueAssumption().build();
       var expectedMethodString = 
         'describe(\'name\'), function () {\n'
       + '  it(\'func called with ("arg") should return "value"\'), function () {\n'
@@ -54,7 +51,7 @@ describe('Lib create_verification', function () {
       expect(actualMethodString).to.eql(expectedMethodString);
     });
    it('can work with different templates', function () {
-     var assumption = createAssumption().build();
+     var assumption = createDefaultReturnValueAssumption().build();
      var template = {
        returnValue: {
         m0: 'describe(\'{name}\'), function () {',
@@ -77,7 +74,7 @@ describe('Lib create_verification', function () {
       expect(actualMethodString).to.eql(expectedMethodString);
     });
     it('should work with an throwErrorAssumption', function () {
-      var assumption = createAssumption().withErrorMessage('message').build();
+      var assumption = createDefaultThrowErrorAssumption().build();
       var expectedMethodString = 
          'describe(\'name\'), function () {\n'
        + '  it(\'called with ("arg") should throw error\'), function () {\n'
@@ -88,11 +85,11 @@ describe('Lib create_verification', function () {
        expect(actualMethodString).to.eql(expectedMethodString);
     });
     it('should work with an callbackAssumption', function () {
-      var assumption = createAssumption().withArgs([function () {}, 5]).withCallback(0, ['foo', 'bar']).build();
+      var assumption = createDefaultCallbackAssumption().withCallback(0, ['foo', 'bar']).build();
       var expectedMethodString = 
         'describe(\'name\'), function () {\n'
-      + '  it(\'func called with (function () {}, 5) should call callback with ("foo","bar")\'), function () {\n'
-      + '    verify(\'name\').canHandle(\'func\').withArgs(callback, 5).andCallsCallbackWith("foo","bar").on(sut, function () {}));\n'
+      + '  it(\'func called with (function () {}, "arg") should call callback with ("foo","bar")\'), function () {\n'
+      + '    verify(\'name\').canHandle(\'func\').withArgs(callback, "arg").andCallsCallbackWith("foo","bar").on(sut, function () {}));\n'
       + '  });\n'
       + '});\n';
       var actualMethodString = createVerificationMethod(createTemplate(), assumption);
@@ -124,12 +121,36 @@ function createTemplate() {
   };
 }
 
+function createDefaultReturnValueAssumption () {
+  return createAssumption()
+    .withName('name')
+    .withFunc('func')
+    .withArgs(['arg'])
+    .withReturnValue('value');
+}
+
+function createDefaultThrowErrorAssumption () {
+  return createAssumption()
+    .withName('name')
+    .withFunc('func')
+    .withArgs(['arg'])
+    .withErrorMessage('message');
+}
+
+function createDefaultCallbackAssumption() {
+  return createAssumption()
+    .withName('name')
+    .withFunc('func')
+    .withArgs([function () {}, 'arg'])
+    .withCallback(0, ['value']);
+}
+
 function createAssumption() {
   var assumption = {
-    name: 'name',
-    func: 'func',
-    args: stringify(['arg']),
-    action: 'r:\"value\"'
+    name: undefined,
+    func: undefined,
+    args: undefined,
+    action: undefined
   };
 
   var builder = {
