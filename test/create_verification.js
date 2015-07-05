@@ -88,8 +88,8 @@ describe('Lib create_verification', function () {
       var assumption = createDefaultCallbackAssumption().withCallback(0, ['foo', 'bar']).build();
       var expectedMethodString = 
         'describe(\'name\'), function () {\n'
-      + '  it(\'func called with (function () {}, "arg") should call callback with ("foo","bar")\'), function () {\n'
-      + '    verify(\'name\').canHandle(\'func\').withArgs(callback, "arg").andCallsCallbackWith("foo","bar").on(sut, function () {}));\n'
+      + '  it(\'func called with (function () {}, "arg") should call callback with ("foo", "bar")\'), function () {\n'
+      + '    verify(\'name\').canHandle(\'func\').withArgs(callback, "arg").andCallsCallbackWith("foo", "bar").on(sut, function () {}));\n'
       + '  });\n'
       + '});\n';
       var actualMethodString = createVerificationMethod(createTemplate(), assumption);
