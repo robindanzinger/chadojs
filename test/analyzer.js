@@ -11,11 +11,11 @@ describe('Some functions for analyzing the made assumptions', function () {
 
   it('find a path', function () {
     var array = createArray()
-      .addAssumption('AName', 'FileA', 'MethodA')
-      .addVerification('AName', 'FileB', 'MethodB')
-      .addAssumption('anotherName', 'FileB', 'MethodB')
-      .addVerification('anotherName', 'FileC', 'MethodC')
-      .addAssumption('yetAnotherName', 'FileC', 'MethodC')
+      .addAssumption('AName', 'FileA', 'TestA')
+      .addVerification('AName', 'FileB', 'TestB')
+      .addAssumption('anotherName', 'FileB', 'TestB')
+      .addVerification('anotherName', 'FileC', 'TestC')
+      .addAssumption('yetAnotherName', 'FileC', 'TestC')
       .build();
 
     var paths = analyzer.findPaths(array, array[0]);
@@ -26,15 +26,15 @@ describe('Some functions for analyzing the made assumptions', function () {
 
   it('find a path with two different ways', function () {
     var array = createArray()
-      .addAssumption('AName', 'FileA', 'MethodA')
-      .addVerification('AName', 'FileB', 'MethodB')
-      .addAssumption('path1Name1', 'FileB', 'MethodB')
-      .addVerification('path1Name1', 'FileD', 'MethodD')
-      .addAssumption('path1Name2', 'FileD', 'MethodD')
-      .addVerification('AName', 'FileC', 'MethodC')
-      .addAssumption('path2Name1', 'FileC', 'MethodC')
-      .addVerification('path2Name1', 'FileE', 'MethodE')
-      .addAssumption('path2Name2', 'FileE', 'MethodE')
+      .addAssumption('AName', 'FileA', 'TestA')
+      .addVerification('AName', 'FileB', 'TestB')
+      .addAssumption('path1Name1', 'FileB', 'TestB')
+      .addVerification('path1Name1', 'FileD', 'TestD')
+      .addAssumption('path1Name2', 'FileD', 'TestD')
+      .addVerification('AName', 'FileC', 'TestC')
+      .addAssumption('path2Name1', 'FileC', 'TestC')
+      .addVerification('path2Name1', 'FileE', 'TestE')
+      .addAssumption('path2Name2', 'FileE', 'TestE')
       .build();
 
     var paths = analyzer.findPaths(array, array[0]);
@@ -46,10 +46,10 @@ describe('Some functions for analyzing the made assumptions', function () {
 
   it('find a path with different several assumptions, should return one path', function () {
     var array = createArray()
-      .addAssumption('AName', 'FileA', 'MethodA')
-      .addVerification('AName', 'FileB', 'MethodB')
-      .addAssumption('Assumption1', 'FileB', 'MethodB')
-      .addAssumption('Assumption2', 'FileB', 'MethodB')
+      .addAssumption('AName', 'FileA', 'TestA')
+      .addVerification('AName', 'FileB', 'TestB')
+      .addAssumption('Assumption1', 'FileB', 'TestB')
+      .addAssumption('Assumption2', 'FileB', 'TestB')
       .build();
 
     var paths = analyzer.findPaths(array, array[0]);
@@ -154,13 +154,13 @@ describe('Some functions for analyzing the made assumptions', function () {
 function createArray() {
   var array = [];
 
-  function addAssumption(name, file, callermethod) {
-    array.push(createItem(name, 'assume', file, callermethod));
+  function addAssumption(name, file, test) {
+    array.push(createItem(name, 'assume', file, test));
     return forward();
   }
 
-  function addVerification(name, file, callermethod) {
-    array.push(createItem(name, 'verify', file, callermethod));
+  function addVerification(name, file, test) {
+    array.push(createItem(name, 'verify', file, test));
     return forward();
   }
 
@@ -169,7 +169,7 @@ function createArray() {
     return forward();
   }
 
-  function createItem(name, type, file, callermethod, func, args, retval) {
+  function createItem(name, type, file, test, func, args, retval) {
     return {
       name: name,
       func: func ? func : 'func',
@@ -178,7 +178,7 @@ function createArray() {
       type: type,
       file: file ? file : '/dir/file.js',
       line: 42,
-      callermethod: 'callermethod'
+      test: 'testname'
     };
   }
 
