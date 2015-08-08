@@ -1,3 +1,5 @@
 .idea
 coverage
 node_modules
+*.swp
+Thumbs.db
