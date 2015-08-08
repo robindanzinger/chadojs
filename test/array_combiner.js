@@ -2,25 +2,20 @@
 
 var expect = require('must');
 var combine = require('../lib/array_combiner');
-describe('combines different arrays', function () {
+describe('combine arrays combines each element of one array with each element of another array', function () {
   it('combine one array with one element should return an array with one array with one element', function () {
-    var array = ['A1'];
-    var result = combine(array);
-    expect(result[0]).to.eql(['A1']);
+    expect(combine(['A'])).to.eql([['A']]);
   });
 
-  it('combine one array with two elements should return an array containing two arrays with each one elment', function () {
-    var array = ['A1', 'A2'];
-    var result = combine(array);
-    expect(result[0]).to.eql(['A1']);
-    expect(result[1]).to.eql(['A2']);
+  it('combine one array with two elements [A1,A2] should result in two arrays [[A1],[A2]]', function () {
+    expect(combine(['A1', 'A2'])).to.eql([['A1'], ['A2']]);
   });
 
-  it('combine two arrays with each one element should return an array containing one array with both elments', function () {
-    var arrayA = ['A1'];
-    var arrayB = ['B1'];
+  it('combine [A] and [B] should result [[A,B]]', function () {
+    var arrayA = ['A'];
+    var arrayB = ['B'];
     var result = combine(arrayA, arrayB);
-    expect(result).to.eql([['A1', 'B1']]);
+    expect(result).to.eql([['A', 'B']]);
   });
 
   it('combine [A1, A2] with [B1] should result in [[A1, B1],[A2, B1]]', function () {
@@ -38,22 +33,22 @@ describe('combines different arrays', function () {
     expect(result).to.eql([['A1', 'B1'], ['A1', 'B2']]);
   });
 
-  it('combine three arrays', function () {
-    var arrayA = ['A1'];
-    var arrayB = ['B1'];
-    var arrayC = ['C1'];
+  it('combine [A] with [B] and [C] should result in [[A, B, C]', function () {
+    var arrayA = ['A'];
+    var arrayB = ['B'];
+    var arrayC = ['C'];
     var result = combine(arrayA, arrayB, arrayC);
-    expect(result).to.eql([['A1', 'B1', 'C1']]);
+    expect(result).to.eql([['A', 'B', 'C']]);
   });
 
-  it('empty array should be ignored', function () {
+  it('should ignore empty arrays', function () {
     var emptyArray = [];
-    var arrayA = ['A1'];
-    expect(combine(arrayA, emptyArray)).to.eql([['A1']]);
-    expect(combine(emptyArray, arrayA)).to.eql([['A1']]);
+    var arrayA = ['A'];
+    expect(combine(arrayA, emptyArray)).to.eql([['A']]);
+    expect(combine(emptyArray, arrayA)).to.eql([['A']]);
   });
 
-  it('combine different paths', function () {
+  it('combine arrays with different sizes', function () {
     var pathA = ['A1', 'A2'];
     var pathB = ['B1'];
     var pathC = ['C1', 'C2', 'C3'];
