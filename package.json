@@ -1,6 +1,6 @@
 {
   "name": "chado",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "",
   "main": "lib/chado.js",
   "directories": {
@@ -34,7 +34,6 @@
   ],
   "author": "Robin Danzinger",
   "license": "(MIT OR Apache-2.0)",
-  "gitHead": "4b0edf858c7182aa673e24b6ed485892ce48f90c",
   "bugs": {
     "url": "https://github.com/robindanzinger/chadojs/issues"
   }
