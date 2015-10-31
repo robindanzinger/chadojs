@@ -32,6 +32,11 @@ describe('Library testdouble', function () {
     it('should return object, which can be used as testDouble, when called', function () {
       expect(this.createTestDoubleFor('anyLib')).to.be.an.object();
     });
+
+    it('can pass real object as second parameter, which will then be used as testDouble', function () {
+      var realObject = {foo: 'bar'};
+      expect(this.createTestDoubleFor('realObject', realObject)).to.equal(realObject);
+    });
   });
 
   describe('Given: function getLibFor And: testDouble', function () {
