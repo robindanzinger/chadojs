@@ -105,7 +105,7 @@ function createChef(pantry) {
   function make(menu) {
     var ingredients = recipes[menu];
     if (!pantry.has(ingredients)) {
-      throw Error('Empty pantry');
+      throw new Error('Empty pantry');
     }
     ingredients.forEach(function (ingredient) {
       pantry.take(ingredient);

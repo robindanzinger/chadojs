@@ -1,179 +1,170 @@
 'use strict';
 
+var path = require('path');
 var expect = require('must');
-var chadodouble = require('../lib/testdouble').createTestDoubleFor;
 var callback = require('../lib/types').callback;
-describe('library assume', function () {
-  var repo;
-  var assume;
-  before(function () {
-    repo = {};
-    assume = require('../lib/assume')(repo);
+
+var repo = {};
+var assume = require('../lib/assume')(repo);
+
+describe('library "assume"', function () {
+  var collaborator;
+
+  beforeEach(function () {
+    collaborator = require('../lib/testdouble').createDouble('collie');
   });
 
-  describe('Given canHandle assumption with return value it should return the value when function is called', function () {
-    it('return value is a string', function () {
-      var expectedString = 'anyString';
-      var lib = chadodouble('lib');
-      assume(lib).canHandle('anyFuncName').andReturns('anyString');
-      expect(lib.anyFuncName()).to.eql(expectedString);
+  describe('Calling a stub with defined return value (no args)', function () {
+    it('returns a defined string', function () {
+      assume(collaborator).canHandle('anyFuncName').andReturns('anyString');
+
+      expect(collaborator.anyFuncName()).to.be('anyString');
     });
 
-    it('return value is a number', function () {
-      var expectedNumber = 5;
-      var lib = chadodouble('lib');
-      assume(lib).canHandle('anyFuncName').andReturns(5);
-      expect(lib.anyFuncName()).to.eql(expectedNumber);
+    it('returns a defined number', function () {
+      assume(collaborator).canHandle('anyFuncName').andReturns(5);
+
+      expect(collaborator.anyFuncName()).to.be(5);
     });
 
-    it('return value is null', function () {
-      var lib = chadodouble('lib');
-      assume(lib).canHandle('anyFuncName').andReturns(null);
-      expect(lib.anyFuncName()).to.eql(null);
+    it('returns a defined "null"', function () {
+      assume(collaborator).canHandle('anyFuncName').andReturns(null);
+
+      expect(collaborator.anyFuncName()).to.be(null);
     });
 
-    it('return value is an object', function () {
-      var lib = chadodouble('lib');
-      assume(lib).canHandle('anyFuncName').andReturns({prop1: 'value1', prop2: 4});
-      expect(lib.anyFuncName()).to.eql({prop1: 'value1', prop2: 4});
-    });
-  });
-  
-  describe('Given canHandle assumption with arguments and which returns a simple value', function () {
-    it('when called with expected arguments it should return value', function () {
-      var expectedString = 'anyString';
-      var lib = chadodouble('lib');
-      assume(lib).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
-      expect(lib.anyFuncName('aString', [1, 2])).to.eql(expectedString);
+    it('returns a defined object', function () {
+      var expectedReturnValue = {prop1: 'value1', prop2: 4};
+      assume(collaborator).canHandle('anyFuncName').andReturns(expectedReturnValue);
+
+      expect(collaborator.anyFuncName()).to.be(expectedReturnValue);
     });
 
-    it('when called with no arguments it should throw error', function () {
-      var lib = chadodouble('lib');
-      assume(lib).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
+    it('throws an exception if no return value is set up', function () {
+      assume(collaborator).canHandle('anyFuncName');
+
       var func = function () {
-        lib.anyFuncName();
+        collaborator.anyFuncName();
       };
-      expect(func).to.throw();
-    });
-
-    it('when called with wrong argument it should throw error', function () {
-      var lib = chadodouble('lib');
-      assume(lib).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
-      var func = function () {
-        lib.anyFuncName('anotherString', [1, 2]);
-      };
-      expect(func).to.throw();
-    });
-
-    it('tracks the assumption call', function () {
-      var lib = chadodouble('lib');
-      assume(lib).canHandle('anyFuncName').withArgs('aString').andReturns('anyString');
-      expect(Object.keys(repo.lib.anyFuncName['["aString"]']['r:"anyString"'].assume)[0]).to.match('assume.js');
-    });
-
-    it('stores the assumption in repo', function () {
-      var lib = chadodouble('mylib');
-      assume(lib).canHandle('anyFunc').withArgs('aString').andReturns('anyString');
-      assume(lib).canHandle('anotherFunc').andReturns('foo');
-      expect(repo.mylib.anyFunc['["aString"]']['r:"anyString"']).to.exist();
-      expect(repo.mylib.anotherFunc.undefined['r:"foo"']).to.exist();
-    });
-
-    it('stores who calls the assumption in repo', function () {
-      var lib = chadodouble('mylib');
-      assume(lib).canHandle('anyFunc').withArgs('aString').andReturns('anyString');
-      lib.anyFunc('aString');
-      expect(repo.mylib.anyFunc['["aString"]']['r:"anyString"'].calledBy).to.exist();
+      expect(func).to.throw(/There is no assumption defined./);
     });
   });
 
-  describe('Given canHandle assumption with object as return value', function () {
-    it('should return the object', function () {
-      var lib = chadodouble('mylib');
+  describe('Calling a stub with defined return value (defined arguments)', function () {
+    it('returns the expected value when called with the expected arguments', function () {
+      assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
+
+      expect(collaborator.anyFuncName('aString', [1, 2])).to.be('anyString');
+    });
+
+    it('returns a working object', function () {
       var returnValue = {
         name: 'addOneCalculator',
         addOne: function (x) {
           return x + 1;
         }
       };
-      assume(lib).canHandle('anyFunc').withArgs('aString').andReturns(returnValue);
-      var actualValue = lib.anyFunc('aString');
+      assume(collaborator).canHandle('anyFunc').withArgs('aString').andReturns(returnValue);
+
+      var actualValue = collaborator.anyFunc('aString');
       expect(actualValue.name).to.eql('addOneCalculator');
       expect(actualValue.addOne(1)).to.eql(2);
     });
+
+    it('returns the correspondent value to an argument', function () {
+      assume(collaborator).canHandle('anyFuncName').withArgs('arg1').andReturns('val1');
+      assume(collaborator).canHandle('anyFuncName').withArgs('arg2').andReturns('val2');
+
+      expect(collaborator.anyFuncName('arg1')).to.eql('val1');
+      expect(collaborator.anyFuncName('arg2')).to.eql('val2');
+    });
+
+    it('throws an error when called with no arguments', function () {
+      assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
+
+      var func = function () { collaborator.anyFuncName(); };
+      expect(func).to.throw(/There is no assumption defined. /);
+    });
+
+    it('throws an error when called with wrong arguments', function () {
+      assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
+
+      var func = function () { collaborator.anyFuncName('anotherString', [1, 2]); };
+      expect(func).to.throw();
+    });
   });
 
-  describe('Given canHandle assumption with a callback', function () {
-    it('should call the callback asynchronous', function (done) {
-      var lib = chadodouble('mylib');
-      var cb = function (result) {
-        expect(result).to.eql('value');
-        done();
-      };
-      assume(lib).canHandle('anyFunc').withArgs(callback).andCallsCallbackWith('value');
-      lib.anyFunc(cb);
+  describe('Storing assumptions', function () {
+    it('tracks the assumption call', function () {
+      assume(collaborator).canHandle('anyFuncName').withArgs('aString').andReturns('anyString');
+
+      expect(repo.collie.anyFuncName['["aString"]']['r:"anyString"'].assume).to.have.ownProperty(path.join(__dirname, 'assume.js'));
     });
 
-    it('the first argument of andCallsCallbackWith defines which argument should be used as callback', function (done) {
-      var lib = chadodouble('mylib');
-      var anotherCb = function () {};
-      var cb = function () {
-        done();
-      };
-      assume(lib).canHandle('anyFunc').withArgs('anyArg', anotherCb, callback).andCallsCallbackWith('');
-      lib.anyFunc('anyArg', anotherCb, cb);
+    it('stores each assumption in repo', function () {
+      assume(collaborator).canHandle('anyFunc').withArgs('aString').andReturns('anyString');
+      assume(collaborator).canHandle('anotherFunc').andReturns('foo');
+
+      expect(repo.collie.anyFunc['["aString"]']['r:"anyString"']).to.exist();
+      expect(repo.collie.anotherFunc.undefined['r:"foo"']).to.exist();
     });
 
-    it('should return control flow and then call callback', function (done) {
-      var lib = chadodouble('mylib');
+    it('stores who calls the assumption in repo', function () {
+      assume(collaborator).canHandle('anyFunc').withArgs('aString').andReturns('anyString');
+      collaborator.anyFunc('aString');
+
+      expect(repo.collie.anyFunc['["aString"]']['r:"anyString"'].calledBy).to.exist();
+    });
+  });
+
+  describe('Calling a stub with defined callback', function () {
+    it('call the callback asynchronously with an argument', function (done) {
+      function cb(result) {
+        expect(result).to.be('value');
+        done();
+      };
+
+      assume(collaborator).canHandle('anyFunc').withArgs(callback).andCallsCallbackWith('value');
+      collaborator.anyFunc(cb);
+    });
+
+    it('will use the position of the special "callback" argument for execution', function (done) {
+      function anotherCb() {};
+      function cb() {
+        done();
+      };
+      
+      assume(collaborator).canHandle('anyFunc').withArgs('anyArg', anotherCb, callback).andCallsCallbackWith();
+      collaborator.anyFunc('anyArg', anotherCb, cb);
+    });
+
+    it('calls the callback after execution of the synchronous flow', function (done) {
       var value = 'value before';
       var cb = function () {
         expect('changed after function call').to.eql(value);
         done();
       };
-      assume(lib).canHandle('anyFunc').withArgs(callback).andCallsCallbackWith('');
-      lib.anyFunc(cb);
+      
+      assume(collaborator).canHandle('anyFunc').withArgs(callback).andCallsCallbackWith();
+      collaborator.anyFunc(cb);
       value = 'changed after function call';
     });
 
-    it('should return returnValue and then call callback', function (done) {
-      var lib = chadodouble('mylib');
+    it('will return the returnValue and then call callback', function (done) {
       var cb = function () {
         done();
       };
-      var anyNumber = 5;
-      assume(lib).canHandle('anyFunc').withArgs('anyArg', anyNumber, callback).andCallsCallbackWith('').andReturns(5);
-      expect(lib.anyFunc('anyArg', anyNumber, cb)).to.be(5);
-    });
-
-    it('should call callback with no argument if not defined', function (done) {
-      var lib = chadodouble('mylib');
-      var cb = function () {
-        done();
-      };
-      assume(lib).canHandle('func').withArgs(callback).andCallsCallbackWith();
-      lib.func(cb);
+      assume(collaborator).canHandle('anyFunc').withArgs('anyArg', callback).andCallsCallbackWith().andReturns(5);
+      
+      expect(collaborator.anyFunc('anyArg', cb)).to.be(5);
     });
   });
 
-  describe('Given two CanHandle assumptions with different arguments', function () {
-    it('depending on the argument it should return the correspondent value', function () {
-      var lib = chadodouble('lib');
-      assume(lib).canHandle('anyFuncName').withArgs('arg1').andReturns('val1');
-      assume(lib).canHandle('anyFuncName').withArgs('arg2').andReturns('val2');
-      expect(lib.anyFuncName('arg1')).to.eql('val1');
-      expect(lib.anyFuncName('arg2')).to.eql('val2');
-    });
-  });
-
-  describe('Given throwError assumption', function () {
-    it('should throw an error when called', function () {
-      var lib = chadodouble('lib');
-      assume(lib).canHandle('anyFunc').withArgs('anyArg').andThrowsError('my error message');
-      var func = function () {
-        lib.anyFunc('anyArg');
-      };
-      expect(func).to.throw('my error message');
+  describe('Calling a stub with defined Error', function () {
+    it('throws the error', function () {
+      assume(collaborator).canHandle('anyFunc').andThrowsError('my error message');
+      
+      expect(collaborator.anyFunc).to.throw('my error message');
     });
   });
 });

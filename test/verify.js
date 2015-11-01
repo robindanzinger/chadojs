@@ -3,137 +3,108 @@
 var expect = require('must');
 var chado = require('../lib/chado');
 
-describe('library verify', function () {
-  var repo;
-  var verify;
-  before(function () {
-    repo = {};
-    verify = require('../lib/verify')(repo);
-  });
+var repo = {};
+var verify = require('../lib/verify')(repo);
 
-  describe('Given canHandle verification', function () {
-    it('doesn\'t throw an error if the sut can handle a assumption and returns the assumed value', function () {
-      var lib = {
-        funcName: function () {
-          return 'value';
-        }
-      };
-      verify('libName').canHandle('funcName').withArgs('anyString', [1, 2]).andReturns('value').on(lib);
+describe('Library "verify"', function () {
+  var collaborator = {
+    funcName: function () {
+      return 'value';
+    },
+    arrayReturner: function () {
+      return ['value1', 'value2'];
+    },
+    callbackFunc: function (foo, callback) {
+      callback('value');
+    },
+    errorFunc: function () {
+      throw new Error('any message');
+    }
+  };
+
+  describe('Handles return values and arguments', function () {
+    it('is quiet if the collaborator supports the protocol', function () {
+      verify('collie').canHandle('funcName').andReturns('value').on(collaborator);
+    });
+
+    it('can return arrays', function () {
+      verify('collie').canHandle('arrayReturner').andReturns(['value1', 'value2']).on(collaborator);
     });
 
     it('throws error, if the sut cannot handle the assumption', function () {
-      var lib = {
-        funcName: function () {
-          return 'anotherValue';
-        }
+      function func() {
+        verify('collie').canHandle('funcName').andReturns('anotherValue').on(collaborator);
       };
-      var func = function () {
-        verify('libName').canHandle('funcName').withArgs('anyString', [1, 2]).andReturns('value').on(lib);
-      };
+      
       expect(func).to.throw();
     });
 
     it('throws error, if the sut has not the expected function', function () {
-      var func = function () {
-        var lib = {};
-        verify('libName').canHandle('funcName').withArgs('anyString', [1, 2]).andReturns('value').on(lib);
+      function func() {
+        verify('collie').canHandle('funcNameNonExisting').andReturns('value').on(collaborator);
       };
+      
       expect(func).to.throw();
-    });
-
-    it('stores the verification', function () {
-      var lib = {funcName: function () {return 'value'; }};
-      verify('libName').canHandle('funcName').withArgs('anyString').andReturns('value').on(lib);
-      expect(repo.libName.funcName['["anyString"]']['r:"value"']).to.exist();
-    });
-
-    it('can return arrays', function () {
-      var lib = {
-        funcName: function () {
-          return ['value1', 'value2'];
-        }
-      };
-      verify('libName').canHandle('funcName').andReturns(['value1', 'value2']).on(lib);
     });
   });
 
-  describe('Given callback assumption', function () {
-    it('should call the given callback of method on, if the sut can handle the assumption and calls the callback', function (done) {
-      var lib = {
-        funcName: function (foo, callback) {
-          callback('value');
-        }
-      };
-      verify('libName').canHandle('funcName').withArgs('foo', chado.callback, 'bar')
+  describe('Handles callback assumptions', function () {
+    it('calls a callback as requested', function (done) {
+      verify('collie').canHandle('callbackFunc').withArgs('foo', chado.callback)
         .andCallsCallbackWith('value')
-        .on(lib, done);
+        .on(collaborator, done);
     });
 
     it('should throw error, if the sut calls the callback with other argument than expected', function () {
-      var lib = {
-        funcName: function (foo, callback) {
-          callback('anothervalue');
-        }
-      };
-      var func = function () {
-        verify('libName').canHandle('funcName').withArgs('foo', chado.callback, 'bar')
-          .andCallsCallbackWith('value')
-          .on(lib, 'some dummy arg');
+      function func() {
+        verify('collie').canHandle('callbackFunc').withArgs('foo', chado.callback, 'bar')
+          .andCallsCallbackWith('anothervalue')
+          .on(collaborator, 'some dummy arg');
       };
       expect(func).to.throw();
     });
 
-    it('stores the verification', function (done) {
-      var lib = {
-        funcName: function (callback) {
-          setTimeout(function () {
-            callback('value');
-          }, 0);
-        }
-      };
-      verify('libName').canHandle('funcName').withArgs(chado.callback)
-        .andCallsCallbackWith('value')
-        .on(lib, function () {
-              expect(repo.libName.funcName['["=>function"]']['cb:0->["value"]']).exist();
-              done();
-            });
-    });
-
     it('should throw error, when no callback is passed', function () {
-      var lib = {funcName: function () {}};
-      var func = function () {
-        verify('libName').canHandle('funcName').withArgs('foo')
+      function func() {
+        verify('collie').canHandle('callbackFunc').withArgs('foo')
           .andCallsCallbackWith('bar')
-          .on(lib, function () {});
+          .on(collaborator, function () {});
       };
       expect(func).to.throw();
     });
   });
 
-  describe('Given throw Error assumption', function () {
-    it('doesn\'t throw an error, if the sut can handle the assumption and throws an error', function () {
-      var lib = {
-        funcName: function () {
-          throw Error('any message');
-        }
-      };
-      verify('libName').canHandle('funcName').withArgs('anyArg').andThrowsError('any message').on(lib);
+  describe('Handles Error assumptions', function () {
+    it('is quiet if the expected Error is raised', function () {
+      verify('collie').canHandle('errorFunc').withArgs('anyArg').andThrowsError('any message').on(collaborator);
     });
 
     it('throws an error, if the sut doesn\'t throw an error', function () {
-      var lib = {
-        funcName: function () {}
-      };
-      var func = function () {
-        verify('libName').canHandle('funcName').withArgs('anyArg').andThrowsError('any message').on(lib);
+      function func() {
+        verify('collie').canHandle('funcName').withArgs('anyArg').andThrowsError('any message').on(collaborator);
       };
       expect(func).to.throw();
     });
+  });
+  
+  describe('Storing Verifications', function() {
+    it('for return values', function () {
+      verify('collie').canHandle('funcName').withArgs('anyString').andReturns('value').on(collaborator);
+      expect(repo.collie.funcName['["anyString"]']['r:"value"']).to.exist();
+    });
 
-    it('stores the verification', function () {
-      var lib = {funcName: function () { throw Error('any message'); }};
-      verify('libName').canHandle('funcName').withArgs('anyArg').andThrowsError('any message').on(lib);
-      expect(repo.libName.funcName['["anyArg"]']['ex:any message']).to.exist();
+    it('for callback verification', function (done) {
+      verify('collie').canHandle('callbackFunc').withArgs('foo', chado.callback)
+        .andCallsCallbackWith('value')
+        .on(collaborator, function () {
+              expect(repo.collie.callbackFunc['["foo","=>function"]']['cb:1->["value"]']).to.exist();
+              done();
+            });
+    });
+    
+    it('for error verification', function () {
+      verify('collie').canHandle('errorFunc').withArgs('anyArg').andThrowsError('any message').on(collaborator);
+      expect(repo.collie.errorFunc['["anyArg"]']['ex:any message']).to.exist();
     });
   });
 });
