@@ -43,7 +43,7 @@ describe('library "assume"', function () {
     it('throws an exception if no return value is set up', function () {
       assume(collaborator).canHandle('anyFuncName');
 
-      var func = function () {
+      function func() {
         collaborator.anyFuncName();
       };
       expect(func).to.throw(/There is no assumption defined./);
@@ -82,14 +82,14 @@ describe('library "assume"', function () {
     it('throws an error when called with no arguments', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
 
-      var func = function () { collaborator.anyFuncName(); };
+      function func() { collaborator.anyFuncName(); };
       expect(func).to.throw(/There is no assumption defined. /);
     });
 
     it('throws an error when called with wrong arguments', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
 
-      var func = function () { collaborator.anyFuncName('anotherString', [1, 2]); };
+      function func() { collaborator.anyFuncName('anotherString', [1, 2]); };
       expect(func).to.throw();
     });
   });
@@ -133,7 +133,7 @@ describe('library "assume"', function () {
       function cb() {
         done();
       };
-      
+
       assume(collaborator).canHandle('anyFunc').withArgs('anyArg', anotherCb, callback).andCallsCallbackWith();
       collaborator.anyFunc('anyArg', anotherCb, cb);
     });
@@ -144,7 +144,7 @@ describe('library "assume"', function () {
         expect('changed after function call').to.eql(value);
         done();
       };
-      
+
       assume(collaborator).canHandle('anyFunc').withArgs(callback).andCallsCallbackWith();
       collaborator.anyFunc(cb);
       value = 'changed after function call';
@@ -155,7 +155,7 @@ describe('library "assume"', function () {
         done();
       };
       assume(collaborator).canHandle('anyFunc').withArgs('anyArg', callback).andCallsCallbackWith().andReturns(5);
-      
+
       expect(collaborator.anyFunc('anyArg', cb)).to.be(5);
     });
   });
@@ -163,7 +163,7 @@ describe('library "assume"', function () {
   describe('Calling a stub with defined Error', function () {
     it('throws the error', function () {
       assume(collaborator).canHandle('anyFunc').andThrowsError('my error message');
-      
+
       expect(collaborator.anyFunc).to.throw('my error message');
     });
   });

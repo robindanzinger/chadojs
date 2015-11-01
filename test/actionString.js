@@ -18,38 +18,30 @@ describe('library actionString', function () {
   });
 
   it('can transform a callbackValueActionString to a more readable', function () {
-    var callbackString = 'cb:2->["returnValue"]';
-    var expected = 'calls 2. argument with ("returnValue")';
-    expect(actionString.makeHumanReadableActionString(callbackString)).to.be(expected);
+    expect(actionString.makeHumanReadableActionString('cb:2->["returnValue"]')).to.be('calls 2. argument with ("returnValue")');
   });
 
   it('can transform a returnValueActionString to a more readable', function () {
-    var returnValueString = 'r:"returnValue"';
-    var expected = 'returns "returnValue"';
-    expect(actionString.makeHumanReadableActionString(returnValueString)).to.be(expected);
+    expect(actionString.makeHumanReadableActionString('r:"returnValue"')).to.be('returns "returnValue"');
   });
 
   it('can transform a throwErrorActionString to a more readable', function () {
-    var throwErrorString = 'ex:error message';
-    var expected = 'throws Error: error message';
-    expect(actionString.makeHumanReadableActionString(throwErrorString)).to.be(expected);
+    expect(actionString.makeHumanReadableActionString('ex:error message')).to.be('throws Error: error message');
   });
 
   it('can parse a callbackValueActionString', function () {
-    var callbackString = 'cb:2->["returnValue"]';
-    var expected = {type: 'callback', value: ['returnValue'], callbackIndex: 2};
-    expect(actionString.parseActionString(callbackString)).to.eql(expected);
+    expect(actionString.parseActionString('cb:2->["returnValue"]')).to.eql({
+      type: 'callback',
+      value: ['returnValue'],
+      callbackIndex: 2
+    });
   });
 
   it('can parse a returnValueActionString', function () {
-    var returnValueString = 'r:"returnValue"';
-    var expected = {type: 'returnValue', value: 'returnValue'};
-    expect(actionString.parseActionString(returnValueString)).to.eql(expected);
+    expect(actionString.parseActionString('r:"returnValue"')).to.eql({type: 'returnValue', value: 'returnValue'});
   });
 
   it('can parse a throwErrorActionString', function () {
-    var throwErrorString = 'ex:error message';
-    var expected = {type: 'throwError', message: 'error message'};
-    expect(actionString.parseActionString(throwErrorString)).to.eql(expected);
+    expect(actionString.parseActionString('ex:error message')).to.eql({type: 'throwError', message: 'error message'});
   });
 });

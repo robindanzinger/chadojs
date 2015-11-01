@@ -1,12 +1,9 @@
 'use strict';
 
 var expect = require('must');
-describe('library compare', function () {
-  var is;
-  before(function () {
-    is = require('../lib/compare');
-  });
+var is = require('../lib/compare');
 
+describe('library compare', function () {
   it('simple objects are similar when they are equal', function () {
     expect(is('foo').similarTo('foo')).to.be.true();
     expect(is('foo').similarTo('bar')).to.be.false();

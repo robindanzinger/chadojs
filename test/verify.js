@@ -35,7 +35,7 @@ describe('Library "verify"', function () {
       function func() {
         verify('collie').canHandle('funcName').andReturns('anotherValue').on(collaborator);
       };
-      
+
       expect(func).to.throw();
     });
 
@@ -43,7 +43,7 @@ describe('Library "verify"', function () {
       function func() {
         verify('collie').canHandle('funcNameNonExisting').andReturns('value').on(collaborator);
       };
-      
+
       expect(func).to.throw();
     });
   });
@@ -86,8 +86,8 @@ describe('Library "verify"', function () {
       expect(func).to.throw();
     });
   });
-  
-  describe('Storing Verifications', function() {
+
+  describe('Storing Verifications', function () {
     it('for return values', function () {
       verify('collie').canHandle('funcName').withArgs('anyString').andReturns('value').on(collaborator);
       expect(repo.collie.funcName['["anyString"]']['r:"value"']).to.exist();
@@ -101,7 +101,7 @@ describe('Library "verify"', function () {
               done();
             });
     });
-    
+
     it('for error verification', function () {
       verify('collie').canHandle('errorFunc').withArgs('anyArg').andThrowsError('any message').on(collaborator);
       expect(repo.collie.errorFunc['["anyArg"]']['ex:any message']).to.exist();

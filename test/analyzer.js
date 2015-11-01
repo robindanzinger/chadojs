@@ -2,6 +2,7 @@
 
 var expect = require('must');
 var analyzer = require('../lib/analyzer');
+
 describe('Some functions for analyzing the made assumptions', function () {
   it('sort array', function () {
     var array = createArray().addAssumption('BName').addAssumption('AName').build();
@@ -169,16 +170,13 @@ function createArray() {
     return forward();
   }
 
-  function createItem(name, type, file, test, func, args, retval) {
+  function createItem(name, type, file, test) {
     return {
       name: name,
-      func: func ? func : 'func',
-      args: args ? args : 'args',
-      retval: retval ? retval : 'retval',
       type: type,
       file: file ? file : '/dir/file.js',
       line: 42,
-      test: 'testname'
+      test: test
     };
   }
 

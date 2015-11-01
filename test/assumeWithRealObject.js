@@ -45,7 +45,7 @@ describe('library assume [on real objects]', function () {
 
     it('throws error if called with wrong number of args', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
-      var func = function () {
+      function func() {
         realObject.anyFuncName();
       };
       expect(func).to.throw();
@@ -53,7 +53,7 @@ describe('library assume [on real objects]', function () {
 
     it('throws error if called with wrong args', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
-      var func = function () {
+      function func() {
         realObject.anyFuncName('aString', [1, 3]);
       };
       expect(func).to.throw();

@@ -6,55 +6,54 @@ var testDoubleLib = require('../lib/testdouble');
 describe('Library "testdouble"', function () {
 
   var createDouble = testDoubleLib.createDouble;
-  
+
   describe('Function "createDouble"', function () {
-    it('should throw error, if called without lib name', function () {
-      function func() {
-        createDouble();
-      };
-      expect(func).to.throw(/name not set or not a String/);
-    });
-
-    it('should throw error, if lib is no string', function () {
-      function func() {
-        createDouble({});
-      };
-      expect(func).to.throw(/name not set or not a String/);
-    });
-
-    it('should return object, which can be used as testDouble, when called', function () {
+    it('returns a new object to be used as testDouble', function () {
       expect(createDouble('anyLib')).to.be.an.object();
+    });
+
+    it('returns a new object initialized with some variables', function () {
+      expect(createDouble('anyLib')).to.eql({chadojsNamespace: 'anyLib', chadojsBackup: {}});
     });
 
     it('can pass real object as second parameter, which will then be used as testDouble', function () {
       var realObject = {foo: 'bar'};
-      expect(createDouble('realObject', realObject)).to.equal(realObject);
+      expect(createDouble('realObject', realObject)).to.be(realObject);
+      expect(realObject.chadojsNamespace).to.be('realObject');
+      expect(realObject.chadojsBackup).to.exist();
+    });
+
+    it('has a mandatory "name" attribute', function () {
+      function func() { createDouble(); };
+      expect(func).to.throw(/name not set or not a String/);
+    });
+
+    it('has a mandatory "name" attribute of type String', function () {
+      function func() { createDouble({}); };
+      expect(func).to.throw(/name not set or not a String/);
     });
   });
 
-  describe('Given: function getLibFor And: testDouble', function () {
-    before(function () {
-      this.nameFor = testDoubleLib.nameFor;
-      this.testDouble = testDoubleLib.createDouble('anyLib');
-      testDoubleLib.createDouble('anotherLib');
+  describe('getting the name for a testDouble', function () {
+    var nameFor = testDoubleLib.nameFor;
+
+    it('returns the registered name of the double', function () {
+      testDoubleLib.createDouble('someLib');
+      var testDouble = testDoubleLib.createDouble('anyLib');
+      
+      expect(nameFor(testDouble)).to.be('anyLib');
     });
 
-    it('should throw error, if called with no testDouble', function () {
-      var getLibNameFor = this.nameFor;
-      var func = function () {
-        getLibNameFor();
+    it('throws an error, if called without argument', function () {
+      function func() {
+        nameFor();
       };
       expect(func).to.throw();
     });
 
-    it('should return library name, when called with testDouble', function () {
-      expect(this.nameFor(this.testDouble)).to.be('anyLib');
-    });
-
-    it('should throw error, if test double is not stored', function () {
-      var getLibNameFor = this.nameFor;
-      var func = function () {
-        getLibNameFor({});
+    it('throws an error, if called with an invalid argument (not registered as test double)', function () {
+      function func() {
+        nameFor({});
       };
       expect(func).to.throw();
     });
