@@ -230,7 +230,7 @@ fs.writeFile("chado-result.json", json);
 ## addition
 
 ### pizza restaurant - an example
-[pizza restaurant - an example](../example/example.md)
+[pizza restaurant - an example](example/example.md)
 
 ### inside-out vs outside-in tdd
 
@@ -238,12 +238,12 @@ Because chadojs doesn't need integration test it's perfect for outside-in tdd.
 
 In classical (or bottom-up, inside-out) tdd you write first the units which do not depend on other units. Then you write the units, which only depends on units you already have written. So you usually do not need to use mocks.
 
-![inside-out](../example/inside-out-tdd.jpg)
+![inside-out](example/inside-out-tdd.jpg)
 
 In outside-in (or top-down) tdd you write first the units next to the client or customer specification. But these units might depend on other units which do not already exist.
 So you have to mock the depending units.
 
-![outside-in](../example/outside-in-tdd.jpg)
+![outside-in](example/outside-in-tdd.jpg)
 
 ### simple design philosophy
 If it gets too complicated, maybe you should rethink about your design.
