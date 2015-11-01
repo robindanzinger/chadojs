@@ -31,6 +31,20 @@ npm install chado --save-dev
 
 ## setup chadojs
 
+### mocha
+create a new file (e.g.: mocha-chado.js) in your test directory and add the following lines. 
+```js
+var chado = require('chado');
+var fs = require('fs');
+after( function () {
+  chado.consoleReporter.logReport();
+  fs.writeFileSync(
+    "chado-result.json", 
+    JSON.stringify(chado.repo, null, 2)
+  );
+});
+```
+
 ### busterjs
 create a new file (e.g.: buster-chado.js) in your test directory and add the following lines. 
 ```js
@@ -40,20 +54,6 @@ var testRunner = require('buster').testRunner;
 testRunner.on('suite:end', function () {
   chado.consoleReporter.logReport();
   fs.writeFile(
-    "chado-result.json", 
-    JSON.stringify(chado.repo, null, 2)
-  );
-});
-```
-
-### mocha
-create a new file (e.g.: mocha-chado.js) in your test directory and add the following lines. 
-```js
-var chado = require('chado');
-var fs = require('fs');
-after( function () {
-  chado.consoleReporter.logReport();
-  fs.writeFileSync(
     "chado-result.json", 
     JSON.stringify(chado.repo, null, 2)
   );
