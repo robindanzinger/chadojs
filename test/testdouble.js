@@ -1,41 +1,34 @@
 'use strict';
 
 var expect = require('must');
-describe('Library testdouble', function () {
-  var testDoubleLib;
+var testDoubleLib = require('../lib/testdouble');
 
-  before(function () {
-    testDoubleLib = require('../lib/testdouble');
-  });
+describe('Library "testdouble"', function () {
 
-  describe('Given: function createTestDoubleFor', function () {
-    before(function () {
-      this.createDouble = testDoubleLib.createDouble;
-    });
-
+  var createDouble = testDoubleLib.createDouble;
+  
+  describe('Function "createDouble"', function () {
     it('should throw error, if called without lib name', function () {
-      var createTestDoubleFor = testDoubleLib.createDouble;
-      var func = function () {
-        createTestDoubleFor();
+      function func() {
+        createDouble();
       };
-      expect(func).to.throw();
+      expect(func).to.throw(/name not set or not a String/);
     });
 
     it('should throw error, if lib is no string', function () {
-      var createTestDoubleFor = testDoubleLib.createDouble;
-      var func = function () {
-        createTestDoubleFor({});
+      function func() {
+        createDouble({});
       };
-      expect(func).to.throw();
+      expect(func).to.throw(/name not set or not a String/);
     });
 
     it('should return object, which can be used as testDouble, when called', function () {
-      expect(this.createDouble('anyLib')).to.be.an.object();
+      expect(createDouble('anyLib')).to.be.an.object();
     });
 
     it('can pass real object as second parameter, which will then be used as testDouble', function () {
       var realObject = {foo: 'bar'};
-      expect(this.createDouble('realObject', realObject)).to.equal(realObject);
+      expect(createDouble('realObject', realObject)).to.equal(realObject);
     });
   });
 

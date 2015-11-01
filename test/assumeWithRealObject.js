@@ -2,7 +2,7 @@
 
 var expect = require('must');
 var callback = require('../lib/types').callback;
-var chado = require('../lib/chado').create();
+var chado = require('../lib/chado');
 var chadodouble = chado.createDouble;
 var assume = chado.assume;
 var repo = chado.repo;
@@ -21,22 +21,22 @@ describe('library assume [on real objects]', function () {
   describe('Mocking a function on an existing object', function () {
     it('returns the mocked value', function () {
       assume(collaborator).canHandle('anyFuncName').andReturns('anyString');
-      expect(realObject.anyFuncName()).to.eql('anyString');
+      expect(realObject.anyFuncName()).to.be('anyString');
     });
 
     it('returns a null value', function () {
       assume(collaborator).canHandle('anyFuncName').andReturns(null);
-      expect(realObject.anyFuncName()).to.eql(null);
+      expect(realObject.anyFuncName()).to.be(null);
     });
 
     it('respects expected arguments', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
-      expect(realObject.anyFuncName('aString', [1, 2])).to.eql('anyString');
+      expect(realObject.anyFuncName('aString', [1, 2])).to.be('anyString');
     });
 
     it('calls a configured callback asynchronous', function (done) {
       var cb = function (result) {
-        expect(result).to.eql('value');
+        expect(result).to.be('value');
         done();
       };
       assume(collaborator).canHandle('anyFuncName').withArgs(callback).andCallsCallbackWith('value');
@@ -89,7 +89,7 @@ describe('library assume [on real objects]', function () {
     it('restores the old function', function () {
       assume(collaborator).canHandle('anyFuncName').andReturns('anyString');
       chado.reset();
-      expect(realObject.anyFuncName()).to.eql('Ooops');
+      expect(realObject.anyFuncName()).to.be('Ooops');
     });
   });
 });

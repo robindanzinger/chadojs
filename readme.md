@@ -76,7 +76,7 @@ If you verify an assumption, but you forgot to make the assumption, chadojs remi
 
 ```js
 var createDouble = require('chado').createDouble;
-var myTestdouble = createDouble('libname');
+var myTestdouble = createDouble('collaboratorName');
 ```
 Note: every mock (or testdouble) is a new empty object. It neither creates a partial mock nor supports to call the real implementation. See in FAQ and simple design philosophy why.
 
@@ -84,26 +84,26 @@ Note: every mock (or testdouble) is a new empty object. It neither creates a par
 
 ```js
 var chado = require('chado');
-var lib = chado.createDouble('myLib');
+var collaborator = chado.createDouble('collaboratorName');
 var assume = chado.assume;
 ```
 
 assume function returns a value
 ```js
-assume(lib).canHandle('foo').andReturns('bar');
-// lib.foo() === 'bar'
-assume(lib).canHandle('foo').withArgs('argument').andReturns('bar');
-// lib.foo('argument') === 'bar'
-assume(lib).canHandle('foo').withArgs('first', 2, 'third').andReturns('bar');
-// lib.foo('first', 2, 'third) === 'bar'
+assume(collaborator).canHandle('foo').andReturns('bar');
+// collaborator.foo() === 'bar'
+assume(collaborator).canHandle('foo').withArgs('argument').andReturns('bar');
+// collaborator.foo('argument') === 'bar'
+assume(collaborator).canHandle('foo').withArgs('first', 2, 'third').andReturns('bar');
+// collaborator.foo('first', 2, 'third) === 'bar'
 ```
 
 assume function throws an error
 ```js
-assume(lib).canHandle('foo').andThrowsError('error message');
-// lib.foo() -> Error: error message
-assume(lib).canHandle('foo').withArgs('argument').andThrowsError('error message');
-// lib.foo('argument') -> Error: error message
+assume(collaborator).canHandle('foo').andThrowsError('error message');
+// collaborator.foo() -> Error: error message
+assume(collaborator).canHandle('foo').withArgs('argument').andThrowsError('error message');
+// collaborator.foo('argument') -> Error: error message
 ```
 
 assume function calls a given callback
@@ -111,76 +111,76 @@ assume function calls a given callback
 var callback = chado.callback
 // var realCallback = function (result) {console.log(result);};
 
-assume(lib).canHandle('foo').withArgs(callback).andCallsCallbackWith();
-// lib.foo(realCallback) -> console: undefined
-assume(lib).canHandle('foo').withArgs(callback).andCallsCallbackWith('bar');
-// lib.foo(realCallback) -> console: 'bar'
-assume(lib).canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar');
-// lib.foo('argument', realCallback) -> Error
-// lib.foo(realCallback, 'argument') -> console: 'bar'
-assume(lib).canHandle('foo').withArgs('argument', callback).andCallsCallbackWith('bar');
-// lib.foo('argument', realCallback) -> console: 'bar'
-// lib.foo(realCallback, 'argument') -> Error
+assume(collaborator).canHandle('foo').withArgs(callback).andCallsCallbackWith();
+// collaborator.foo(realCallback) -> console: undefined
+assume(collaborator).canHandle('foo').withArgs(callback).andCallsCallbackWith('bar');
+// collaborator.foo(realCallback) -> console: 'bar'
+assume(collaborator).canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar');
+// collaborator.foo('argument', realCallback) -> Error
+// collaborator.foo(realCallback, 'argument') -> console: 'bar'
+assume(collaborator).canHandle('foo').withArgs('argument', callback).andCallsCallbackWith('bar');
+// collaborator.foo('argument', realCallback) -> console: 'bar'
+// collaborator.foo(realCallback, 'argument') -> Error
 ```
 
 ### define a verification
 
 ```js
 var chado = require('chado');
-var testdouble = chado.createDouble('myLib');
+var collaborator = chado.createDouble('collaboratorName');
 var verify = chado.verify;
 ```
 
 verify function returns a value
 ```js
-var lib = {foo:function () { return 'bar';}};
+var collaborator = {foo:function () { return 'bar';}};
 // ok
-verify('myLib').canHandle('foo').andReturns('bar').on(lib);
-verify('myLib').canHandle('foo').withArgs('argument').andReturns('bar').on(lib);
-verify('myLib').canHandle('foo').withArgs('first', 2, 'third').andReturns('bar').on(lib);
+verify('collaboratorName').canHandle('foo').andReturns('bar').on(collaborator);
+verify('collaboratorName').canHandle('foo').withArgs('argument').andReturns('bar').on(collaborator);
+verify('collaboratorName').canHandle('foo').withArgs('first', 2, 'third').andReturns('bar').on(collaborator);
 // error
-verify('myLib').canHandle('foo').andReturns('foo').on(lib); // because bar != foo
-verify('myLib').canHandle('foo').withArgs('arg').andReturns('bar').on(lib); // because argument != arg
-verify('myLib').canHandle('foo').withArgs(1, 2, 'third').andReturns('bar').on(lib); // because 1 != first
+verify('collaboratorName').canHandle('foo').andReturns('foo').on(collaborator); // because bar != foo
+verify('collaboratorName').canHandle('foo').withArgs('arg').andReturns('bar').on(collaborator); // because argument != arg
+verify('collaboratorName').canHandle('foo').withArgs(1, 2, 'third').andReturns('bar').on(collaborator); // because 1 != first
 ```
 
 verify function throws an error
 ```js
-var lib = {foo: function () { throw Error('error message');}};
+var collaborator = {foo: function () { throw Error('error message');}};
 // ok: 
-verify('myLib').canHandle('foo').andThrowsError('error message').on(lib);
+verify('collaboratorName').canHandle('foo').andThrowsError('error message').on(collaborator);
 // error:
-verify('myLib').canHandle('bang').andThrowsError('error message').on(lib);
+verify('collaboratorName').canHandle('bang').andThrowsError('error message').on(collaborator);
 // ok
-verify('myLib').canHandle('foo').withArgs('argument').andThrowsError('error message').on(lib);
+verify('collaboratorName').canHandle('foo').withArgs('argument').andThrowsError('error message').on(collaborator);
 ```
 
 verify function calls a given callback
 ```js
 var callback = chado.callback; // this function is never called in verify!
-var lib = {foo: function (callback) {callback();};
+var collaborator = {foo: function (callback) {callback();};
 
 // ok
-verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith().
-  on(lib, function () {});    
+verify('collaboratorName').canHandle('foo').withArgs(callback).andCallsCallbackWith().
+  on(collaborator, function () {});    
 
-// throws error, because lib.foo doesn't call callback with argument 'bar'
-verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith('bar').
-  on(lib, function () {});    
+// throws error, because collaborator.foo doesn't call callback with argument 'bar'
+verify('collaboratorName').canHandle('foo').withArgs(callback).andCallsCallbackWith('bar').
+  on(collaborator, function () {});    
 
 // ok
-lib = {foo: function (callback) {callback('bar');};
-verify('myLib').canHandle('foo').withArgs(callback).andCallsCallbackWith('bar').
-  on(lib, function () {});    
+collaborator = {foo: function (callback) {callback('bar');};
+verify('collaboratorName').canHandle('foo').withArgs(callback).andCallsCallbackWith('bar').
+  on(collaborator, function () {});    
 
-// throws error, because lib.foo uses first argument as callback
-verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
-  on(lib, function () {});    
+// throws error, because collaborator.foo uses first argument as callback
+verify('collaboratorName').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
+  on(collaborator, function () {});    
   
 // ok
-lib = {foo: function (argument, callback) {callback('bar');};
-verify('myLib').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
-  on(lib, function () {});    
+collaborator = {foo: function (argument, callback) {callback('bar');};
+verify('collaboratorName').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
+  on(collaborator, function () {});    
 ```
 
 ### evaluate assumptions and verifications
@@ -210,12 +210,12 @@ CHADO CONSOLE REPORTER
 
 WARNING: some assumptions aren't verified
 -----------------------------------------------
-  lib.foo("any argument") => returns "bar"
+  collaborator.foo("any argument") => returns "bar"
 
 -----------------------------------------------
 WARNING: some verifications aren't assumed
 --------------------------------------------------------------
-  lib.foo("any argument") => returns "foobar"
+  collaborator.foo("any argument") => returns "foobar"
 
 --------------------------------------------------------------
 ```
@@ -230,7 +230,7 @@ fs.writeFile("chado-result.json", json);
 ## addition
 
 ### pizza restaurant - an example
-[pizza restaurant - an example](https://github.com/robindanzinger/chadojs/blob/master/example/example.md)
+[pizza restaurant - an example](../example/example.md)
 
 ### inside-out vs outside-in tdd
 
@@ -238,12 +238,12 @@ Because chadojs doesn't need integration test it's perfect for outside-in tdd.
 
 In classical (or bottom-up, inside-out) tdd you write first the units which do not depend on other units. Then you write the units, which only depends on units you already have written. So you usually do not need to use mocks.
 
-![inside-out](https://github.com/robindanzinger/chadojs/blob/master/example/inside-out-tdd.jpg)
+![inside-out](../example/inside-out-tdd.jpg)
 
 In outside-in (or top-down) tdd you write first the units next to the client or customer specification. But these units might depend on other units which do not already exist.
 So you have to mock the depending units.
 
-![outside-in](https://github.com/robindanzinger/chadojs/blob/master/example/outside-in-tdd.jpg)
+![outside-in](../example/outside-in-tdd.jpg)
 
 ### simple design philosophy
 If it gets too complicated, maybe you should rethink about your design.
