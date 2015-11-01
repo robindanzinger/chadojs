@@ -2,94 +2,76 @@
 
 var chado = require('chado');
 var createDouble = chado.createDouble;
-var assume = chado.assume;
-var verify = chado.verify;
+var assume = chado.assume; // with assume you describe your assumption
+var verify = chado.verify; // with verify you can check your assumptions against a real object
 
 describe('pizza restaurant', function () {
-  describe('a customer can order a pizza', function () {
-    it('gets the pizza from the waiter', function customer() {
+
+  describe('a customer', function () {
+    it('can successfully order a pizza tonno', function customer() {
       var waiter = createDouble('waiter');
-      assume(waiter).canHandle('order').withArgs('pizza').andReturns('pizza');
+      assume(waiter).canHandle('order').withArgs('pizza tonno').andReturns('pizza tonno'); // will never be called here
     });
 
-    it('gets an error from the waiter when pantry is empty', function customer() {
+    it('will receive an "Error" if the pizza tonno is not available', function customer() {
       var waiter = createDouble('waiter');
-      assume(waiter).canHandle('order').withArgs('pizza').andThrowsError('Empty pantry');
+      assume(waiter).canHandle('order').withArgs('pizza tonno').andThrowsError('Sorry. Maybe you want to order something else?'); // will never be called here
     });
   });
 
-  describe('waiter', function () {
-    it('passes the order to the chef', function () {
+  describe('the waiter', function () {
+    it('passes the translated order to the chef', function () {
       var chef = createDouble('chef');
       var waiter = createWaiter(chef);
-      assume(chef).canHandle('make').withArgs('pizza').andReturns('pizza');
-      verify('waiter').canHandle('order').withArgs('pizza').andReturns('pizza')
-        .on(waiter);
+      assume(chef).canHandle('make').withArgs('143').andReturns('pizza tonno');
+
+      verify('waiter').canHandle('order').withArgs('pizza tonno').andReturns('pizza tonno').on(waiter);
     });
 
     it('throws an error, when the chef throws the error "Empty pantry"', function () {
       var chef = createDouble('chef');
       var waiter = createWaiter(chef);
-      assume(chef).canHandle('make').withArgs('pizza').andThrowsError('Empty pantry');
-      verify('waiter').canHandle('order').withArgs('pizza').andThrowsError('Empty pantry')
-        .on(waiter);
+      assume(chef).canHandle('make').withArgs('143').andThrowsError('Not available');
+
+      verify('waiter').canHandle('order').withArgs('pizza tonno').andThrowsError('Sorry. Maybe you want to order something else?').on(waiter);
     });
   });
 
-  describe('chef', function () {
-    it('can make pizzas, when dough, cheese and tomato sauce are in and can be taken from the pantry', function () {
-      var pantry = createDouble('pantry');
+  describe('the chef', function () {
+    it('can make pizzas, if the pantry has everything needed to produce an order', function () {
+      var pantry = createPantry({
+        dough: ['dough'],
+        cheese: ['cheese'],
+        'tomato sauce': ['tomato sauce'],
+        tuna: ['tuna']
+      });
       var chef = createChef(pantry);
-      assume(pantry).canHandle('has').withArgs(['dough', 'cheese', 'tomato sauce']).andReturns(true);
-      assume(pantry).canHandle('take').withArgs('dough').andReturns('dough');
-      assume(pantry).canHandle('take').withArgs('cheese').andReturns('cheese');
-      assume(pantry).canHandle('take').withArgs('tomato sauce').andReturns('tomato sauce');
-      verify('chef').canHandle('make').withArgs('pizza').andReturns('pizza').on(chef);
+
+      verify('chef').canHandle('make').withArgs('143').andReturns('pizza tonno').on(chef);
     });
 
     it('throws an error, when pantry is empty', function () {
-      var pantry = createDouble('pantry');
+      var pantry = createPantry();
       var chef = createChef(pantry);
-      assume(pantry).canHandle('has').withArgs(['dough', 'cheese', 'tomato sauce']).andReturns(false);
-      verify('chef').canHandle('make').withArgs('pizza').andThrowsError('Empty pantry').on(chef);
+
+      verify('chef').canHandle('make').withArgs('143').andThrowsError('Not available').on(chef);
     });
   });
 
-  describe('pantry', function () {
-    it('when food is stored in the pantry, then has(food...) returns true', function () {
-      var pantry = createPantry();
-      pantry.add('dough');
-      pantry.add('cheese');
-      pantry.add('tomato sauce');
-      verify('pantry').canHandle('has').withArgs(['dough', 'cheese', 'tomato sauce'])
-        .andReturns(true)
-        .on(pantry);
-    });
-
-    it('when food is stored in the pantry, then take(food) returns the food', function () {
-      var pantry = createPantry();
-      pantry.add('dough');
-      pantry.add('cheese');
-      pantry.add('tomato sauce');
-      verify('pantry').canHandle('take').withArgs('dough').andReturns('dough').on(pantry);
-      verify('pantry').canHandle('take').withArgs('cheese').andReturns('cheese').on(pantry);
-      verify('pantry').canHandle('take').withArgs('tomato sauce').andReturns('tomato sauce').on(pantry);
-    });
-
-    it('when food is not stored in the pantry, then has(food...) returns false', function pantry3() {
-      var pantry = createPantry();
-      pantry.add('dough');
-      pantry.add('cheese');
-      verify('pantry').canHandle('has').withArgs(['dough', 'cheese', 'tomato sauce'])
-        .andReturns(false)
-        .on(pantry);
-    });
-  });
 });
 
+//====== "PRODUCTION" CODDE BELOW
+
 function createWaiter(chef) {
-  function order(menu) {
-    return chef.make(menu);
+  var internalmenu = {'pizza tonno': '143'};
+
+  function order(meal) {
+    try {
+      return chef.make(internalmenu[meal]);
+    }
+    catch (e) {
+      throw new Error('Sorry. Maybe you want to order something else?');
+    }
   }
 
   return {
@@ -98,20 +80,19 @@ function createWaiter(chef) {
 }
 
 function createChef(pantry) {
-  var recipes = {
-    'pizza': ['dough', 'cheese', 'tomato sauce']
-  };
+  var recipes = {'143': ['dough', 'cheese', 'tomato sauce', 'tuna']};
+  var externalmenu = {'143': 'pizza tonno'};
 
-  function make(menu) {
-    var ingredients = recipes[menu];
+  function make(order) {
+    var ingredients = recipes[order];
     if (!pantry.has(ingredients)) {
-      throw new Error('Empty pantry');
+      throw new Error('Not available');
     }
     ingredients.forEach(function (ingredient) {
       pantry.take(ingredient);
     }, this);
 
-    return menu;
+    return externalmenu[order];
   }
 
   return {
@@ -119,8 +100,8 @@ function createChef(pantry) {
   };
 }
 
-function createPantry() {
-  var storedFood = {};
+function createPantry(initialFood) {
+  var storedFood = initialFood || {};
 
   function add(food) {
     if (!storedFood[food]) {
