@@ -53,7 +53,7 @@ describe('Library "stringify"', function () {
 
     it('"=>function" to anyFunction', function () {
       expect(parse('"=>function"')).to.be.function();
-      expect(parse('"=>function"').toString()).to.be('function () {}');
+      expect(parse('"=>function"').toString()).to.match(/function.*\(\)\{.*\}/);
     });
 
     it('with unescaping /=>function to =>function', function () {
