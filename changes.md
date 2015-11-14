@@ -1,3 +1,11 @@
+Version 0.2.3 / 14 Nov 2015
+-------------
+* Adding test for fail safe tracking
+
+Version 0.2.2 / 08 Nov 2015
+-------------
+* Adding fail safe tracking if there is no relevant context in the stack trace
+
 Version 0.2.1 / 31 Oct 2015
 -------------
 * Moving the use of existing objects to 'testDouble'
