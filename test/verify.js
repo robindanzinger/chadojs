@@ -88,9 +88,20 @@ describe('Library "verify"', function () {
   });
 
   describe('Storing Verifications', function () {
+
+    beforeEach(function () {
+      repo = {};
+      verify = require('../lib/verify')(repo);
+    });
+
     it('for return values', function () {
       verify('collie').canHandle('funcName').withArgs('anyString').andReturns('value').on(collaborator);
       expect(repo.collie.funcName['["anyString"]']['r:"value"']).to.exist();
+    });
+
+    it('should ignore appending undefined arguments', function () {
+      verify('collie').canHandle('funcName').withArgs('arg1', undefined).andReturns('value').on(collaborator);
+      expect(repo.collie.funcName['["arg1"]']['r:"value"']).to.exist();
     });
 
     it('for callback verification', function (done) {

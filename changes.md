@@ -1,6 +1,7 @@
-Version 0.2.3 / 14 Nov 2015
+Version 0.2.3 / 15 Nov 2015
 -------------
 * Adding test for fail safe tracking
+* ignore appending undefined arguments in assumption and verification
 
 Version 0.2.2 / 08 Nov 2015
 -------------

@@ -57,6 +57,24 @@ describe('library "assume"', function () {
       expect(collaborator.anyFuncName('aString', [1, 2])).to.be('anyString');
     });
 
+    it('returns the expected value when called with expected number', function () {
+      assume(collaborator).canHandle('anyFuncName').withArgs(1).andReturns('anyString');
+
+      expect(collaborator.anyFuncName(1)).to.be('anyString');
+    });
+
+    it('should ignore appending undefined arguments when creating assumption', function () {
+      assume(collaborator).canHandle('anyFuncName').withArgs(1, undefined).andReturns('anyString');
+    
+      expect(collaborator.anyFuncName(1)).to.be('anyString');
+    });
+
+    it('should ignore all appending undefined arguments when calling the assumed function', function () {
+      assume(collaborator).canHandle('anyFuncName').withArgs(1).andReturns('anyString');
+    
+      expect(collaborator.anyFuncName(1, undefined)).to.be('anyString');
+    });
+
     it('returns a working object', function () {
       var returnValue = {
         name: 'addOneCalculator',
