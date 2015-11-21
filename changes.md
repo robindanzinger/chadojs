@@ -1,3 +1,7 @@
+Version x.x.x / ?? ??? ????
+-------------
+* small rework of example
+
 Version 0.2.3 / 15 Nov 2015
 -------------
 * Adding test for fail safe tracking
