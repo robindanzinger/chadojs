@@ -1,6 +1,6 @@
 'use strict';
 
-var chado = require('chado');
+var chado = require('../lib/chado');
 var fs = require('fs');
 
 before(function () {

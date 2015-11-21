@@ -1,6 +1,6 @@
 'use strict';
 
-var chado = require('chado');
+var chado = require('../lib/chado');
 var createDouble = chado.createDouble;
 var assume = chado.assume; // with assume you describe your assumption
 var verify = chado.verify; // with verify you can check your assumptions against a real object
@@ -8,29 +8,28 @@ var verify = chado.verify; // with verify you can check your assumptions against
 describe('pizza restaurant', function () {
 
   describe('a customer', function () {
+    var waiter = createDouble('waiter');
+    
     it('can successfully order a pizza tonno', function customer() {
-      var waiter = createDouble('waiter');
       assume(waiter).canHandle('order').withArgs('pizza tonno').andReturns('pizza tonno'); // will never be called here
     });
 
     it('will receive an "Error" if the pizza tonno is not available', function customer() {
-      var waiter = createDouble('waiter');
       assume(waiter).canHandle('order').withArgs('pizza tonno').andThrowsError('Sorry. Maybe you want to order something else?'); // will never be called here
     });
   });
 
   describe('the waiter', function () {
+    var chef = createDouble('chef');
+    var waiter = createWaiter(chef);
+    
     it('passes the translated order to the chef', function () {
-      var chef = createDouble('chef');
-      var waiter = createWaiter(chef);
       assume(chef).canHandle('make').withArgs('143').andReturns('pizza tonno');
 
       verify('waiter').canHandle('order').withArgs('pizza tonno').andReturns('pizza tonno').on(waiter);
     });
 
-    it('throws an error, when the chef throws the error "Empty pantry"', function () {
-      var chef = createDouble('chef');
-      var waiter = createWaiter(chef);
+    it('throws an error, when the chef throws the error "Not available"', function () {
       assume(chef).canHandle('make').withArgs('143').andThrowsError('Not available');
 
       verify('waiter').canHandle('order').withArgs('pizza tonno').andThrowsError('Sorry. Maybe you want to order something else?').on(waiter);
@@ -39,20 +38,20 @@ describe('pizza restaurant', function () {
 
   describe('the chef', function () {
     it('can make pizzas, if the pantry has everything needed to produce an order', function () {
-      var pantry = createPantry({
-        dough: ['dough'],
-        cheese: ['cheese'],
-        'tomato sauce': ['tomato sauce'],
-        tuna: ['tuna']
-      });
-      var chef = createChef(pantry);
+      var fullPantry = createPantry({
+                                      dough: ['dough'],
+                                      cheese: ['cheese'],
+                                      'tomato sauce': ['tomato sauce'],
+                                      tuna: ['tuna']
+                                    });
+      var chef = createChef(fullPantry);
 
       verify('chef').canHandle('make').withArgs('143').andReturns('pizza tonno').on(chef);
     });
 
     it('throws an error, when pantry is empty', function () {
-      var pantry = createPantry();
-      var chef = createChef(pantry);
+      var emptyPantry = createPantry();
+      var chef = createChef(emptyPantry);
 
       verify('chef').canHandle('make').withArgs('143').andThrowsError('Not available').on(chef);
     });
@@ -90,7 +89,7 @@ function createChef(pantry) {
     }
     ingredients.forEach(function (ingredient) {
       pantry.take(ingredient);
-    }, this);
+    });
 
     return externalmenu[order];
   }
@@ -103,17 +102,10 @@ function createChef(pantry) {
 function createPantry(initialFood) {
   var storedFood = initialFood || {};
 
-  function add(food) {
-    if (!storedFood[food]) {
-      storedFood[food] = [];
-    }
-    storedFood[food].push(food);
-  }
-
   function has(foods) {
     return foods.every(function (food) {
       return storedFood[food] && storedFood[food].length > 0;
-    }, this);
+    });
   }
 
   function take(food) {
