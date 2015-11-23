@@ -83,7 +83,7 @@ describe('Library "verify"', function () {
       function func() {
         verify('collie').canHandle('funcName').withArgs('anyArg').andThrowsError('any message').on(collaborator);
       };
-      expect(func).to.throw();
+      expect(func).to.throw('VerificationError: Expected that sut throws an error, but didn\'t.');
     });
   });
 
