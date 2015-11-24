@@ -131,6 +131,17 @@ describe('Some functions for analyzing the made assumptions', function () {
     expect(notAssumedVerifications[0].name).to.be('B');
   });
 
+  it('get all unused assumptions', function () {
+    var array = createArray()
+      .addAssumption('A')
+      .addCalledBy('A')
+      .addAssumption('B')
+      .build();
+    var unUsedAssumptions = analyzer.getUnusedAssumptions(array);
+    expect(unUsedAssumptions).to.have.length(1);
+    expect(unUsedAssumptions[0].name).to.be('B');
+  });
+
   it('get all assumptions', function () {
     var array = createArray()
       .addAssumption('A')
