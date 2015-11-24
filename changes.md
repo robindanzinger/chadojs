@@ -1,6 +1,9 @@
-Version x.x.x / ?? ??? ????
+Version 0.2.4 / 24 Nov 2015
 -------------
 * small rework of example
+* removed unused line in find_in_track
+* improved verification error message. NaN will now be logged as NaN
+* list unused assumptions in the console reporter
 
 Version 0.2.3 / 15 Nov 2015
 -------------
