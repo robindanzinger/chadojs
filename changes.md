@@ -1,3 +1,7 @@
+Version 0.2.5 / ?? ??? ????
+-------------
+* small refactoring of lib/verify
+
 Version 0.2.4 / 24 Nov 2015
 -------------
 * small rework of example
