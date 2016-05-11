@@ -3,3 +3,4 @@ coverage
 node_modules
 *.swp
 Thumbs.db
+chado-result.json

@@ -9,7 +9,7 @@ describe('pizza restaurant', function () {
 
   describe('a customer', function () {
     var waiter = createDouble('waiter');
-    
+
     it('can successfully order a pizza tonno', function customer() {
       assume(waiter).canHandle('order').withArgs('pizza tonno').andReturns('pizza tonno'); // will never be called here
     });
@@ -22,7 +22,7 @@ describe('pizza restaurant', function () {
   describe('the waiter', function () {
     var chef = createDouble('chef');
     var waiter = createWaiter(chef);
-    
+
     it('passes the translated order to the chef', function () {
       assume(chef).canHandle('make').withArgs('143').andReturns('pizza tonno');
 
@@ -114,7 +114,6 @@ function createPantry(initialFood) {
 
   return {
     has: has,
-    add: add,
     take: take
   };
 }

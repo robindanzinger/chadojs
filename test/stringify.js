@@ -25,7 +25,8 @@ describe('Library "stringify"', function () {
     });
 
     it('functions as \'=>function\' string', function () {
-      function func() {};
+      function func() {}
+
       expect(stringify(func)).to.be('"=>function"');
     });
 
@@ -44,7 +45,7 @@ describe('Library "stringify"', function () {
       expect(stringify(obj)).to.be(expected);
     });
   });
-  
+
   describe('parses', function () {
     it('like JSON', function () {
       expect(parse('"5"')).to.be('5');
@@ -68,8 +69,6 @@ describe('Library "stringify"', function () {
       expect(obj.key).to.be.function();
     });
   });
-
-
 
 });
 

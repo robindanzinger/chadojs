@@ -45,7 +45,7 @@ describe('library "assume"', function () {
 
       function func() {
         collaborator.anyFuncName();
-      };
+      }
       expect(func).to.throw(/There is no assumption defined./);
     });
   });
@@ -65,13 +65,13 @@ describe('library "assume"', function () {
 
     it('should ignore appending undefined arguments when creating assumption', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs(1, undefined).andReturns('anyString');
-    
+
       expect(collaborator.anyFuncName(1)).to.be('anyString');
     });
 
     it('should ignore all appending undefined arguments when calling the assumed function', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs(1).andReturns('anyString');
-    
+
       expect(collaborator.anyFuncName(1, undefined)).to.be('anyString');
     });
 
@@ -100,14 +100,14 @@ describe('library "assume"', function () {
     it('throws an error when called with no arguments', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
 
-      function func() { collaborator.anyFuncName(); };
+      function func() { collaborator.anyFuncName(); }
       expect(func).to.throw(/There is no assumption defined. /);
     });
 
     it('throws an error when called with wrong arguments', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
 
-      function func() { collaborator.anyFuncName('anotherString', [1, 2]); };
+      function func() { collaborator.anyFuncName('anotherString', [1, 2]); }
       expect(func).to.throw();
     });
   });
@@ -140,17 +140,17 @@ describe('library "assume"', function () {
       function cb(result) {
         expect(result).to.be('value');
         done();
-      };
+      }
 
       assume(collaborator).canHandle('anyFunc').withArgs(callback).andCallsCallbackWith('value');
       collaborator.anyFunc(cb);
     });
 
     it('will use the position of the special "callback" argument for execution', function (done) {
-      function anotherCb() {};
+      function anotherCb() {}
       function cb() {
         done();
-      };
+      }
 
       assume(collaborator).canHandle('anyFunc').withArgs('anyArg', anotherCb, callback).andCallsCallbackWith();
       collaborator.anyFunc('anyArg', anotherCb, cb);

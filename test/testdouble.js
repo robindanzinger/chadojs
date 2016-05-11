@@ -24,12 +24,14 @@ describe('Library "testdouble"', function () {
     });
 
     it('has a mandatory "name" attribute', function () {
-      function func() { createDouble(); };
+      function func() { createDouble(); }
+
       expect(func).to.throw(/name not set or not a String/);
     });
 
     it('has a mandatory "name" attribute of type String', function () {
-      function func() { createDouble({}); };
+      function func() { createDouble({}); }
+
       expect(func).to.throw(/name not set or not a String/);
     });
   });
@@ -40,21 +42,23 @@ describe('Library "testdouble"', function () {
     it('returns the registered name of the double', function () {
       testDoubleLib.createDouble('someLib');
       var testDouble = testDoubleLib.createDouble('anyLib');
-      
+
       expect(nameFor(testDouble)).to.be('anyLib');
     });
 
     it('throws an error, if called without argument', function () {
       function func() {
         nameFor();
-      };
+      }
+
       expect(func).to.throw();
     });
 
     it('throws an error, if called with an invalid argument (not registered as test double)', function () {
       function func() {
         nameFor({});
-      };
+      }
+
       expect(func).to.throw();
     });
   });

@@ -1,6 +1,9 @@
 Version 0.2.5 / ?? ??? ????
 -------------
+* requires lodash 4, so maybe breaking your dependency chain
 * small refactoring of lib/verify
+* dependencies bump
+* using much stricter eslint settings
 
 Version 0.2.4 / 24 Nov 2015
 -------------

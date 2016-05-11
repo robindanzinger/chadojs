@@ -1,5 +1,10 @@
 {
   "env": {
     "mocha": true
+  },
+  "rules": {
+    "no-use-before-define": 0,
+    "no-console": 0,
+    "no-sync": 0
   }
 }

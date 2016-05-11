@@ -7,6 +7,86 @@ var actionStringLib = require('../lib/actionString');
 var createVerificationString = createVerification.createVerificationString;
 var createVerificationMethod = createVerification.createVerificationMethod;
 
+function createAssumption() {
+
+  var builder = {};
+
+  var assumption = {
+    name: undefined,
+    func: undefined,
+    args: undefined,
+    action: undefined
+  };
+
+  builder.withName = function setName(name) {
+    assumption.name = name;
+    return builder;
+  };
+
+  builder.withFunc = function setFunc(func) {
+    assumption.func = func;
+    return builder;
+  };
+
+  builder.withArgs = function setArgs(args) {
+    assumption.args = stringify(args);
+    return builder;
+  };
+
+  builder.withAction = function setAction(action) {
+    assumption.action = action;
+    return builder;
+  };
+
+  builder.withReturnValue = function setReturnValue(returnValue) {
+    var actionString = actionStringLib.createReturnValueActionString(returnValue);
+    builder.withAction(actionString);
+    return builder;
+  };
+
+  builder.withErrorMessage = function setErrorMessage(message) {
+    var actionString = actionStringLib.createThrowErrorActionString(message);
+    builder.withAction(actionString);
+    return builder;
+  };
+
+  builder.withCallback = function setCallback(callbackIndex, callbackArgs) {
+    var actionString = actionStringLib.createCallbackActionString(callbackIndex, callbackArgs);
+    builder.withAction(actionString);
+    return builder;
+  };
+
+  builder.build = function build() {
+    return assumption;
+  };
+
+  return builder;
+}
+
+function createDefaultThrowErrorAssumption() {
+  return createAssumption()
+    .withName('name')
+    .withFunc('func')
+    .withArgs(['arg'])
+    .withErrorMessage('message');
+}
+
+function createDefaultReturnValueAssumption() {
+  return createAssumption()
+    .withName('name')
+    .withFunc('func')
+    .withArgs(['arg'])
+    .withReturnValue('value');
+}
+
+function createDefaultCallbackAssumption() {
+  return createAssumption()
+    .withName('name')
+    .withFunc('func')
+    .withArgs([function () {}, 'arg'])
+    .withCallback(0, ['value']);
+}
+
 describe('Lib create_verification', function () {
 
   describe('create verification string', function () {
@@ -73,9 +153,10 @@ describe('Lib create_verification', function () {
       var actualMethodString = createVerificationMethod(template, assumption);
       expect(actualMethodString).to.be(expectedMethodString);
     });
+
     it('can work with different templates', function () {
       var assumption = createDefaultReturnValueAssumption().build();
-      var template = {
+      var templ = {
         returnValue: {
           m0: 'describe(\'{name}\'), function () {',
           m0end: '});',
@@ -93,9 +174,10 @@ describe('Lib create_verification', function () {
         + '    });\n'
         + '  });\n'
         + '});\n';
-      var actualMethodString = createVerificationMethod(template, assumption);
+      var actualMethodString = createVerificationMethod(templ, assumption);
       expect(actualMethodString).to.be(expectedMethodString);
     });
+
     it('should work with an throwErrorAssumption', function () {
       var assumption = createDefaultThrowErrorAssumption().build();
       var expectedMethodString =
@@ -120,91 +202,3 @@ describe('Lib create_verification', function () {
     });
   });
 });
-
-function createDefaultReturnValueAssumption() {
-  return createAssumption()
-    .withName('name')
-    .withFunc('func')
-    .withArgs(['arg'])
-    .withReturnValue('value');
-}
-
-function createDefaultThrowErrorAssumption() {
-  return createAssumption()
-    .withName('name')
-    .withFunc('func')
-    .withArgs(['arg'])
-    .withErrorMessage('message');
-}
-
-function createDefaultCallbackAssumption() {
-  return createAssumption()
-    .withName('name')
-    .withFunc('func')
-    .withArgs([function () {}, 'arg'])
-    .withCallback(0, ['value']);
-}
-
-function createAssumption() {
-  var assumption = {
-    name: undefined,
-    func: undefined,
-    args: undefined,
-    action: undefined
-  };
-
-  var builder = {
-    withName: setName,
-    withFunc: setFunc,
-    withArgs: setArgs,
-    withAction: setAction,
-    withReturnValue: setReturnValue,
-    withErrorMessage: setErrorMessage,
-    withCallback: setCallback,
-    build: build
-  };
-
-  function build() {
-    return assumption;
-  }
-
-  function setName(name) {
-    assumption.name = name;
-    return builder;
-  }
-
-  function setFunc(func) {
-    assumption.func = func;
-    return builder;
-  }
-
-  function setArgs(args) {
-    assumption.args = stringify(args);
-    return builder;
-  }
-
-  function setAction(action) {
-    assumption.action = action;
-    return builder;
-  }
-
-  function setReturnValue(returnValue) {
-    var actionString = actionStringLib.createReturnValueActionString(returnValue);
-    setAction(actionString);
-    return builder;
-  }
-
-  function setErrorMessage(message) {
-    var actionString = actionStringLib.createThrowErrorActionString(message);
-    setAction(actionString);
-    return builder;
-  }
-
-  function setCallback(callbackIndex, callbackArgs) {
-    var actionString = actionStringLib.createCallbackActionString(callbackIndex, callbackArgs);
-    setAction(actionString);
-    return builder;
-  }
-
-  return builder;
-}
