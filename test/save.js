@@ -5,10 +5,10 @@ describe('library save', function () {
   var repo = {};
   var save = require('../lib/save');
 
-  beforeEach(function() {
+  beforeEach(function () {
     repo = {};
   });
-  
+
   it('saves an array as a map to the given repository object', function () {
     save(['value1', 'value2', 1, 'value3']).to(repo);
     expect(repo.value1.value2['1'].value3).to.exist();

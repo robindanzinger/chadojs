@@ -1,4 +1,5 @@
-var path = require('path');
+'use strict';
+
 var expect = require('must');
 var findInStack = require('../lib/find_in_stack');
 
@@ -17,10 +18,10 @@ var noContextStack = [
 
 describe('find_in_stack', function () {
   it('detects and separates information when stack trace has a context (in line 3)', function () {
-    expect(findInStack(standardStack)).to.eql(['at Context.<anonymous> (/JavascriptDev/chadojs/test/assume.js:19:7)','Context.<anonymous>','/JavascriptDev/chadojs/test/assume.js','19','7']);
+    expect(findInStack(standardStack)).to.eql(['at Context.<anonymous> (/JavascriptDev/chadojs/test/assume.js:19:7)', 'Context.<anonymous>', '/JavascriptDev/chadojs/test/assume.js', '19', '7']);
   });
-  
+
   it('detects and separates information when stack trace does not have a context (in line 3)', function () {
-    expect(findInStack(noContextStack)).to.eql(['at /JavascriptDev/chadojs/test/assume.js:19:7','','/JavascriptDev/chadojs/test/assume.js','19','7']);
-  })
+    expect(findInStack(noContextStack)).to.eql(['at /JavascriptDev/chadojs/test/assume.js:19:7', '', '/JavascriptDev/chadojs/test/assume.js', '19', '7']);
+  });
 });

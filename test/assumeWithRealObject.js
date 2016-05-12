@@ -47,7 +47,7 @@ describe('library assume [on real objects]', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
       function func() {
         realObject.anyFuncName();
-      };
+      }
       expect(func).to.throw();
     });
 
@@ -55,7 +55,7 @@ describe('library assume [on real objects]', function () {
       assume(collaborator).canHandle('anyFuncName').withArgs('aString', [1, 2]).andReturns('anyString');
       function func() {
         realObject.anyFuncName('aString', [1, 3]);
-      };
+      }
       expect(func).to.throw();
     });
 

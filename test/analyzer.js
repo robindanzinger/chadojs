@@ -3,6 +3,50 @@
 var expect = require('must');
 var analyzer = require('../lib/analyzer');
 
+function createArray() {
+  var array = [];
+
+  function createItem(name, type, file, test) {
+    return {
+      name: name,
+      type: type,
+      file: file ? file : '/dir/file.js',
+      line: 42,
+      test: test
+    };
+  }
+
+  function forward() {
+    function addAssumption(name, file, test) {
+      array.push(createItem(name, 'assume', file, test));
+      return forward();
+    }
+
+    function addVerification(name, file, test) {
+      array.push(createItem(name, 'verify', file, test));
+      return forward();
+    }
+
+    function addCalledBy(name) {
+      array.push(createItem(name, 'calledBy'));
+      return forward();
+    }
+
+    function build() {
+      return array;
+    }
+
+    return {
+      addAssumption: addAssumption,
+      addVerification: addVerification,
+      addCalledBy: addCalledBy,
+      build: build
+    };
+  }
+
+  return forward();
+}
+
 describe('Some functions for analyzing the made assumptions', function () {
   it('sort array', function () {
     var array = createArray().addAssumption('BName').addAssumption('AName').build();
@@ -162,49 +206,5 @@ describe('Some functions for analyzing the made assumptions', function () {
     expect(allVerifications).to.have.length(2);
   });
 });
-
-function createArray() {
-  var array = [];
-
-  function addAssumption(name, file, test) {
-    array.push(createItem(name, 'assume', file, test));
-    return forward();
-  }
-
-  function addVerification(name, file, test) {
-    array.push(createItem(name, 'verify', file, test));
-    return forward();
-  }
-
-  function addCalledBy(name) {
-    array.push(createItem(name, 'calledBy'));
-    return forward();
-  }
-
-  function createItem(name, type, file, test) {
-    return {
-      name: name,
-      type: type,
-      file: file ? file : '/dir/file.js',
-      line: 42,
-      test: test
-    };
-  }
-
-  function build() {
-    return array;
-  }
-
-  function forward() {
-    return {
-      addAssumption: addAssumption,
-      addVerification: addVerification,
-      addCalledBy: addCalledBy,
-      build: build
-    };
-  }
-
-  return forward();
-}
 
 

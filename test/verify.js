@@ -34,7 +34,7 @@ describe('Library "verify"', function () {
     it('throws error, if the sut cannot handle the assumption', function () {
       function func() {
         verify('collie').canHandle('funcName').andReturns('anotherValue').on(collaborator);
-      };
+      }
 
       expect(func).to.throw();
     });
@@ -42,7 +42,7 @@ describe('Library "verify"', function () {
     it('throws error, if the sut has not the expected function', function () {
       function func() {
         verify('collie').canHandle('funcNameNonExisting').andReturns('value').on(collaborator);
-      };
+      }
 
       expect(func).to.throw();
     });
@@ -60,7 +60,7 @@ describe('Library "verify"', function () {
         verify('collie').canHandle('callbackFunc').withArgs('foo', chado.callback, 'bar')
           .andCallsCallbackWith('anothervalue')
           .on(collaborator, 'some dummy arg');
-      };
+      }
       expect(func).to.throw();
     });
 
@@ -69,7 +69,7 @@ describe('Library "verify"', function () {
         verify('collie').canHandle('callbackFunc').withArgs('foo')
           .andCallsCallbackWith('bar')
           .on(collaborator, function () {});
-      };
+      }
       expect(func).to.throw();
     });
   });
@@ -82,7 +82,7 @@ describe('Library "verify"', function () {
     it('throws an error, if the sut doesn\'t throw an error', function () {
       function func() {
         verify('collie').canHandle('funcName').withArgs('anyArg').andThrowsError('any message').on(collaborator);
-      };
+      }
       expect(func).to.throw('VerificationError: Expected that sut throws an error, but didn\'t.');
     });
   });
