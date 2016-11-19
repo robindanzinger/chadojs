@@ -1,4 +1,8 @@
-Version 0.2.5 / ?? ??? ????
+Version 0.2.6 / ?? ??? ????
+* some small refactoring of lib/assume, lib/save
+* add node 6 for travis
+
+Version 0.2.5 / 12 May 2016
 -------------
 * requires lodash 4, so maybe breaking your dependency chain
 * small refactoring of lib/verify
