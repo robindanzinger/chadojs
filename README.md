@@ -212,12 +212,12 @@ verify('collaboratorName').canHandle('foo').withArgs(callback).andCallsCallbackW
   on(collaborator, function () {});    
 
 // throws error, because collaborator.foo uses first argument as callback
-verify('collaboratorName').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
+verify('collaboratorName').canHandle('foo').withArgs('argument', callback).andCallsCallbackWith('bar').
   on(collaborator, function () {});    
   
 // ok
 collaborator = {foo: function (argument, callback) {callback('bar');};
-verify('collaboratorName').canHandle('foo').withArgs(callback, 'argument').andCallsCallbackWith('bar').
+verify('collaboratorName').canHandle('foo').withArgs('argument', callback).andCallsCallbackWith('bar').
   on(collaborator, function () {});    
 ```
 
