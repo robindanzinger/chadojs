@@ -40,6 +40,17 @@ describe('library "assume"', function () {
       expect(collaborator.anyFuncName()).to.be(expectedReturnValue);
     });
 
+    it('can reuse a testdouble function to create another assumption', function () {
+      var testdoubleFunc = assume(collaborator).canHandle('anyFunc');
+      testdoubleFunc.withArgs(1).andReturns(1);
+      testdoubleFunc.withArgs(2).andReturns(2);
+      testdoubleFunc.andReturns(0);
+
+      expect(collaborator.anyFunc()).to.be(0);
+      expect(collaborator.anyFunc(1)).to.be(1);
+      expect(collaborator.anyFunc(2)).to.be(2);
+    });
+
   });
 
   describe('Calling a stub with defined return value (defined arguments)', function () {
@@ -167,6 +178,16 @@ describe('library "assume"', function () {
       assume(collaborator).canHandle('anyFunc').withArgs('anyArg', callback).andCallsCallbackWith().andReturns(5);
 
       expect(collaborator.anyFunc('anyArg', cb)).to.be(5);
+    });
+    it('can define two different callbacks on same function', function (done) {
+      var funcDouble = assume(collaborator).canHandle('anyFunc');
+      funcDouble.withArgs(callback, 'anyArg').andCallsCallbackWith();
+      funcDouble.withArgs('anyArg', callback).andCallsCallbackWith();
+
+      var cb = function () {
+        collaborator.anyFunc('anyArg', done);
+      };
+      collaborator.anyFunc(cb, 'anyArg');
     });
   });
 
