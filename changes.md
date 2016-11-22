@@ -3,6 +3,7 @@ Version 0.2.6 / ?? ??? ????
 * refactoring: separated stub logic in stub.js and fluent api in assume.js
 * changed eslint settings: no-use-before-define excluded for functions
 * requires lodash 4.12.0. Newer versions will break.
+* add stubbing support, i.e. classic stubs
 * add node 6 for travis
 
 Version 0.2.5 / 12 May 2016
