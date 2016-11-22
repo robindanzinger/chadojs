@@ -1,5 +1,7 @@
 Version 0.2.6 / ?? ??? ????
 * some small refactoring of lib/assume, lib/save
+* refactoring: separated stub logic in stub.js and fluent api in assume.js
+* changed eslint settings: no-use-before-define excluded for functions
 * add node 6 for travis
 
 Version 0.2.5 / 12 May 2016
