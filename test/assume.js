@@ -42,7 +42,7 @@ describe('library "assume"', function () {
 
     it('throws an exception if no return value is set up', function () {
       assume(collaborator).canHandle('anyFuncName');
-      
+
       function func() {
         collaborator.anyFuncName();
       }
