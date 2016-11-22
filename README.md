@@ -36,7 +36,7 @@ create a new file (e.g.: mocha-chado.js) in your test directory and add the foll
 ```js
 var chado = require('chado');
 var fs = require('fs');
-after( function () {
+after(function () {
   chado.consoleReporter.logReport();
   fs.writeFileSync(
     "chado-result.json", 
@@ -53,8 +53,31 @@ var fs = require('fs');
 var testRunner = require('buster').testRunner;
 testRunner.on('suite:end', function () {
   chado.consoleReporter.logReport();
-  fs.writeFile(
+  fs.writeFileSync(
     "chado-result.json", 
+    JSON.stringify(chado.repo, null, 2)
+  );
+});
+```
+
+### jasmine
+create a new SpecHelper file and add the following lines.
+```js
+var chado = require('chado');
+var fs = require('fs');
+var chadoJasmineReporter = {
+  specStarted: function (result) {
+    chado.setCurrentTest(result.fullName);
+  },
+  specDone : function (result) {
+    chado.setCurrentTest(null);
+  }
+};
+jasmine.getEnv().addReporter(chadoJasmineReporter);
+afterAll(function() {
+  chado.consoleReporter.logReport();
+  fs.writeFileSync(
+    "chado-result.json",
     JSON.stringify(chado.repo, null, 2)
   );
 });
