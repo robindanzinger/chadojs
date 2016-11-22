@@ -40,14 +40,6 @@ describe('library "assume"', function () {
       expect(collaborator.anyFuncName()).to.be(expectedReturnValue);
     });
 
-    it('throws an exception if no return value is set up', function () {
-      assume(collaborator).canHandle('anyFuncName');
-
-      function func() {
-        collaborator.anyFuncName();
-      }
-      expect(func).to.throw(/anyFuncName is not a function/);
-    });
   });
 
   describe('Calling a stub with defined return value (defined arguments)', function () {
