@@ -32,7 +32,7 @@ npm install chado --save-dev
 ## setup chadojs
 
 ### mocha
-create a new file (e.g.: mocha-chado.js) in your test directory and add the following lines. 
+Create a new file (e.g.: mocha-chado.js) in your test directory and add the following lines. 
 ```js
 var chado = require('chado');
 var fs = require('fs');
@@ -44,9 +44,21 @@ after(function () {
   );
 });
 ```
+Create a new reporter file (chado-reporter.js) with following content and add it to the mocha.opts file.
+```js
+var Spec = require('mocha').reporters.Spec;
+var setCurrentTest = require('chado').setCurrentTest;
+function Reporter(runner) {
+  runner.on('test', function (test) {
+    setCurrentTest(test.title);
+  });
+  return new Spec(runner);
+}
+module.exports = Reporter;
+```
 
 ### busterjs
-create a new file (e.g.: buster-chado.js) in your test directory and add the following lines. 
+Create a new file (e.g.: buster-chado.js) in your test directory and add the following lines. 
 ```js
 var chado = require('chado');
 var fs = require('fs');
@@ -61,7 +73,7 @@ testRunner.on('suite:end', function () {
 ```
 
 ### jasmine
-create a new SpecHelper file and add the following lines.
+Create a new SpecHelper file and add the following lines.
 ```js
 var chado = require('chado');
 var fs = require('fs');
@@ -84,7 +96,10 @@ afterAll(function() {
 ```
 
 ### other testrunners
-ensure that after the test suite ran chado.consoleReporter.logReport() is called and if you want to use the html-reporter that the chado.repo is written to a file.
+Ensure that after the test suite ran chado.consoleReporter.logReport() is called and if you want to use the html-reporter that the chado.repo is written to a file. Depending on the test framework ensure also, that the testname will be set in chado.
+```js
+chado.setCurrentTest(testname);
+```
 
 ## how does it work
 
