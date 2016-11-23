@@ -1,5 +1,4 @@
 'use strict';
-
 var expect = require('must');
 var any = require('../lib/types').any;
 var anyValue = require('../lib/types').anyValue;
