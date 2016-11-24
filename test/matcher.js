@@ -10,6 +10,10 @@ function findMatcher(matchers) {
 }
 
 describe('library matcher', function () {
+  it('findMatcher called with no matcher returns undefined', function () {
+    expect(findMatcher([], 1)).to.be(undefined);
+    expect(findMatcher(undefined, 1)).to.be(undefined);
+  });
   describe('findMatcher with exact simple values', function () {
     it('returns matching matcher for one argument', function () {
        var matcher = create(1);
