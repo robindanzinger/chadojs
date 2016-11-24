@@ -24,7 +24,8 @@ describe('library arguments_helper ', function () {
     });
     it('return empty array when called with nothing or with undefined', function () {
       exp(undefined).eql([]);
-      //exp().eql([]);
+      exp().eql([]);
+      expect(getArgumentsAsArray()).eql([]);
     });
   });
 });

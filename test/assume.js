@@ -127,7 +127,7 @@ describe('library "assume"', function () {
       assume(collaborator).canHandle('anotherFunc').andReturns('foo');
 
       expect(repo.collie.anyFunc['["aString"]']['r:"anyString"']).to.exist();
-      expect(repo.collie.anotherFunc.undefined['r:"foo"']).to.exist();
+      expect(repo.collie.anotherFunc['[]']['r:"foo"']).to.exist();
     });
 
     it('stores who calls the assumption in repo', function () {

@@ -74,7 +74,7 @@ describe('library assume [on real objects]', function () {
       assume(collaborator).canHandle('anotherFunc').andReturns('foo');
 
       expect(repo.collie.anyFunc['["aString"]']['r:"anyString"']).to.exist();
-      expect(repo.collie.anotherFunc.undefined['r:"foo"']).to.exist();
+      expect(repo.collie.anotherFunc['[]']['r:"foo"']).to.exist();
     });
 
     it('the callee in repo', function () {
