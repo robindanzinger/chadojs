@@ -3,8 +3,11 @@ var expect = require('must');
 var any = require('../lib/types').any;
 var anyValue = require('../lib/types').anyValue;
 var lib = require('../lib/matcher');
-var findMatcher = lib.findMatcher;
 var create = lib.createMatcher;
+
+function findMatcher(matchers) {
+  return lib.findMatcher(matchers, Array.prototype.slice.call(arguments, 1));
+}
 
 describe('library matcher', function () {
   describe('findMatcher with exact simple values', function () {
@@ -31,6 +34,16 @@ describe('library matcher', function () {
       var matchers = [create(1), create(2)];
       expect(findMatcher(matchers, 1)).to.be(matchers[0]);
       expect(findMatcher(matchers, 2)).to.be(matchers[1]);
+    });
+  });
+  describe('findMatcher with no value', function () {
+    it('returns matcher for no arguments', function () {
+      var matcher = create();
+      expect(findMatcher(matcher)).to.be(matcher);
+      expect(findMatcher(matcher, undefined)).to.be(matcher);
+      matcher = create(undefined);
+      expect(findMatcher(matcher)).to.be(matcher);
+      expect(findMatcher(matcher, undefined)).to.be(matcher);
     });
   });
   describe('findMatcher with object values', function () {
