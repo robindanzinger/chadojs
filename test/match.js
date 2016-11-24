@@ -16,6 +16,12 @@ describe('library match ', function () {
      value = [1, 2, 3, 4];
      expect(match(value, value)).to.be.true();
   });
+  it('matches undefined value', function () {
+    expect(match(undefined, undefined)).to.be.true();
+  });
+  it('matches null value', function () {
+    expect(match(null, null)).to.be.true();
+  });
   it('two functions matches always', function () {
     expect(match(function () {}, function () {})).to.be.true();
     expect(match(types.callback, function () {})).to.be.true();
@@ -28,6 +34,9 @@ describe('library match ', function () {
   it('with anyValue matcher', function () {
     expect(match(types.anyValue, 1)).to.be.true();
     expect(match(types.anyValue, 2)).to.be.true();
+    expect(match(types.anyValue, undefined)).to.be.true();
+    expect(match(types.anyValue, null)).to.be.true();
+
   });
   it('with number matcher', function () {
     expect(match(types.anyNumber, 1)).to.be.true();
