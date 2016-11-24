@@ -7,7 +7,6 @@ var findMatcher = lib.findMatcher;
 var create = lib.createMatcher;
 
 describe('library matcher', function () {
-
   describe('findMatcher with exact simple values', function () {
     it('returns matching matcher for one argument', function () {
        var matcher = create(1);
@@ -32,6 +31,14 @@ describe('library matcher', function () {
       var matchers = [create(1), create(2)];
       expect(findMatcher(matchers, 1)).to.be(matchers[0]);
       expect(findMatcher(matchers, 2)).to.be(matchers[1]);
+    });
+  });
+  describe('findMatcher with object values', function () {
+    it('returns matching matcher for one argument', function () {
+      var object = {1: 'one'};
+      var matcher = create(object);
+      expect(findMatcher(matcher, object)).to.be(matcher);
+      expect(findMatcher(matcher, {1: 'one'})).to.be(matcher);
     });
   });
   describe('findMatcher with anyValues', function () {
