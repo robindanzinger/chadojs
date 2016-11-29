@@ -3,7 +3,11 @@ var expect = require('must');
 var any = require('../lib/types').any;
 var anyValue = require('../lib/types').anyValue;
 var lib = require('../lib/matcher');
-var create = lib.createMatcher;
+var createMatcher = lib.createMatcher;
+var getArgumentsAsArray = require('../lib/arguments_helper').getArgumentsAsArray;
+var create = function() { 
+  createMatcher(getArgumentsAsArray(arguments));
+}
 
 function findMatcher(matchers) {
   return lib.findMatcher(matchers, Array.prototype.slice.call(arguments, 1));
