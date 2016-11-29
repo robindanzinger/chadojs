@@ -8,8 +8,8 @@ var verify = require('../lib/verify')(repo);
 
 describe('Library "verify"', function () {
   var collaborator = {
-    funcName: function () {
-      return 'value';
+    funcName: function (arg) {
+      return arg === 'other' ? 'anotherValue' : 'value';
     },
     arrayReturner: function () {
       return ['value1', 'value2'];
@@ -23,8 +23,11 @@ describe('Library "verify"', function () {
   };
 
   describe('Handles return values and arguments', function () {
-    it('is quiet if the collaborator supports the protocol', function () {
+    it('is quiet if the collaborator supports the protocol (no argument)', function () {
       verify('collie').canHandle('funcName').andReturns('value').on(collaborator);
+    });
+    it('is quiet if the collaborator supports the protocol (with argument)', function () {
+      verify('collie').canHandle('funcName').withArgs('other').andReturns('anotherValue').on(collaborator);
     });
 
     it('can return arrays', function () {
