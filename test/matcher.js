@@ -5,8 +5,9 @@ var anyValue = require('../lib/types').anyValue;
 var lib = require('../lib/matcher');
 var createMatcher = lib.createMatcher;
 var getArgumentsAsArray = require('../lib/arguments_helper').getArgumentsAsArray;
-var create = function() { 
-  createMatcher(getArgumentsAsArray(arguments));
+
+function create() {
+  return createMatcher(getArgumentsAsArray(arguments));
 }
 
 function findMatcher(matchers) {
