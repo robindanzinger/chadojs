@@ -198,4 +198,13 @@ describe('library "assume"', function () {
       expect(collaborator.anyFunc).to.throw('my error message');
     });
   });
+
+  describe('combining assume and stub', function () {
+    it('can define a specific assumption and a stub for all other calls', function () {
+      assume(collaborator).canHandle('anyFunc').withArgs('foo').andReturns('bar').stubElseReturn('barbar');
+      expect(collaborator.anyFunc('foo')).to.be('bar');
+      expect(collaborator.anyFunc()).to.be('barbar');
+      expect(collaborator.anyFunc('foofoo')).to.be('barbar');
+    });
+  });
 });
