@@ -1,8 +1,8 @@
-Version 0.3.0 / ?? ??? ????
+Version 0.3.0 / 02 Dec 2016
 * some small refactoring of lib/assume, lib/save
 * refactoring: separated stub logic in stub.js and fluent api in assume.js
 * changed eslint settings: no-use-before-define excluded for functions
-* requires lodash 4.12.0. Newer versions will break.
+* ensure compare.js only uses public lodash API
 * add stubbing support, i.e. classic stubs
 * add simple matcher, for example anyValue -> assume(col).canHandle('func').withArgs(types.anyValue).andReturn(true);
  -> then function will return true for any given argument
