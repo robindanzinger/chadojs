@@ -34,7 +34,7 @@
     "testdouble",
     "fake"
   ],
-  "author": "Robin Danzinger",
+  "author": "Andreas Leidig, Robin Danzinger",
   "license": "(MIT OR Apache-2.0)",
   "bugs": {
     "url": "https://github.com/robindanzinger/chadojs/issues"
