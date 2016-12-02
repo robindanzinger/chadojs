@@ -1,8 +1,8 @@
-Version 0.3.1 / ?? ??? ????
+Version 0.3.2 / ?? ??? ????
 --------------
 
 
-Version 0.3.0 / 02 Dec 2016
+Version 0.3.1 / 02 Dec 2016
 --------------
 * some small refactoring of lib/assume, lib/save
 * refactoring: separated stub logic in stub.js and fluent api in assume.js
