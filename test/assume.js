@@ -205,6 +205,7 @@ describe('library "assume"', function () {
       expect(collaborator.anyFunc('foo')).to.be('bar');
       expect(collaborator.anyFunc()).to.be('barbar');
       expect(collaborator.anyFunc('foofoo')).to.be('barbar');
+      expect(collaborator.anyFunc(1, 2)).to.be('barbar');
     });
   });
 });
