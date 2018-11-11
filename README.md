@@ -3,6 +3,13 @@
 # chadojs
 chadojs is a mocking library for nodejs which reduces the need for integration tests. Instead of integration tests it supports writing verification tests.
 
+## production ready?
+
+chadojs is more a proof of concept than a production ready library. Although it is used in some productive environments. Unfortunately I don't have enough time to add new interesting features. Still I think the basic concept is worth to have a look at. Especially the example how software can be implemented with chadojs and outside-in tdd.
+I hope that some day it will be enough to focus on the necessary unit tests and still guarantee the basic correctness of the application.
+If you have any issues or questions about chadojs, outside-in tdd and mocking, don't hesitate to ask me.
+Thank you!
+
 ## why a new mocking library
 The problem with mocks is, that the tests still pass, although the real objects might not work together any more.
 
@@ -306,7 +313,7 @@ However there are some similar mocking libraries in other languages:
 ### licence
 The MIT License (MIT)
 
-Copyright (c) <2015-2016> <copyright holders>
+Copyright (c) <2015-2019> <copyright holders>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
