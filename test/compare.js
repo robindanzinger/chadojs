@@ -30,6 +30,7 @@ describe('library compare', function () {
     var firstObject = {property: 'value'};
     expect(is(firstObject).similarTo({property: 'value'})).to.be.true();
     expect(is(firstObject).similarTo({property: 'value', prop2: 2})).to.be.true();
+    expect(is({property: 'value', prop2: 2}).similarTo(firstObject)).to.be.false();
     expect(is({prop: 'val', dat: new Date(2014, 0, 1)}).similarTo({
       dat: new Date(2014, 0, 1),
       prop: 'val'
