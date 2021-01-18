@@ -40,6 +40,16 @@ describe('library compare', function () {
     expect(is([]).similarTo([])).to.be.true();
   });
 
+  it('ignores function properties', function () {
+    expect(is(foo()).similarTo(foo())).to.be.true();
+  });
+
+  function foo() {
+    return {
+      bar: function () {}
+    };
+  }
+
   it('objects should be similar, when the second object contains the same properties as the first object', function () {
     var firstObject = JSON.parse('[null,{"state":{"title":"Title of the Activity","description":"description1","assignedGroup":"groupname","location":"location1","direction":"direction1","startUnix":1356994800,"url":"urlOfTheActivity","owner":"ownerId","resources":{"Veranstaltung":{"_registeredMembers":[],"_registrationOpen":true}},"_addons":{}},"group":{"id":"groupname","longName":"Buxtehude","organizers":[]},"participants":[{"state":{"id":"memberId1","nickname":"participant1","email":"a@b.c"}},{"state":{"id":"memberId2","nickname":"participant2","email":"a@b.c"}}],"ownerNickname":"owner"}]');
     var secondObject = JSON.parse('[null,{"state":{"title":"Title of the Activity","description":"description1","assignedGroup":"groupname","location":"location1","direction":"direction1","startUnix":1356994800,"url":"urlOfTheActivity","owner":"ownerId","resources":{"Veranstaltung":{"_registeredMembers":[],"_registrationOpen":true}},"_addons":{}},"group":{"id":"groupname","longName":"Buxtehude","organizers":[]},"participants":[{"state":{"id":"memberId1","nickname":"participant1","email":"a@b.c"}},{"state":{"id":"memberId2","nickname":"participant2","email":"a@b.c"}}],"ownerNickname":"owner"}]');

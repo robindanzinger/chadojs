@@ -30,7 +30,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-mocha-istanbul');
 
-  grunt.registerTask('tests', ['eslint', 'mocha_istanbul']);
+  grunt.registerTask('tests', ['mocha_istanbul', 'eslint']);
 
   // Default task.
   grunt.registerTask('default', ['tests']);
