@@ -1,6 +1,6 @@
 {
   "name": "chado",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "",
   "main": "lib/chado.js",
   "directories": {
@@ -10,8 +10,9 @@
     "lodash": "^4"
   },
   "devDependencies": {
+    "eslint": "^7.18.0",
     "grunt": "^1",
-    "grunt-eslint": "^18",
+    "grunt-eslint": "^23.0.0",
     "grunt-mocha-istanbul": "^4.0.0",
     "istanbul": ">=0.4",
     "mocha": ">2",

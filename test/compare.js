@@ -41,6 +41,10 @@ describe('library compare', function () {
     expect(is([]).similarTo([])).to.be.true();
   });
 
+  it('compare promises', () => {
+    expect(is(new Promise((res) => res())).similarTo(new Promise((res) => res()))).to.be.true();
+  });
+
   it('ignores function properties', function () {
     expect(is(foo()).similarTo(foo())).to.be.true();
   });
